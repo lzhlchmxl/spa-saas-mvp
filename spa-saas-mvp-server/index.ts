@@ -7,7 +7,7 @@ import usersRouter from './routes/users';
 
 dotenv.config();
 
-const app = Express();
+export const app = Express();
 
 const port = process.env.PORT ? parseInt(process.env.PORT) : 4000;
 const host = process.env.HOST ||  "127.0.0.1";
