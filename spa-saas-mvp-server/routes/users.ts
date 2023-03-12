@@ -2,13 +2,18 @@ import express from 'express';
 import dotenv from 'dotenv';
 import User, { UserInterface } from '../models/user.model';
 import bcrypt from 'bcrypt';
-import session from "express-session";
-import crypto from 'crypto';
-import { app } from '../index';
 
 dotenv.config();
 
 const router = express.Router();
+
+declare module 'express-session' {
+  interface Session {
+    data: {
+      userId: string;
+    };
+  }
+}
 
 /* 
   GET list of users
@@ -23,20 +28,41 @@ router.route('/').get((_req, res) => { // hostname/users/
 /* 
   POST add new user to database
 */
-router.route('/add').post( async (req, res) => {
-  // [CAUTION] this might not be a great pattern, I feel I'm not typingscripting this correctly
+router.route('/register').post( async (req, res) => {
   try {
-    const user: UserInterface = req.body;
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-    user.password = hashedPassword;
-    const newUser = new User(user);
-    newUser.save();
+    const userReqBody: UserInterface = req.body;
+
+    const user = await User.findOne({ username: userReqBody.username });
+
+    if (user !== null) {
+      return res.status(400).json({ message: 'The username is already taken' });
+    }
+
+    const hashedPassword = await bcrypt.hash(userReqBody.password, 10);
+    userReqBody.password = hashedPassword;
+    const newUser = new User(userReqBody);
+    await newUser.save();
+
+    
+    // Add userId to session
+    req.session.data.userId = newUser._id.toString();
+
+    // Redirect to protected routes
+    if (newUser.role === "client") {
+      
+       
+      res.redirect('/client/dashboard');
+
+    } else if (newUser.role === "vendor") {
+
+    } else {
+
+    }
+    
   } catch (err) {
     res.status(400).json('Error ' + err);
-  } finally {
-    res.json('User added!');
-  }
-})
+  } 
+});
 
 /* 
   POST user login
@@ -55,20 +81,14 @@ router.route('/login').post( async (req, res) => {
     return res.status(401).json({ message: 'Invalid email or password' });
   }
 
-  // Create session
-  app.set('trust proxy', 1) // trust first proxy
-  app.use(session({
-    secret: process.env.SESSION_SECRET || "",
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: true }
-  }))
+  try {
+    // Add userId to session
+    req.session.data.userId = user._id.toString();
 
-  // Create session
-  // req.session.userId = user._id;
-
-  // Redirect to protected route
-  res.json(user)
+    res.redirect('/dashboard')
+  } catch (err: Error | any) { // [TODO]
+    res.status(400).json({ message: err.message})
+  }
 
 })
 

@@ -1,3 +1,3 @@
 - Database
 	- Each vendor should have their own database
-	- For now I will use one database for everything, and just give vendor/client a different user type.
+	- For now I will use one database for everything, and just give vendor/client a different user type. 

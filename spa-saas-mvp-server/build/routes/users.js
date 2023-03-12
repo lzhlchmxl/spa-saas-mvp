@@ -13,8 +13,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const dotenv_1 = __importDefault(require("dotenv"));
 const user_model_1 = __importDefault(require("../models/user.model"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+dotenv_1.default.config();
 const router = express_1.default.Router();
 /*
   GET list of users
@@ -28,20 +30,30 @@ router.route('/').get((_req, res) => {
 /*
   POST add new user to database
 */
-router.route('/add').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    // [CAUTION] this might not be a great pattern, I feel I'm not typingscripting this correctly
+router.route('/register').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const user = req.body;
-        const hashedPassword = yield bcrypt_1.default.hash(user.password, 10);
-        user.password = hashedPassword;
-        const newUser = new user_model_1.default(user);
-        newUser.save();
+        const userReqBody = req.body;
+        const user = yield user_model_1.default.findOne({ username: userReqBody.username });
+        if (user !== null) {
+            return res.status(400).json({ message: 'The username is already taken' });
+        }
+        const hashedPassword = yield bcrypt_1.default.hash(userReqBody.password, 10);
+        userReqBody.password = hashedPassword;
+        const newUser = new user_model_1.default(userReqBody);
+        yield newUser.save();
+        // Add userId to session
+        req.session.data.userId = newUser._id.toString();
+        // Redirect to protected routes
+        if (newUser.role === "client") {
+            res.redirect('/client/dashboard');
+        }
+        else if (newUser.role === "vendor") {
+        }
+        else {
+        }
     }
     catch (err) {
         res.status(400).json('Error ' + err);
-    }
-    finally {
-        res.json('User added!');
     }
 }));
 /*
@@ -57,9 +69,13 @@ router.route('/login').post((req, res) => __awaiter(void 0, void 0, void 0, func
     if (!passwordMatch) {
         return res.status(401).json({ message: 'Invalid email or password' });
     }
-    // Create session
-    // req.session.userId = user._id;
-    // Redirect to protected route
-    res.json(user);
+    try {
+        // Add userId to session
+        req.session.data.userId = user._id.toString();
+        res.redirect('/dashboard');
+    }
+    catch (err) { // [TODO]
+        res.status(400).json({ message: err.message });
+    }
 }));
 exports.default = router;
