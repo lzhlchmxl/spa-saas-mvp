@@ -2,6 +2,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import User, { UserInterface } from '../models/user.model';
 import bcrypt from 'bcrypt';
+import session from 'express-session';
+
 
 dotenv.config();
 
@@ -11,7 +13,7 @@ declare module 'express-session' {
   interface Session {
     data: {
       userId: string;
-    };
+    } | null
   }
 }
 
@@ -45,13 +47,19 @@ router.route('/register').post( async (req, res) => {
 
     
     // Add userId to session
-    req.session.data.userId = newUser._id.toString();
+    // if (req.session.data) {
+    //   req.session.data.userId = newUser._id.toString();
+    // } else {
+    //   req.session.data = {
+    //     userId: newUser._id.toString()
+    //   };
+    // }
 
     // Redirect to protected routes
     if (newUser.role === "client") {
       
        
-      res.redirect('/client/dashboard');
+      res.redirect('/client/');
 
     } else if (newUser.role === "vendor") {
 
@@ -82,14 +90,46 @@ router.route('/login').post( async (req, res) => {
   }
 
   try {
-    // Add userId to session
-    req.session.data.userId = user._id.toString();
+    if (!req.session) {
+      throw new Error('Session middleware not set up correctly');
+    }
 
-    res.redirect('/dashboard')
+    // Add userId to session
+    if (!req.session.data) {
+      req.session.data = {
+        userId: user._id.toString()
+      };
+    } else {
+      req.session.data.userId = user._id.toString();
+    }
+
+    req.session.save((err) => {
+      if (err) {
+        throw err;
+      }
+
+      res.status(200).json({ redirect: '/client' });
+    });
   } catch (err: Error | any) { // [TODO]
-    res.status(400).json({ message: err.message})
+    console.error(err); 
+    res.status(500).json({ message: 'Error addig userId to session'})
   }
 
 })
+
+
+/* 
+  DELETE user logout
+*/
+router.route('/logout').delete(async (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Error logging out' });
+    } else {
+      res.status(200).json({ redirect: '/' });
+    }
+  });
+});
 
 export default router;

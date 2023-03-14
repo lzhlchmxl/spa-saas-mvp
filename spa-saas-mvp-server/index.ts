@@ -6,6 +6,7 @@ import mongoose from 'mongoose';
 import usersRouter from './routes/users';
 import clientRoutes from './routes/client';
 import session from 'express-session';
+import MongoStore from 'connect-mongo';
 
 dotenv.config();
 
@@ -15,7 +16,11 @@ const port = process.env.PORT ? parseInt(process.env.PORT) : 4000;
 const host = process.env.HOST ||  "127.0.0.1";
 
 // cors middleware
-app.use(cors());
+app.use(cors({
+  origin: true,
+  credentials: true,
+  optionsSuccessStatus: 200
+}));
 // Parse JSON requests automatically
 app.use(Express.json());
 
@@ -26,43 +31,34 @@ connection.once('open', () => {
   console.log("MongoDB database connection established successfully");
 })
 
+app.use(session({
+  secret: process.env.SESSION_SECRET || "supersecret",
+  resave: false,
+  saveUninitialized: true,
+  store: MongoStore.create({
+    mongoUrl: process.env.ATLAS_URI,
+    ttl: 14 * 24 * 60 * 60, // 14 days
+    autoRemove: 'native' 
+})
+}))
 
 // Serve static files from the latest production React app build
 app.use(Express.static(Path.join('..', 'spa-saas-mvp-client', 'build')));
 app.use(Express.static(Path.join(__dirname, 'public')));
 
-// Serve index.html to all other routes
-app.get('/*', (_req, res) => {
-  res.sendFile(Path.join(process.cwd(), '..', 'spa-saas-mvp-client' ,'build', 'index.html'));
-});
-
-
-// Create session
-app.set('trust proxy', 1) // trust first proxy
-app.use(session({
-  name: process.env.SESSION_NAME || "",
-  secret: process.env.SESSION_SECRET || "",
-  resave: false,
-  saveUninitialized: false,
-  cookie: { 
-    maxAge: 1000 * 60 * 60 * 2,
-    sameSite: true,
-    secure: true
-  }
-}))
-
-app.get('/', (_req, res) => {
-  res.send('Express + TypeScript Server');
-});
-
 // When hitting /users in the browser, it will show everything inside usersRouter
-app.use('/users', usersRouter);
+app.use('/api/users', usersRouter);
 
 // Protected routes for clients
-app.use('/client', clientRoutes);
+app.use('/api/client', clientRoutes);
 
 // Routes for vendors
 // app.use('/vendor', vendorRoutes);
+
+// Serve index.html to all other routes
+app.get('*', (_req, res) => {
+  res.sendFile(Path.join(process.cwd(), '..', 'spa-saas-mvp-client' ,'build', 'index.html'));
+});
 
 // Run the server
 app.listen(port, host, () => {

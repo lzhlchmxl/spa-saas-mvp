@@ -42,10 +42,16 @@ router.route('/register').post((req, res) => __awaiter(void 0, void 0, void 0, f
         const newUser = new user_model_1.default(userReqBody);
         yield newUser.save();
         // Add userId to session
-        req.session.data.userId = newUser._id.toString();
+        // if (req.session.data) {
+        //   req.session.data.userId = newUser._id.toString();
+        // } else {
+        //   req.session.data = {
+        //     userId: newUser._id.toString()
+        //   };
+        // }
         // Redirect to protected routes
         if (newUser.role === "client") {
-            res.redirect('/client/dashboard');
+            res.redirect('/client/');
         }
         else if (newUser.role === "vendor") {
         }
@@ -70,12 +76,42 @@ router.route('/login').post((req, res) => __awaiter(void 0, void 0, void 0, func
         return res.status(401).json({ message: 'Invalid email or password' });
     }
     try {
+        if (!req.session) {
+            throw new Error('Session middleware not set up correctly');
+        }
         // Add userId to session
-        req.session.data.userId = user._id.toString();
-        res.redirect('/dashboard');
+        if (!req.session.data) {
+            req.session.data = {
+                userId: user._id.toString()
+            };
+        }
+        else {
+            req.session.data.userId = user._id.toString();
+        }
+        req.session.save((err) => {
+            if (err) {
+                throw err;
+            }
+            res.status(200).json({ redirect: '/client' });
+        });
     }
     catch (err) { // [TODO]
-        res.status(400).json({ message: err.message });
+        console.error(err);
+        res.status(500).json({ message: 'Error addig userId to session' });
     }
+}));
+/*
+  DELETE user logout
+*/
+router.route('/logout').delete((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    req.session.destroy((err) => {
+        if (err) {
+            console.error(err);
+            res.status(500).json({ message: 'Error logging out' });
+        }
+        else {
+            res.status(200).json({ redirect: '/' });
+        }
+    });
 }));
 exports.default = router;
