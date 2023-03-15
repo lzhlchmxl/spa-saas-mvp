@@ -26,9 +26,8 @@ root.render(
           <Route path="logout" element={<Logout />} />
           <Route path="client" element={<ClientPage />} >
             <Route index element={<div>Welcome to the Client portal</div>} />
-            <Route path="profile" element={<ProfilePage />} > 
-              <Route path='edit/:profileId' element={<EditProfile />} />
-            </Route>
+            <Route path="profile" element={<ProfilePage />} />
+            <Route path='profile/edit' element={<EditProfile />} />
             <Route path="spas" element={<SPASPage />} />
             <Route path="appointments" element={<AppointmentsPage />} />
             <Route path="history" element={<HistoryPage />} />

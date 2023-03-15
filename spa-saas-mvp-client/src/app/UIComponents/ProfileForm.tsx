@@ -106,11 +106,14 @@ function RecipeForm({
           actionText={actionText}
           actionType="primary"
         />
-        <Button 
-          actionHandler={tryCancel}
-          actionText={cancelText}
-          actionType="secondary"
-        />
+        {
+          initialProfile &&
+          <Button 
+            actionHandler={tryCancel}
+            actionText={cancelText}
+            actionType="secondary"
+          />
+        }
       </div>
     </div>
   )

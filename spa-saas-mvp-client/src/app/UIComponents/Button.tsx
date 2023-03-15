@@ -29,7 +29,7 @@ export default function Button(
 
   return (
     <button 
-      className={buttonTypeClassNames() + ` font-semibold border-2 rounded-md p-1 mt-5 px-3 shadow-md transition-all`}
+      className={buttonTypeClassNames() + ` font-semibold border-2 rounded-md p-1 m-1 px-3 shadow-md transition-all`}
       onClick={ actionHandler }
     >
       {actionText}

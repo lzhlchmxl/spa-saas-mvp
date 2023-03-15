@@ -32,3 +32,35 @@ export async function createProfile(newProfile: T.ClientProfile): Promise<T.HTTP
 
   return response.status;
 }
+
+export async function updateProfile(updatedProfile: T.ClientProfile): Promise<T.HTTPStatusCode> {
+
+  const requestOptions = {
+    method: 'put',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updatedProfile)
+  }
+
+  const response = await fetch(`/api/client/profile/update`, requestOptions);
+
+  if (response.status !== 200) {
+    throw new Error(`/api/client/profile/update returned HTTP status code: ${response.status}`);
+  }
+
+  return response.status;
+}
+
+export async function deleteProfile(): Promise<T.HTTPStatusCode> {
+
+  const requestOptions = {
+    method: 'delete'
+  }
+
+  const response = await fetch(`/api/client/profile/delete`, requestOptions);
+
+  if (response.status !== 200) {
+    throw new Error(`/api/client/profile/delete returned HTTP status code: ${response.status}`);
+  }
+
+  return response.status;
+}

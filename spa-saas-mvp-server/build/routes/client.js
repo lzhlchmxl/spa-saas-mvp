@@ -36,7 +36,7 @@ router.route('/profile').get(middleware_1.isAuthenticated, (req, res) => __await
     POST /api/client/profile/create
     Description:
     Request body: ClientProfile
-    Response body: ClientProfileId
+    Response body:
 */
 router.route('/profile/create').post(middleware_1.isAuthenticated, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
@@ -49,6 +49,40 @@ router.route('/profile/create').post(middleware_1.isAuthenticated, (req, res) =>
     catch (err) {
         console.log(err);
         res.status(500).json({ message: 'An error has occurred when creating the profile.' });
+    }
+}));
+/*
+    PUT /api/client/profile/update
+    Description:
+    Request body: ClientProfile
+    Response body:
+*/
+router.route('/profile/update').put(middleware_1.isAuthenticated, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _c;
+    try {
+        yield clientProfile_model_1.default.findOneAndUpdate({ userId: (_c = req.session.data) === null || _c === void 0 ? void 0 : _c.userId }, req.body);
+        res.status(200).json({ message: 'Profile sucessfully updated.' });
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'An error has occurred when updating the profile.' });
+    }
+}));
+/*
+    DELETE /api/client/profile/delete
+    Description:
+    Request body:
+    Response body:
+*/
+router.route('/profile/delete').delete(middleware_1.isAuthenticated, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _d;
+    try {
+        yield clientProfile_model_1.default.findOneAndDelete({ userId: (_d = req.session.data) === null || _d === void 0 ? void 0 : _d.userId });
+        res.status(200).json({ message: 'Profile sucessfully deleted.' });
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'An error has occurred when deleting the profile.' });
     }
 }));
 exports.default = router;

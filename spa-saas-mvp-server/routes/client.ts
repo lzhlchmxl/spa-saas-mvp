@@ -26,7 +26,7 @@ router.route('/profile').get(isAuthenticated, async (req, res) => {
     POST /api/client/profile/create
     Description: 
     Request body: ClientProfile
-    Response body: ClientProfileId
+    Response body: 
 */
 router.route('/profile/create').post(isAuthenticated, async (req, res) => {
 
@@ -40,6 +40,42 @@ router.route('/profile/create').post(isAuthenticated, async (req, res) => {
   } catch(err) {
     console.log(err)
     res.status(500).json({ message: 'An error has occurred when creating the profile.'})
+  }
+});
+
+/*
+    PUT /api/client/profile/update
+    Description: 
+    Request body: ClientProfile
+    Response body: 
+*/
+router.route('/profile/update').put(isAuthenticated, async (req, res) => {
+
+  try {
+    await ClientProfile.findOneAndUpdate({ userId: req.session.data?.userId }, req.body);
+
+    res.status(200).json({ message: 'Profile sucessfully updated.'});
+  } catch(err) {
+    console.log(err)
+    res.status(500).json({ message: 'An error has occurred when updating the profile.'})
+  }
+});
+
+/*
+    DELETE /api/client/profile/delete
+    Description: 
+    Request body: 
+    Response body: 
+*/
+router.route('/profile/delete').delete(isAuthenticated, async (req, res) => {
+
+  try {
+    await ClientProfile.findOneAndDelete({ userId: req.session.data?.userId });
+    
+    res.status(200).json({ message: 'Profile sucessfully deleted.'});
+  } catch(err) {
+    console.log(err)
+    res.status(500).json({ message: 'An error has occurred when deleting the profile.'})
   }
 });
 
