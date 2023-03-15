@@ -32,22 +32,20 @@ router.route('/register').post((req, res) => __awaiter(void 0, void 0, void 0, f
         userReqBody.password = hashedPassword;
         const newUser = new user_model_1.default(userReqBody);
         yield newUser.save();
-        // Add userId to session
-        // if (req.session.data) {
-        //   req.session.data.userId = newUser._id.toString();
-        // } else {
-        //   req.session.data = {
-        //     userId: newUser._id.toString()
-        //   };
-        // }
-        // Redirect to protected routes
-        if (newUser.role === "client") {
-            res.redirect('/client/');
+        if (!req.session) {
+            throw new Error('Session middleware not set up correctly');
         }
-        else if (newUser.role === "vendor") {
-        }
-        else {
-        }
+        // Add new user data to session
+        req.session.data = {
+            userId: newUser._id.toString(),
+            role: newUser.role,
+        };
+        req.session.save((err) => {
+            if (err) {
+                throw err;
+            }
+            res.status(200).json({ redirect: `/${newUser.role}` });
+        });
     }
     catch (err) {
         res.status(400).json('Error ' + err);
@@ -73,17 +71,21 @@ router.route('/login').post((req, res) => __awaiter(void 0, void 0, void 0, func
         // Add userId to session
         if (!req.session.data) {
             req.session.data = {
-                userId: user._id.toString()
+                userId: user._id.toString(),
+                role: user.role,
             };
         }
         else {
-            req.session.data.userId = user._id.toString();
+            req.session.data = {
+                userId: user._id.toString(),
+                role: user.role,
+            };
         }
         req.session.save((err) => {
             if (err) {
                 throw err;
             }
-            res.status(200).json({ redirect: '/client' });
+            res.status(200).json({ redirect: `/${user.role}` });
         });
     }
     catch (err) { // [TODO]

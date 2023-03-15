@@ -1,4 +1,8 @@
-
+export type User = {
+  username: string,
+  password: string,
+  role: 'client' | 'vendor',
+}
 
 
 export type ClientProfile = {

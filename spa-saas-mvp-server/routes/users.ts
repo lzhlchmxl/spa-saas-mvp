@@ -13,6 +13,7 @@ declare module 'express-session' {
   interface Session {
     data: {
       userId: string;
+      role: 'vendor' | 'client';
     } | null
   }
 }
@@ -35,27 +36,23 @@ router.route('/register').post( async (req, res) => {
     const newUser = new User(userReqBody);
     await newUser.save();
 
-    
-    // Add userId to session
-    // if (req.session.data) {
-    //   req.session.data.userId = newUser._id.toString();
-    // } else {
-    //   req.session.data = {
-    //     userId: newUser._id.toString()
-    //   };
-    // }
-
-    // Redirect to protected routes
-    if (newUser.role === "client") {
-      
-       
-      res.redirect('/client/');
-
-    } else if (newUser.role === "vendor") {
-
-    } else {
-
+    if (!req.session) {
+      throw new Error('Session middleware not set up correctly');
     }
+
+    // Add new user data to session
+    req.session.data = {
+      userId: newUser._id.toString(),
+      role: newUser.role,
+    }
+
+    req.session.save((err) => {
+      if (err) {
+        throw err;
+      }
+
+      res.status(200).json({ redirect: `/${newUser.role}` });
+    });
     
   } catch (err) {
     res.status(400).json('Error ' + err);
@@ -87,10 +84,14 @@ router.route('/login').post( async (req, res) => {
     // Add userId to session
     if (!req.session.data) {
       req.session.data = {
-        userId: user._id.toString()
+        userId: user._id.toString(),
+        role: user.role,
       };
     } else {
-      req.session.data.userId = user._id.toString();
+      req.session.data = {
+        userId: user._id.toString(),
+        role: user.role,
+      }
     }
 
     req.session.save((err) => {
@@ -98,7 +99,7 @@ router.route('/login').post( async (req, res) => {
         throw err;
       }
 
-      res.status(200).json({ redirect: '/client' });
+      res.status(200).json({ redirect: `/${user.role}` });
     });
   } catch (err: Error | any) { // [TODO]
     console.error(err); 

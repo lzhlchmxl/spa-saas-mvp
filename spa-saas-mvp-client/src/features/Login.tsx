@@ -16,6 +16,7 @@ export default function Login() {
     return <p>You are already logged in</p>
   }
 
+  // [TODO] move to API
   const handleLogin = async () => {
 
     const params = {

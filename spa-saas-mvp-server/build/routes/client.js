@@ -22,7 +22,7 @@ const router = express_1.default.Router();
     Request body: no request body
     Response body: ClientProfile
 */
-router.route('/profile').get(middleware_1.isAuthenticated, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/profile').get(middleware_1.isAuthenticated, middleware_1.isAuthorized, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const profile = yield clientProfile_model_1.default.findOne({ userId: (_a = req.session.data) === null || _a === void 0 ? void 0 : _a.userId });
     if (profile === null) {
@@ -38,7 +38,7 @@ router.route('/profile').get(middleware_1.isAuthenticated, (req, res) => __await
     Request body: ClientProfile
     Response body:
 */
-router.route('/profile/create').post(middleware_1.isAuthenticated, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/profile/create').post(middleware_1.isAuthenticated, middleware_1.isAuthorized, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
     const profile = Object.assign(Object.assign({}, req.body), { userId: (_b = req.session.data) === null || _b === void 0 ? void 0 : _b.userId });
     try {
@@ -57,7 +57,7 @@ router.route('/profile/create').post(middleware_1.isAuthenticated, (req, res) =>
     Request body: ClientProfile
     Response body:
 */
-router.route('/profile/update').put(middleware_1.isAuthenticated, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/profile/update').put(middleware_1.isAuthenticated, middleware_1.isAuthorized, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _c;
     try {
         yield clientProfile_model_1.default.findOneAndUpdate({ userId: (_c = req.session.data) === null || _c === void 0 ? void 0 : _c.userId }, req.body);
@@ -74,7 +74,7 @@ router.route('/profile/update').put(middleware_1.isAuthenticated, (req, res) => 
     Request body:
     Response body:
 */
-router.route('/profile/delete').delete(middleware_1.isAuthenticated, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+router.route('/profile/delete').delete(middleware_1.isAuthenticated, middleware_1.isAuthorized, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _d;
     try {
         yield clientProfile_model_1.default.findOneAndDelete({ userId: (_d = req.session.data) === null || _d === void 0 ? void 0 : _d.userId });

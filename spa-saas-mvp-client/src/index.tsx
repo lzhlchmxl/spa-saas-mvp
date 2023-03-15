@@ -12,6 +12,7 @@ import HistoryPage from './app/PageComponents/ClientPortal/HistoryPage';
 import ProfilePage from './app/PageComponents/ClientPortal/ProfilePage';
 import SPASPage from './app/PageComponents/ClientPortal/SPASPage';
 import EditProfile from './features/ClientPortal/EditProfile';
+import Register from './features/Register';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -23,6 +24,7 @@ root.render(
         <Route path="/" element={<App />}>
           <Route index element={<HomePage />} />
           <Route path='login' element={<Login />} />
+          <Route path='register' element={<Register />} />
           <Route path="logout" element={<Logout />} />
           <Route path="client" element={<ClientPage />} >
             <Route index element={<div>Welcome to the Client portal</div>} />

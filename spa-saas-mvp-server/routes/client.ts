@@ -1,5 +1,5 @@
 import express from 'express';
-import { isAuthenticated } from '../middleware';
+import { isAuthenticated, isAuthorized } from '../middleware';
 import ClientProfile, {ClientProfileInterface} from '../models/clientProfile.model';
 import * as T from '../utilities/types';
 
@@ -11,7 +11,7 @@ const router = express.Router();
     Request body: no request body
     Response body: ClientProfile
 */
-router.route('/profile').get(isAuthenticated, async (req, res) => {
+router.route('/profile').get(isAuthenticated, isAuthorized, async (req, res) => {
 
   const profile = await ClientProfile.findOne({ userId: req.session.data?.userId });
 
@@ -28,7 +28,7 @@ router.route('/profile').get(isAuthenticated, async (req, res) => {
     Request body: ClientProfile
     Response body: 
 */
-router.route('/profile/create').post(isAuthenticated, async (req, res) => {
+router.route('/profile/create').post(isAuthenticated, isAuthorized, async (req, res) => {
 
   const profile: T.NewClientProfile = {...req.body, userId: req.session.data?.userId};
  
@@ -49,7 +49,7 @@ router.route('/profile/create').post(isAuthenticated, async (req, res) => {
     Request body: ClientProfile
     Response body: 
 */
-router.route('/profile/update').put(isAuthenticated, async (req, res) => {
+router.route('/profile/update').put(isAuthenticated, isAuthorized, async (req, res) => {
 
   try {
     await ClientProfile.findOneAndUpdate({ userId: req.session.data?.userId }, req.body);
@@ -67,7 +67,7 @@ router.route('/profile/update').put(isAuthenticated, async (req, res) => {
     Request body: 
     Response body: 
 */
-router.route('/profile/delete').delete(isAuthenticated, async (req, res) => {
+router.route('/profile/delete').delete(isAuthenticated, isAuthorized, async (req, res) => {
 
   try {
     await ClientProfile.findOneAndDelete({ userId: req.session.data?.userId });
