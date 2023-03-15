@@ -19,15 +19,6 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 dotenv_1.default.config();
 const router = express_1.default.Router();
 /*
-  GET list of users
-*/
-router.route('/').get((_req, res) => {
-    // mongoose method to get a list of all users in mongoDB
-    user_model_1.default.find()
-        .then(users => res.json(users)) // returning all users
-        .catch(err => res.status(400).json('Error: ' + err));
-});
-/*
   POST add new user to database
 */
 router.route('/register').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {

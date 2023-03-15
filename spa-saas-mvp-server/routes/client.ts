@@ -1,31 +1,46 @@
 import express from 'express';
 import { isAuthenticated } from '../middleware';
+import ClientProfile, {ClientProfileInterface} from '../models/clientProfile.model';
+import * as T from '../utilities/types';
 
 const router = express.Router();
 
 /*
-    GET /api/client:id
+    GET /api/client/profile
     Description: 
     Request body: no request body
-    Response body: ClientDetails
+    Response body: ClientProfile
 */
-router.get('/:clientId', isAuthenticated, (req, res) => {
+router.route('/profile').get(isAuthenticated, async (req, res) => {
 
-  res.send('This is the client dashboard');
+  const profile = await ClientProfile.findOne({ userId: req.session.data?.userId });
+
+  if (profile === null) {
+    res.status(404).send();
+  } else {
+    res.status(200).send(profile);
+  }
 });
 
+/*
+    POST /api/client/profile/create
+    Description: 
+    Request body: ClientProfile
+    Response body: ClientProfileId
+*/
+router.route('/profile/create').post(isAuthenticated, async (req, res) => {
 
-// app.get('/api/recipe-list/:recipeId', async (req, res) => {
-//   const database = await readDatabase();
+  const profile: T.NewClientProfile = {...req.body, userId: req.session.data?.userId};
+ 
+  try {
+    const newProfile = new ClientProfile(profile);
+    await newProfile.save();
 
-//   const recipe: T.RecipeDetail | undefined = database.recipes.find( recipe => recipe.id === req.params.recipeId)
-
-//   if (recipe === undefined) {
-//       res.status(204).send();
-//       console.log(`the requested recipe is not found in the database`);
-//   }
-
-//   res.send(recipe); // Note: still has the type Recipe instead of RecipeDetail, though the two types are identical
-// });
+    res.status(200).json({ message: 'Profile sucessfully created.'});
+  } catch(err) {
+    console.log(err)
+    res.status(500).json({ message: 'An error has occurred when creating the profile.'})
+  }
+});
 
 export default router;

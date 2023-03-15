@@ -1,25 +1,40 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
-const userSchema = new mongoose_1.Schema({
-    username: {
+const clientProfileSchema = new mongoose_1.Schema({
+    userId: {
         type: String,
         required: true,
-        unique: true,
-        trim: true,
-        minlength: 3
+        unique: true
     },
-    password: {
+    firstName: {
         type: String,
         required: true,
         trim: true,
-        minlength: 8
     },
-    role: {
+    lastName: {
         type: String,
-        enum: ['client', 'vendor'],
-    }
+        required: true,
+        trim: true,
+    },
+    dateOfBirth: {
+        type: Date,
+        required: true,
+    },
+    emailAddress: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    phoneNumber: {
+        type: String,
+        required: true,
+    },
+    homeAddress: {
+        type: String,
+        required: true,
+    },
 }, {
     timestamps: true,
 });
-exports.default = (0, mongoose_1.model)('User', userSchema);
+exports.default = (0, mongoose_1.model)('ClientProfile', clientProfileSchema);

@@ -2,31 +2,49 @@ import { Schema, model, Document } from "mongoose";
 
 export interface ClientProfileInterface extends Document {
   userId: string;
-  username: string;
-  password: string;
-  role: 'client' | 'vendor';
+  firstName: string;
+  lastName: string;
+  dateOfBirth: Date;
+  phoneNumber: string;
+  emailAddress: string;
+  homeAddress: string;
 }
 
-const userSchema = new Schema<ClientProfileInterface>({
-  username: {
+const clientProfileSchema = new Schema<ClientProfileInterface>({
+  userId: {
     type: String,
     required: true,
-    unique: true,
-    trim: true,
-    minlength: 3
+    unique: true
   },
-  password: {
+  firstName: {
     type: String,
     required: true,
     trim: true,
-    minlength: 8
   },
-  role: {
+  lastName: {
     type: String,
-    enum: ['client', 'vendor'],
-  }
+    required: true,
+    trim: true,
+  },
+  dateOfBirth: {
+    type: Date,
+    required: true,
+  },
+  emailAddress: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  phoneNumber: {
+    type: String,
+    required: true,
+  },
+  homeAddress: {
+    type: String,
+    required: true,
+  },
 }, {
   timestamps: true,
 });
 
-export default model<ClientProfileInterface>('User', userSchema);
+export default model<ClientProfileInterface>('ClientProfile', clientProfileSchema);

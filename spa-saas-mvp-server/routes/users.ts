@@ -18,16 +18,6 @@ declare module 'express-session' {
 }
 
 /* 
-  GET list of users
-*/ 
-router.route('/').get((_req, res) => { // hostname/users/ 
-  // mongoose method to get a list of all users in mongoDB
-  User.find()
-    .then(users => res.json(users)) // returning all users
-    .catch(err => res.status(400).json('Error: ' + err));
-})
-
-/* 
   POST add new user to database
 */
 router.route('/register').post( async (req, res) => {
