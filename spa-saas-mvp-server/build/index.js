@@ -11,6 +11,8 @@ const cors_1 = __importDefault(require("cors"));
 const mongoose_1 = __importDefault(require("mongoose"));
 const users_1 = __importDefault(require("./routes/users"));
 const client_1 = __importDefault(require("./routes/client"));
+const vendor_1 = __importDefault(require("./routes/vendor"));
+const admin_1 = __importDefault(require("./routes/admin"));
 const express_session_1 = __importDefault(require("express-session"));
 const connect_mongo_1 = __importDefault(require("connect-mongo"));
 dotenv_1.default.config();
@@ -49,7 +51,9 @@ exports.app.use('/api/users', users_1.default);
 // Protected routes for clients
 exports.app.use('/api/client', client_1.default);
 // Routes for vendors
-// app.use('/vendor', vendorRoutes);
+exports.app.use('/api/vendor', vendor_1.default);
+// Routes for admin
+exports.app.use('/api/admin', admin_1.default);
 // Serve index.html to all other routes
 exports.app.get('*', (_req, res) => {
     res.sendFile(node_path_1.default.join(process.cwd(), '..', 'spa-saas-mvp-client', 'build', 'index.html'));

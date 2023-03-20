@@ -25,7 +25,7 @@ export default function Register() {
     }
 
     // [TODO] use a cleaner way to handle the type error on user role
-    if (role !== 'client' && role !== 'vendor') {
+    if (role !== 'client' && role !== 'vendor' && role !== 'admin') {
       throw new Error('') 
     }
 
@@ -76,7 +76,7 @@ export default function Register() {
       <SelectWithLabel 
         label="role selection" 
         name="role-selection"
-        selections={[{ value: 'client', text: 'client' }, { value: 'vendor', text: 'vendor' }]} 
+        selections={[{ value: 'client', text: 'client' }, { value: 'vendor', text: 'vendor' },  { value: 'admin', text: 'admin' }]} 
         selected={role} 
         setSelected={setRole}      
       />

@@ -19,6 +19,25 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 dotenv_1.default.config();
 const router = express_1.default.Router();
 /*
+  GET /api/users to return the correct logged in user if any
+*/
+router.route('/').get((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    try {
+        if (!req.session) {
+            throw new Error('Session middleware not set up correctly');
+        }
+        if (!req.session.data) {
+            res.status(401).json({ Error: 'User is not logged in.' });
+        }
+        const userRole = (_a = req.session.data) === null || _a === void 0 ? void 0 : _a.role;
+        res.status(200).json({ role: userRole });
+    }
+    catch (err) {
+        res.status(400).json('Error ' + err);
+    }
+}));
+/*
   POST add new user to database
 */
 router.route('/register').post((req, res) => __awaiter(void 0, void 0, void 0, function* () {

@@ -1,12 +1,12 @@
 import * as T from "../../utilities/types";
-import { createProfile } from "../../utilities/api";
+import { createClientProfile } from "../../utilities/api";
 import ProfileForm from "../../app/UIComponents/ProfileForm";
 import ErrorIndicator from "../../app/UIComponents/ErrorIndicator";
 
-export default function CreateRecipe() {                                                                                                                                                        
+export default function CreateProfile() {                                                                                                                                                        
 
   const tryCreate = async (profile: T.ClientProfile) => {
-    const statusCode = await createProfile(profile);
+    const statusCode = await createClientProfile(profile);
     if (statusCode === 200) {
       window.location.href = '/client/profile';
     } else {

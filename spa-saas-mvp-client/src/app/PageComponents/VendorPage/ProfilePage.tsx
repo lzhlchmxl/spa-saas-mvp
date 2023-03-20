@@ -1,8 +1,6 @@
-import { useState } from "react";
-import { NavLink, Outlet, useNavigate, useOutletContext } from "react-router-dom";
-import CreateProfile from "../../../features/ClientPortal/CreateProfile";
-import ViewProfile from "../../../features/ClientPortal/ViewProfile";
-import { deleteProfile, getClientProfile } from "../../../utilities/api";
+import CreateProfile from "../../../features/VendorPage/CreateProfile";
+import ViewProfile from "../../../features/VendorPage/ViewProfile";
+import { deleteClientProfile, getVendorProfile } from "../../../utilities/api";
 import { useAsync } from "../../../utilities/customHooks";
 import Button from "../../UIComponents/Button";
 import ErrorIndicator from "../../UIComponents/ErrorIndicator";
@@ -11,26 +9,26 @@ import LoadingIndicator from "../../UIComponents/LoadingIndicator";
 
 export default function ProfilePage() {
 
-  const clientProfileAsync = useAsync(() => getClientProfile(), []);
+  const vendorProfileAsync = useAsync(() => getVendorProfile(), []);
 
-  if ( clientProfileAsync.status === "pending" ) {
+  if ( vendorProfileAsync.status === "pending" ) {
     return <LoadingIndicator />;
   }
 
-  if ( clientProfileAsync.status === "rejected" ) {
+  if ( vendorProfileAsync.status === "rejected" ) {
     return <ErrorIndicator />;
   }
 
-  const clientProfile = clientProfileAsync.value;
+  const vendorProfile = vendorProfileAsync.value;
 
   const handleEditProfile = () => {
-    window.location.href = '/client/profile/edit'
+    window.location.href = '/vendor/profile/edit'
   }
 
   const handleTryDeleteProfile = async () => {
-    const statusCode = await deleteProfile();
+    const statusCode = await deleteClientProfile();
     if (statusCode === 200) {
-      window.location.href = '/client/profile'
+      window.location.href = '/vendor/profile'
     } else {
       return <ErrorIndicator />
     }
@@ -38,8 +36,8 @@ export default function ProfilePage() {
 
   return (
     <div className="flex">
-      {clientProfile ? <ViewProfile profile={clientProfile} /> : <CreateProfile />}
-      {clientProfile && 
+      {vendorProfile ? <ViewProfile profile={vendorProfile} /> : <CreateProfile />}
+      {vendorProfile && 
       <div className="flex h-[50px]">
         <Button 
           actionType="secondary"

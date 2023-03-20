@@ -13,10 +13,31 @@ declare module 'express-session' {
   interface Session {
     data: {
       userId: string;
-      role: 'vendor' | 'client';
+      role: 'vendor' | 'client' | 'admin';
     } | null
   }
 }
+
+/* 
+  GET /api/users to return the correct logged in user if any
+*/
+router.route('/').get( async (req, res) => {
+  try {
+    if (!req.session) {
+      throw new Error('Session middleware not set up correctly');
+    }
+
+    if (!req.session.data) {
+      res.status(401).json({ Error: 'User is not logged in.'});
+    }
+
+    const userRole = req.session.data?.role;
+    res.status(200).json({ role: userRole });
+
+  } catch (err) {
+    res.status(400).json('Error ' + err);
+  } 
+});
 
 /* 
   POST add new user to database

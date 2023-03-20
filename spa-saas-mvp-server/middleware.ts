@@ -26,6 +26,11 @@ export const isAuthorized = (req: Request, res: Response, next: NextFunction) =>
     if (!allowedVendorApiPattern.test(req.originalUrl )) {
       return res.status(403).send('Forbidden');
     }
+  } else if (req.session.data?.role === 'admin' && isAuthRequiredMethod) {
+    const allowedVendorApiPattern = /^\/api\/admin\/(.*)/;
+    if (!allowedVendorApiPattern.test(req.originalUrl )) {
+      return res.status(403).send('Forbidden');
+    }
   }
 
   // If user is authenticated and authorized, call next() to pass control to the next middleware

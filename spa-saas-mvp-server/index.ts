@@ -5,6 +5,8 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import usersRouter from './routes/users';
 import clientRoutes from './routes/client';
+import vendorRoutes from './routes/vendor';
+import adminRoutes from './routes/admin';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 
@@ -53,7 +55,10 @@ app.use('/api/users', usersRouter);
 app.use('/api/client', clientRoutes);
 
 // Routes for vendors
-// app.use('/vendor', vendorRoutes);
+app.use('/api/vendor', vendorRoutes);
+
+// Routes for admin
+app.use('/api/admin', adminRoutes);
 
 // Serve index.html to all other routes
 app.get('*', (_req, res) => {

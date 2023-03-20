@@ -1,12 +1,19 @@
 import { Schema, model, Document } from "mongoose";
+import serviceCategoryModel from "./serviceCategory.model";
+import * as T from '../utilities/types';
+import { VendorServiceInterface } from "./vendorService.model";
+
 
 export interface VendorProfileInterface extends Document {
   userId: string;
+  firstName: string;
+  lastName: string;
   businessName: string;
   phoneNumber: string;
   emailAddress: string;
   businessAddress: string;
-  services: string[];
+  vendorServices: Array<VendorServiceInterface>;
+  serviceCategories: T.ServiceCategoryId[];
 }
 
 const vendorProfileSchema = new Schema<VendorProfileInterface>({
@@ -14,6 +21,16 @@ const vendorProfileSchema = new Schema<VendorProfileInterface>({
     type: String,
     required: true,
     unique: true
+  },
+  firstName: {
+    type: String,
+    required: true,
+    trim: true
+  },
+  lastName: {
+    type: String,
+    required: true,
+    trim: true,
   },
   emailAddress: {
     type: String,
@@ -33,9 +50,13 @@ const vendorProfileSchema = new Schema<VendorProfileInterface>({
     type: String,
     required: true,
   },
-  services: {
+  serviceCategories: {
     type: [String],
     required: true,
+  },
+  vendorServices: {
+    type: [Object], // [TODO] 
+    required: false,
   },
 }, {
   timestamps: true,

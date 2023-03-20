@@ -5,14 +5,22 @@ import App from './App';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import HomePage from './app/PageComponents/HomePage';
 import Login from './features/Login';
-import ClientPage from './app/PageComponents/ClientPortal/ClientPage';
+import ClientPage from './app/PageComponents/ClientPage/ClientPage';
 import Logout from './features/Logout';
-import AppointmentsPage from './app/PageComponents/ClientPortal/AppointmentsPage';
-import HistoryPage from './app/PageComponents/ClientPortal/HistoryPage';
-import ProfilePage from './app/PageComponents/ClientPortal/ProfilePage';
-import SPASPage from './app/PageComponents/ClientPortal/SPASPage';
-import EditProfile from './features/ClientPortal/EditProfile';
+import AppointmentsPage from './app/PageComponents/ClientPage/AppointmentsPage';
+import HistoryPage from './app/PageComponents/ClientPage/HistoryPage';
+import ProfilePage from './app/PageComponents/ClientPage/ProfilePage';
+import SPASPage from './app/PageComponents/ClientPage/SPASPage';
+import EditProfile from './features/ClientPage/EditProfile';
 import Register from './features/Register';
+import VendorPage from './app/PageComponents/VendorPage/VendorPage';
+import VendorProfilePage from './app/PageComponents/VendorPage/ProfilePage';
+import VendorEditProfilePage from './features/VendorPage/EditProfile';
+import AdminPage from './app/PageComponents/AdminPage/AdminPage';
+import ServiceCategoriesPage from './app/PageComponents/AdminPage/ServiceCategoriesPage';
+import ViewServiceCategoryDetails from './features/AdminPage/ViewServiceCategoryDetails';
+import CreateServiceCategoryDetails from './features/AdminPage/CreateServiceCategoryDetails';
+import EditServiceCategoryDetails from './features/AdminPage/EditServiceCategoryDetails';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -33,6 +41,21 @@ root.render(
             <Route path="spas" element={<SPASPage />} />
             <Route path="appointments" element={<AppointmentsPage />} />
             <Route path="history" element={<HistoryPage />} />
+          </Route>
+          <Route path="vendor" element={<VendorPage />} >
+            <Route index element={<div>Welcome to the Vendor portal</div>} />
+            <Route path="profile" element={<VendorProfilePage />} />
+            <Route path='profile/edit' element={<VendorEditProfilePage />} />
+            {/* <Route path="clients" element={<SPASPage />} />
+            <Route path="appointments" element={<AppointmentsPage />} />
+            <Route path="history" element={<HistoryPage />} /> */}
+          </Route>
+          <Route path="admin" element={<AdminPage />} >
+            <Route index element={<div>Welcome to the Admin portal</div>} />
+            <Route path="service-categories" element={<ServiceCategoriesPage />} />
+            <Route path="service-categories/view/:serviceCategoryId" element={<ViewServiceCategoryDetails />} />
+            <Route path="service-categories/edit/:serviceCategoryId" element={<EditServiceCategoryDetails />} />
+            <Route path="service-categories/create" element={<CreateServiceCategoryDetails />} />
           </Route>
           {/* <Route path="recipe-list" element={<RecipePage />} >
             <Route index element={<div>Please select a recipe from the list</div>} />

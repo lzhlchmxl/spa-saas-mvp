@@ -7,6 +7,16 @@ const vendorProfileSchema = new mongoose_1.Schema({
         required: true,
         unique: true
     },
+    firstName: {
+        type: String,
+        required: true,
+        trim: true
+    },
+    lastName: {
+        type: String,
+        required: true,
+        trim: true,
+    },
     emailAddress: {
         type: String,
         required: true,
@@ -25,9 +35,13 @@ const vendorProfileSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
-    services: {
+    serviceCategories: {
         type: [String],
         required: true,
+    },
+    vendorServices: {
+        type: [Object],
+        required: false,
     },
 }, {
     timestamps: true,

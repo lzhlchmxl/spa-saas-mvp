@@ -1,8 +1,5 @@
 import { NavLink, Outlet, useNavigate, useOutletContext } from "react-router-dom";
 import { IsAuthContextType } from "../../../App";
-import { useAsync, useRequiredParams } from "../../../utilities/customHooks";
-import ErrorIndicator from "../../UIComponents/ErrorIndicator";
-import LoadingIndicator from "../../UIComponents/LoadingIndicator";
 
 export default function ClientPage() {
 

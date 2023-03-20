@@ -2,9 +2,8 @@ import * as T from "../../utilities/types";
 import { useState } from "react";
 import Button from "./Button";
 import InputWithLabel from "./InputWithLabel";
-import DatePickerWithLabel from "./DatePickerWithLabel";
 
-function ProfileForm({
+function VendorProfileForm({
     initialProfile,
     cancelText,
     cancelLink,
@@ -13,24 +12,29 @@ function ProfileForm({
   }
   : 
   {
-    initialProfile: T.ClientProfile | null,
+    initialProfile: T.VendorProfile | null,
     cancelText: string,
     cancelLink: string,
     actionText: string,
-    actionCallback: (profile: T.ClientProfile) => void,
-
+    actionCallback: (profile: T.VendorProfile) => void,
   }) {
 
   const [firstName, setFirstName] = useState(initialProfile ? initialProfile.firstName : "");
   const [lastName, setLastName] = useState(initialProfile ? initialProfile.lastName : "");
   const [phoneNumber, setPhoneNumber] = useState(initialProfile ? initialProfile.phoneNumber : "");
   const [emailAddress, setEmailAddress] = useState(initialProfile ? initialProfile.emailAddress : "");
-  const [homeAddress, setHomeAddress] = useState(initialProfile ? initialProfile.homeAddress : "");
-  const [dateOfBirth, setDateOfBirth] = useState<Date | null>(initialProfile ? initialProfile.dateOfBirth : null);
-
-  const areAllFieldsValid = firstName !== "" && lastName !== "" && phoneNumber !== "" && emailAddress !== "" && homeAddress !== "" && dateOfBirth !== null;
-  const isAnyFieldChanged = firstName !== "" || lastName !== "" || phoneNumber !== "" || emailAddress !== "" || homeAddress !== "" || dateOfBirth !== null;
+  const [businessAddress, setBusinessAddress] = useState(initialProfile ? initialProfile.businessAddress : "");
+  const [businessName, setBusinessName] = useState(initialProfile ? initialProfile.businessName : "");
+  const [serviceCategories, setServicesCategories] = useState(initialProfile ? initialProfile.serviceCategories : []);
+   
+  const [isAnyFieldChanged, setIsAnyFieldChanged] = useState(false);
+  const areAllFieldsValid = firstName !== "" && lastName !== "" && phoneNumber !== "" && emailAddress !== "" && businessAddress !== "" && businessName !== null;
   
+  const handleSetter = (v: string, setter: (v: string) => void) => {
+    setter(v);
+    setIsAnyFieldChanged(true)
+  }
+
   const tryCancel = () => {
     if (isAnyFieldChanged) {
       if(window.confirm("Unsaved changes will be discard. Confirm?")) {
@@ -48,8 +52,9 @@ function ProfileForm({
         lastName,
         phoneNumber,
         emailAddress,
-        homeAddress,
-        dateOfBirth
+        businessAddress,
+        businessName,
+        serviceCategories,
       });
     }
     alert("Please fill all the fields.")
@@ -63,41 +68,42 @@ function ProfileForm({
         name="first-name" 
         type="text"
         value={firstName} 
-        setValue={setFirstName}        
+        setValue={(v) => handleSetter(v, setFirstName)}        
       />
       <InputWithLabel 
         label="lastname"
         name="last-name" 
         type="text"
         value={lastName} 
-        setValue={setLastName}        
+        setValue={(v) => handleSetter(v, setLastName)}        
       />
       <InputWithLabel 
         label="phone number"
         name="phone-number" 
         type="text"
         value={phoneNumber} 
-        setValue={setPhoneNumber}        
+        setValue={(v) => handleSetter(v, setPhoneNumber)}        
       />
       <InputWithLabel 
         label="email address"
         name="email-address" 
         type="email"
         value={emailAddress} 
-        setValue={setEmailAddress}        
+        setValue={(v) => handleSetter(v, setEmailAddress)}        
       />
       <InputWithLabel 
-        label="home address"
-        name="home-address" 
+        label="business name"
+        name="business-name" 
         type="text"
-        value={homeAddress} 
-        setValue={setHomeAddress}        
+        value={businessName} 
+        setValue={(v) => handleSetter(v, setBusinessName)}        
       />
-      <DatePickerWithLabel 
-        label="date of birth"
-        name="date-of-birth" 
-        value={dateOfBirth} 
-        setValue={setDateOfBirth}        
+      <InputWithLabel 
+        label="business address"
+        name="business-address" 
+        type="text"
+        value={businessAddress} 
+        setValue={(v) => handleSetter(v, setBusinessAddress)}        
       />
 
       <div className="flex justify-evenly mt-5">
@@ -119,4 +125,4 @@ function ProfileForm({
   )
 }
 
-export default ProfileForm;
+export default VendorProfileForm;

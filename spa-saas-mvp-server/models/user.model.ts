@@ -3,7 +3,7 @@ import { Schema, model, Document } from "mongoose";
 export interface UserInterface extends Document {
   username: string;
   password: string;
-  role: 'client' | 'vendor';
+  role: 'client' | 'vendor' | 'admin';
 }
 
 const userSchema = new Schema<UserInterface>({
@@ -22,7 +22,7 @@ const userSchema = new Schema<UserInterface>({
   },
   role: {
     type: String,
-    enum: ['client', 'vendor'],
+    enum: ['client', 'vendor', 'admin'],
   }
 }, {
   timestamps: true,
