@@ -1,10 +1,8 @@
 import { useEffect } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
-import { IsAuthContextType } from "../App";
+import { useNavigate } from "react-router-dom";
 
 export default function Logout() {
 
-  const [ _isAuthenticated, setIsAuthenticated ] = useOutletContext<IsAuthContextType>();
   const navigate = useNavigate();
   
   const handleLogout = async () => {
@@ -19,8 +17,6 @@ export default function Logout() {
     if (result.redirect) {
       navigate(result.redirect)
     }
-  
-    setIsAuthenticated(false);
   }
 
   useEffect( () => {

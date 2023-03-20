@@ -28,7 +28,7 @@ router.route('/').get((req, res) => __awaiter(void 0, void 0, void 0, function* 
             throw new Error('Session middleware not set up correctly');
         }
         if (!req.session.data) {
-            res.status(401).json({ Error: 'User is not logged in.' });
+            throw new Error('User is not logged in.');
         }
         const userRole = (_a = req.session.data) === null || _a === void 0 ? void 0 : _a.role;
         res.status(200).json({ role: userRole });
@@ -122,7 +122,7 @@ router.route('/logout').delete((req, res) => __awaiter(void 0, void 0, void 0, f
             res.status(500).json({ message: 'Error logging out' });
         }
         else {
-            res.status(200).json({ redirect: '/' });
+            res.status(200).json({ redirect: '/login' });
         }
     });
 }));

@@ -13,20 +13,6 @@ export async function createAccount(newUser: T.User): Promise<T.HTTPStatusCode> 
   return response.status;
 }
 
-/* GET /api/users to return logged in user role */
-export async function getLoggedInRole(): Promise<String | undefined> {
- 
-  const response = await fetch('/api/users');
-  const resJSON = await response.json();
-
-  if (response.status === 200) {
-    return resJSON.role;
-  } else {
-    return resJSON.Error;
-  }
-}
-
-
 export async function getClientProfile(): Promise<T.ClientProfile | null> {
   const response = await fetch(`/api/client/profile`)
 

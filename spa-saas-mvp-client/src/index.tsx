@@ -46,9 +46,6 @@ root.render(
             <Route index element={<div>Welcome to the Vendor portal</div>} />
             <Route path="profile" element={<VendorProfilePage />} />
             <Route path='profile/edit' element={<VendorEditProfilePage />} />
-            {/* <Route path="clients" element={<SPASPage />} />
-            <Route path="appointments" element={<AppointmentsPage />} />
-            <Route path="history" element={<HistoryPage />} /> */}
           </Route>
           <Route path="admin" element={<AdminPage />} >
             <Route index element={<div>Welcome to the Admin portal</div>} />
@@ -57,13 +54,6 @@ root.render(
             <Route path="service-categories/edit/:serviceCategoryId" element={<EditServiceCategoryDetails />} />
             <Route path="service-categories/create" element={<CreateServiceCategoryDetails />} />
           </Route>
-          {/* <Route path="recipe-list" element={<RecipePage />} >
-            <Route index element={<div>Please select a recipe from the list</div>} />
-            <Route path=":recipeId" element={<RecipeDetails />} />
-            <Route path="create" element={<CreateRecipe />} />
-            <Route path="edit/:recipeId" element={<EditRecipe />} />
-          </Route>
-          <Route path="/history" element={<HistoryPage />} /> */}
         </Route>
       </Routes>
     </BrowserRouter>

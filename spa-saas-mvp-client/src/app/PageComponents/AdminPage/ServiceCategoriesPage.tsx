@@ -31,18 +31,9 @@ export default function ServiceCategoriesPage() {
         >
           {serviceCategory.name}
         </p>
-        {/* <Button 
-          actionType="secondary"
-          actionText="EDIT"
-          actionHandler={() => handleEditServiceCategory(serviceCategory._id)} 
-        /> */}
       </li>
     )
   })}</ul>
-
-  const handleEditServiceCategory = (id: T.ServiceCategoryId) => {
-    window.location.href = `/admin/service-categories/edit/${id}`
-  }
 
   const handleViewServiceCategoryDetails = (id: T.ServiceCategoryId) => {
     window.location.href = `/admin/service-categories/view/${id}`

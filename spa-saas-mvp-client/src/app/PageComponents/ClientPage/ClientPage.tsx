@@ -1,28 +1,6 @@
-import { NavLink, Outlet, useNavigate, useOutletContext } from "react-router-dom";
-import { IsAuthContextType } from "../../../App";
+import { NavLink, Outlet } from "react-router-dom";
 
 export default function ClientPage() {
-
-  const [ isAuthenticated, setIsAuthenticated ] = useOutletContext<IsAuthContextType>();
-  const navigate = useNavigate();
-  
-  if (!isAuthenticated) {
-    console.log(isAuthenticated)
-  }
-
-  // const clientId = useRequiredParams("userId");
-
-  // const clientDetailsAsync = useAsync(() => getClientDetails(clientId), []);
-
-  // if ( clientDetailsAsync.status === "pending" ) {
-  //   return <LoadingIndicator />;
-  // }
-
-  // if ( clientDetailsAsync.status === "rejected" ) {
-  //   return <ErrorIndicator />;
-  // }
-
-  // const clientDetails = clientDetailsAsync.value;
 
   return (
     <div className="flex">

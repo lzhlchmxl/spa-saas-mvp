@@ -2,7 +2,6 @@ import express from 'express';
 import dotenv from 'dotenv';
 import User, { UserInterface } from '../models/user.model';
 import bcrypt from 'bcrypt';
-import session from 'express-session';
 
 
 dotenv.config();
@@ -28,7 +27,7 @@ router.route('/').get( async (req, res) => {
     }
 
     if (!req.session.data) {
-      res.status(401).json({ Error: 'User is not logged in.'});
+      throw new Error('User is not logged in.');
     }
 
     const userRole = req.session.data?.role;
@@ -139,7 +138,7 @@ router.route('/logout').delete(async (req, res) => {
       console.error(err);
       res.status(500).json({ message: 'Error logging out' });
     } else {
-      res.status(200).json({ redirect: '/' });
+      res.status(200).json({ redirect: '/login' });
     }
   });
 });
