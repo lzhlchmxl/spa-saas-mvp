@@ -360,19 +360,25 @@ export async function getMyServiceHeaders(): Promise<T.VendorServiceHeader[]> {
 }
 
 
-export async function getMyServiceDetails(): Promise<Response> {
+export async function getMyServiceDetails(vendorServiceId: T.VendorServiceId): Promise<T.VendorService> {
 
-  const response = await fetch(`/api/vendor/my-services`);
+  const response = await fetch(`/api/vendor/my-services/${vendorServiceId}`);
 
   if (response.status === 401 || response.status === 403) {
     window.location.href = '/login';
   }
 
-  if (response.status !== 200) {
-    throw new Error(`/api/vendor/my-services returned HTTP status code: ${response.status}`);
+  if (response.status === 404) {
+    window.alert('No service found with the given id. Redirecting...');
+    window.location.pathname = '/vendor/my-services';
+    throw new Error('No service found with the given id.');
   }
 
-  return response;
+  if (response.status !== 200) {
+    throw new Error(`/api/vendor/my-services: returned HTTP status code: ${response.status}`);
+  }
+
+  return await response.json();
 }
 
 export async function createMyService(newService: T.VendorServiceForm): Promise<Response> {
@@ -396,7 +402,7 @@ export async function createMyService(newService: T.VendorServiceForm): Promise<
   return response;
 }
 
-export async function updateMyService(updatedService: T.VendorService): Promise<T.HTTPStatusCode> {
+export async function updateMyServiceById(updatedService: T.VendorService): Promise<T.HTTPStatusCode> {
 
   const requestOptions = {
     method: 'put',
@@ -404,14 +410,14 @@ export async function updateMyService(updatedService: T.VendorService): Promise<
     body: JSON.stringify(updatedService)
   }
 
-  const response = await fetch(`/api/vendor/my-service/update`, requestOptions);
+  const response = await fetch(`/api/vendor/my-services/update`, requestOptions);
 
   if (response.status === 401 || response.status === 403) {
     window.location.href = '/login';
   }
 
   if (response.status !== 200) {
-    throw new Error(`/api/vendor/my-service/update returned HTTP status code: ${response.status}`);
+    throw new Error(`/api/vendor/my-services/update returned HTTP status code: ${response.status}`);
   }
 
   return response.status;

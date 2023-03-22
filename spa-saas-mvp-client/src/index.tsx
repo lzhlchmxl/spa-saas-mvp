@@ -18,12 +18,12 @@ import VendorProfilePage from './app/PageComponents/VendorPage/ProfilePage';
 import VendorEditProfilePage from './features/VendorPage/EditProfile';
 import AdminPage from './app/PageComponents/AdminPage/AdminPage';
 import ServiceCategoriesPage from './app/PageComponents/AdminPage/ServiceCategoriesPage';
-import ViewServiceCategoryDetails from './features/AdminPage/ViewServiceCategoryDetails';
-import EditServiceCategoryDetails from './features/AdminPage/EditServiceCategoryDetails';
 import MySpaPage from './app/PageComponents/VendorPage/MySpaPage';
 import EditMySpa from './features/VendorPage/MySpaPage/EditMySpa';
 import MyServicesPage from './app/PageComponents/VendorPage/MyServicesPage';
 import CreateVendorService from './features/VendorPage/MyServices/CreateVendorService';
+import ViewVendorServiceDetails from './features/VendorPage/MyServices/ViewVendorServiceDetails';
+import EditVendorServiceDetails from './features/VendorPage/MyServices/EditVendorServiceDetails';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -53,8 +53,8 @@ root.render(
             <Route path="my-spa/edit" element={<EditMySpa />} />
             <Route path="my-services" element={<MyServicesPage />}> 
               <Route index element={<p>Select a service from the list or create a new service</p>} />
-              <Route path="view/:serviceCategoryId" element={<ViewServiceCategoryDetails />} />
-              <Route path="edit/:serviceCategoryId" element={<EditServiceCategoryDetails />} />
+              <Route path=":vendorServiceId" element={<ViewVendorServiceDetails />} />
+              <Route path="edit/:vendorServiceId" element={< EditVendorServiceDetails/>} />
               <Route path="create" element={<CreateVendorService />} />
             </Route>
           </Route>

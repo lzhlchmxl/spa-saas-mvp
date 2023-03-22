@@ -5,6 +5,7 @@ import { secondsToDuration } from "../../../utilities/utilityFunctions";
 import Button from "../../UIComponents/Button";
 import ErrorIndicator from "../../UIComponents/ErrorIndicator";
 import LoadingIndicator from "../../UIComponents/LoadingIndicator";
+import * as T from '../../../utilities/types';
 
 export default function MyServicesPage() {
 
@@ -20,14 +21,13 @@ export default function MyServicesPage() {
 
   const myServiceHeaders = myServiceHeadersAsync.value;
 
-
-
   const myServiceHeadersHTML = myServiceHeaders.map( myServiceHeader => {
     const duration = secondsToDuration(myServiceHeader.durationInSeconds);
     return (
       <div
+        onClick={ () => handleViewServiceDetails(myServiceHeader._id)}
         key={myServiceHeader._id}
-        className="flex border border-b-black/50 justify-around"
+        className="flex border border-b-black/50 justify-around hover:cursor-pointer"
       >
         <p>{myServiceHeader.name}</p>
         <p>{myServiceHeader.cost}</p>
@@ -38,6 +38,10 @@ export default function MyServicesPage() {
 
   const handleCreateMyService = () => {
     window.location.pathname = '/vendor/my-services/create'
+  }
+
+  const handleViewServiceDetails = (vendorServiceId: T.VendorServiceId) => {
+    window.location.pathname = `/vendor/my-services/${vendorServiceId}`
   }
 
   const showCreateButton = window.location.pathname === '/vendor/my-services';

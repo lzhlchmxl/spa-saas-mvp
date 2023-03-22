@@ -6,11 +6,10 @@ import * as T from "../../../utilities/types";
 export default function CreateVendorService() {
 
   const handleCreateVendorService = async (vendorServiceForm: T.VendorServiceForm) => {
-    
-    console.log(vendorServiceForm)
+  
     const res = await createMyService(vendorServiceForm);
     if (res.status === 200) {
-      window.location.href = '/vendor/my-spa';
+      window.location.href = '/vendor/my-services';
     } else {
       return (<ErrorIndicator />);
     }

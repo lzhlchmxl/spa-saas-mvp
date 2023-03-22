@@ -189,11 +189,11 @@ router.route('/my-services').get(isAuthenticated, isAuthorized, async (req, res)
 */
 router.route('/my-services/:vendorServiceId').get(isAuthenticated, isAuthorized, async (req, res) => {
   try {
-    const myServices = await VendorService.find({ _id: req.params.vendorServiceId });
-    if (myServices === null) {
-      res.status(404).json(null);
+    const myServiceDetails = await VendorService.findOne({ _id: req.params.vendorServiceId });
+    if (myServiceDetails === null) {
+      res.status(404).send(null);
     } else {
-      res.status(200).json(myServices);
+      res.status(200).json(myServiceDetails);
     }
   } catch(err) {
     console.log(err)
@@ -246,15 +246,15 @@ router.route('/my-services/update').put(isAuthenticated, isAuthorized, async (re
     Request body: 
     Response body: 
 */
-router.route('/my-spa/delete/:vendorServiceId').delete(isAuthenticated, isAuthorized, async (req, res) => {
+router.route('/my-services/delete/:vendorServiceId').delete(isAuthenticated, isAuthorized, async (req, res) => {
 
   try {
-    await MySpa.findOneAndDelete({ _id: req.params.vendorServiceId });
+    await VendorService.findOneAndDelete({ _id: req.params.vendorServiceId });
     
-    res.status(200).json({ message: 'MySpa sucessfully deleted.'});
+    res.status(200).json({ message: 'VendorService sucessfully deleted.'});
   } catch(err) {
     console.log(err)
-    res.status(500).json({ message: 'An error has occurred when deleting MySpa.'})
+    res.status(500).json({ message: 'An error has occurred when deleting VendorService.'})
   }
 });
 

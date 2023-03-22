@@ -13,12 +13,12 @@ const vendorServiceSchema = new Schema<VendorServiceInterface>({
   categoryId: {
     type: String,
     required: true,
-    unique: true,
+    unique: false,
   },
   vendorUserId: {
     type: String,
     required: true,
-    unique: true,
+    unique: false,
   },
   name: {
     type: String,
@@ -28,17 +28,17 @@ const vendorServiceSchema = new Schema<VendorServiceInterface>({
   description: {
     type: String,
     required: true,
-    unique: true
+    unique: false,
   },
   durationInSeconds: {
     type: Number,
     required: true,
-    unique: true
+    unique: false,
   },
   cost: {
     type: String,
     required: true,
-    unique: true
+    unique: false,
   },
 }, {
   timestamps: true,
