@@ -441,3 +441,33 @@ export async function deleteMyServiceById(id: T.VendorServiceId): Promise<T.HTTP
 
   return response.status;
 }
+
+/* GET a list of public vendor spas info as a client */
+export async function getVendorSpaHeaders(): Promise<T.VendorSpaHeader[]> {
+  const response = await fetch(`/api/client/spas`);
+
+  if (response.status === 401 || response.status === 403) {
+    window.location.href = '/login';
+  }
+
+  if (response.status !== 200 && response.status !== 404) {
+    throw new Error(`/api/client/spas: returned HTTP status code: ${response.status}`);
+  }
+
+  return await response.json();
+}
+
+/* GET spa details by spaId as a client */
+export async function getSpaDetailsById(vendorSpaId: T.VendorSpaId): Promise<T.SpaDetails> {
+  const response = await fetch(`/api/client/spas/${vendorSpaId}`);
+
+  if (response.status === 401 || response.status === 403) {
+    window.location.href = '/login';
+  }
+
+  if (response.status !== 200 && response.status !== 404) {
+    throw new Error(`/api/client/spas: returned HTTP status code: ${response.status}`);
+  }
+
+  return await response.json();
+}

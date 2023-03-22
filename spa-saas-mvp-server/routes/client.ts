@@ -1,6 +1,8 @@
 import express from 'express';
 import { isAuthenticated, isAuthorized } from '../middleware';
 import ClientProfile, {ClientProfileInterface} from '../models/clientProfile.model';
+import MySpa from '../models/mySpa.model';
+import VendorService from '../models/vendorService.model';
 import * as T from '../utilities/types';
 
 const router = express.Router();
@@ -76,6 +78,64 @@ router.route('/profile/delete').delete(isAuthenticated, isAuthorized, async (req
   } catch(err) {
     console.log(err)
     res.status(500).json({ message: 'An error has occurred when deleting the profile.'})
+  }
+});
+
+/*
+    GET /api/client/spas
+    Description: 
+    Request body: no request body
+    Response body: VendorSpaHeader[]
+*/
+router.route('/spas').get(isAuthenticated, isAuthorized, async (req, res) => {
+
+  try {
+    const vendorSpas = await MySpa.find();
+    const vendorSpaHeaders:T.VendorSpaHeader[] = vendorSpas.map( vendorSpa => {
+      return (
+        {
+          vendorSpaId: vendorSpa._id,
+          name: vendorSpa.name,
+          description: vendorSpa.description,
+        }
+      )
+    });
+    
+    res.status(200).send(vendorSpaHeaders);
+  } catch(err) {
+    console.log(err)
+    res.status(500).json({ message: 'An error has occurred when retriving vendorSpaHeaders.'})
+  }
+});
+
+/*
+    GET /api/client/spas/:vendorSpaId
+    Description: 
+    Request body: no request body
+    Response body: VendorSpaHeader[]
+*/
+router.route('/spas/:vendorSpaId').get(isAuthenticated, isAuthorized, async (req, res) => {
+  
+  const vendorSpaId = req.params.vendorSpaId;
+
+  try {
+    const spa = await MySpa.findOne({ _id: vendorSpaId});
+    const services = await VendorService.find({ vendorSpaId });
+
+    if (spa === null || services === null) {
+      throw new Error("No results found with the given vendorSpaId");
+    }
+
+    const spaDetails:T.SpaDetails = {
+      name: spa.name,
+      description: spa.description,
+      services,
+    }
+    
+    res.status(200).send(spaDetails);
+  } catch(err) {
+    console.log(err)
+    res.status(500).json({ message: 'An error has occurred when retriving spaDetails.'})
   }
 });
 

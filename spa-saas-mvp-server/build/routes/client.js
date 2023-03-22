@@ -15,6 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const middleware_1 = require("../middleware");
 const clientProfile_model_1 = __importDefault(require("../models/clientProfile.model"));
+const mySpa_model_1 = __importDefault(require("../models/mySpa.model"));
+const vendorService_model_1 = __importDefault(require("../models/vendorService.model"));
 const router = express_1.default.Router();
 /*
     GET /api/client/profile
@@ -83,6 +85,56 @@ router.route('/profile/delete').delete(middleware_1.isAuthenticated, middleware_
     catch (err) {
         console.log(err);
         res.status(500).json({ message: 'An error has occurred when deleting the profile.' });
+    }
+}));
+/*
+    GET /api/client/spas
+    Description:
+    Request body: no request body
+    Response body: VendorSpaHeader[]
+*/
+router.route('/spas').get(middleware_1.isAuthenticated, middleware_1.isAuthorized, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const vendorSpas = yield mySpa_model_1.default.find();
+        const vendorSpaHeaders = vendorSpas.map(vendorSpa => {
+            return ({
+                vendorSpaId: vendorSpa._id,
+                name: vendorSpa.name,
+                description: vendorSpa.description,
+            });
+        });
+        res.status(200).send(vendorSpaHeaders);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'An error has occurred when retriving vendorSpaHeaders.' });
+    }
+}));
+/*
+    GET /api/client/spas/:vendorSpaId
+    Description:
+    Request body: no request body
+    Response body: VendorSpaHeader[]
+*/
+router.route('/spas/:vendorSpaId').get(middleware_1.isAuthenticated, middleware_1.isAuthorized, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const vendorSpaId = req.params.vendorSpaId;
+    try {
+        const spa = yield mySpa_model_1.default.findOne({ _id: vendorSpaId });
+        const services = yield vendorService_model_1.default.find({ vendorSpaId: vendorSpaId });
+        console.log(services);
+        if (spa === null || services === null) {
+            throw new Error("No results found with the given vendorSpaId");
+        }
+        const spaDetails = {
+            name: spa.name,
+            description: spa.description,
+            services,
+        };
+        res.status(200).send(spaDetails);
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'An error has occurred when retriving spaDetails.' });
     }
 }));
 exports.default = router;

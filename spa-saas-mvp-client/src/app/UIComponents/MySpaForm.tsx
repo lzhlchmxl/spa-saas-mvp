@@ -25,7 +25,6 @@ export default function MySpaForm({
 
   const [name, setName] = useState(initialForm ? initialForm.name : "");
   const [description, setDescription] = useState(initialForm ? initialForm.description : "");
-  const [vendorServices, setVendorServices] = useState(initialForm ? initialForm.vendorServices : []);
 
   const [isAnyFieldChanged, setIsAnyFieldChanged] = useState(false);
   const areAllFieldsValid = name !== "" && description !== "";
@@ -62,7 +61,6 @@ export default function MySpaForm({
       return actionCallback({
         name,
         description,
-        vendorServices,
       });
     }
     alert("Please fill all the fields.")

@@ -19,6 +19,12 @@ export type ClientProfile = {
 export type ClientId = id;
 export type ClientProfileId = id;
 
+export type SpaDetails = {
+  name: string,
+  description: string,
+  services: VendorService[],
+}
+
 /*
   Vendor Types 
 */
@@ -64,7 +70,12 @@ export type VendorService = VendorServiceForm & { _id: VendorServiceId };
 export type NewSpa = {
   name: string,
   description: string,
-  vendorServices: VendorService[],
+}
+export type VendorSpaId = id; 
+export type VendorSpaHeader = {
+  vendorSpaId: VendorSpaId;
+  name: string,
+  description: string,
 }
 
 /*

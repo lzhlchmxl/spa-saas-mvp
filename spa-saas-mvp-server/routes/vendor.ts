@@ -208,10 +208,16 @@ router.route('/my-services/:vendorServiceId').get(isAuthenticated, isAuthorized,
     Response body: 
 */
 router.route('/my-services/create').post(isAuthenticated, isAuthorized, async (req, res) => {
-
-  const service: T.NewVendorService = {...req.body, vendorUserId: req.session.data?.userId};
  
   try {
+
+    const vendorSpa = await MySpa.findOne({userId: req.session.data?.userId});
+    if (vendorSpa === null) {
+      throw new Error('Unable to find the spa associated with the given vendorId');
+    }
+    const service: T.NewVendorService = {...req.body, vendorUserId: req.session.data?.userId, vendorSpaId: vendorSpa._id};
+
+
     const newService = new VendorService(service);
     await newService.save();
 

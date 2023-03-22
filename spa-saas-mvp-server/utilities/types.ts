@@ -37,9 +37,32 @@ export type NewVendorService = {
   cost: string,
 }
 
+// NewVendorSpa and VendorSpaHeader looks identical for now as intended
 export type NewVendorSpa = {
   userId: VendorUserId,
   name: string,
   description: string,
-  // services: VendorService[],
+  serviceCategoryIds: ServiceCategoryId[],
 }
+
+export type VendorSpaHeader = {
+  vendorSpaId: VendorUserId,
+  name: string,
+  description: string,
+}
+
+export type SpaDetails = {
+  name: string,
+  description: string,
+  services: VendorService[],
+}
+
+type VendorServiceForm = {
+  categoryId: ServiceCategoryId,
+  name: string,
+  description: string,
+  cost: string,
+  durationInSeconds: number,
+}
+type VendorServiceId = id;
+type VendorService = VendorServiceForm & { _id: VendorServiceId };

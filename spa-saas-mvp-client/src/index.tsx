@@ -24,6 +24,7 @@ import MyServicesPage from './app/PageComponents/VendorPage/MyServicesPage';
 import CreateVendorService from './features/VendorPage/MyServices/CreateVendorService';
 import ViewVendorServiceDetails from './features/VendorPage/MyServices/ViewVendorServiceDetails';
 import EditVendorServiceDetails from './features/VendorPage/MyServices/EditVendorServiceDetails';
+import ViewSpaDetails from './features/ClientPage/ViewSpaDetails';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -42,6 +43,7 @@ root.render(
             <Route path="profile" element={<ProfilePage />} />
             <Route path='profile/edit' element={<EditProfile />} />
             <Route path="spas" element={<SpasPage />} />
+            <Route path="spas/:vendorSpaId" element={<ViewSpaDetails />} />
             <Route path="appointments" element={<AppointmentsPage />} />
             <Route path="history" element={<HistoryPage />} />
           </Route>

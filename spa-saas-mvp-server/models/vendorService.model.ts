@@ -2,6 +2,7 @@ import { Schema, model, Document } from "mongoose";
 
 export interface VendorServiceInterface extends Document {
   categoryId: string,
+  vendorSpaId: string,
   vendorUserId: string,
   name: string,
   description: string,
@@ -15,7 +16,13 @@ const vendorServiceSchema = new Schema<VendorServiceInterface>({
     required: true,
     unique: false,
   },
+  // [TODO] replace all usage of vendorUserId in vendorServices with vendorSpaId
   vendorUserId: {
+    type: String,
+    required: true,
+    unique: false,
+  },
+  vendorSpaId: {
     type: String,
     required: true,
     unique: false,

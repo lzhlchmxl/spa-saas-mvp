@@ -7,8 +7,6 @@ export interface MySpaInterface extends Document {
   userId: string,
   name: string,
   description: string,
-  vendorServices: Array<VendorServiceInterface>;
-  serviceCategories: T.ServiceCategoryId[];
 }
 
 const mySpaSchema = new Schema<MySpaInterface>({
@@ -24,10 +22,6 @@ const mySpaSchema = new Schema<MySpaInterface>({
   },
   description: {
     type: String,
-    required: true,
-  },
-  vendorServices: {
-    type: [Object], // [TODO]
     required: true,
   }
 }, {
