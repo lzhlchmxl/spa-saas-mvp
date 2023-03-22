@@ -1,13 +1,25 @@
 import { Schema, model, Document } from "mongoose";
 
 export interface VendorServiceInterface extends Document {
+  categoryId: string,
+  vendorUserId: string,
   name: string,
   description: string,
-  duration: string,
+  durationInSeconds: number,
   cost: string,
 }
 
 const vendorServiceSchema = new Schema<VendorServiceInterface>({
+  categoryId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  vendorUserId: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   name: {
     type: String,
     required: true,
@@ -18,8 +30,8 @@ const vendorServiceSchema = new Schema<VendorServiceInterface>({
     required: true,
     unique: true
   },
-  duration: {
-    type: String,
+  durationInSeconds: {
+    type: Number,
     required: true,
     unique: true
   },

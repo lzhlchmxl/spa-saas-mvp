@@ -9,7 +9,7 @@ const router = express.Router();
     GET /api/admin/service-categories
     Description: Get a list of service categories avilable to vendors
     Request body: no request body
-    Response body: ServiceCategory
+    Response body: ServiceCategory[]
 */
 router.route('/service-categories').get(isAuthenticated, isAuthorized, async (_req, res) => {
 
@@ -24,7 +24,7 @@ router.route('/service-categories').get(isAuthenticated, isAuthorized, async (_r
 
 /*
     GET /api/admin/service-categories/view/:serviceCategoryId
-    Description: Get a list of service categories avilable to vendors
+    Description:
     Request body: no request body
     Response body: ServiceCategory
 */

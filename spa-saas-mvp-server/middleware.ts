@@ -14,7 +14,6 @@ export const isAuthorized = (req: Request, res: Response, next: NextFunction) =>
 
   const isAuthRequiredMethod = req.method === 'GET' || req.method === 'PUT' || req.method === 'POST' || req.method === 'DELETE';
 
-  console.log(req.session.data?.role)
   if (req.session.data?.role === 'client' && isAuthRequiredMethod) {
     const allowedClientApiPattern = /^\/api\/client\/(.*)/;
 
@@ -22,7 +21,7 @@ export const isAuthorized = (req: Request, res: Response, next: NextFunction) =>
       return res.status(403).send('Forbidden');
     }
   } else if (req.session.data?.role === 'vendor' && isAuthRequiredMethod) {
-    const allowedVendorApiPattern = /^\/api\/vendor\/(.*)/;
+    const allowedVendorApiPattern = /^\/api\/(vendor\/(.*?)|admin\/service-categories)$/;
     if (!allowedVendorApiPattern.test(req.originalUrl )) {
       return res.status(403).send('Forbidden');
     }

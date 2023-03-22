@@ -7,6 +7,10 @@ export default function VendorPage() {
     <div className="flex">
       <div className="flex flex-col w-[300px]">
         <NavLink to="/vendor/profile" >Profile</NavLink>
+        <NavLink to="/vendor/my-spa" >My Spa</NavLink>
+        <NavLink to="/vendor/my-services" >My Services</NavLink>
+        <NavLink to="/vendor/appointments" >Appointments</NavLink>
+        <NavLink to="/vendor/history" >History</NavLink>
       </div>
       <Outlet />
     </div>

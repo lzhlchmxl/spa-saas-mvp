@@ -8,6 +8,7 @@ export type NewClientProfile = {
 }
 
 export type NewVendorProfile = {
+  userId: VendorUserId,
   firstName: string,
   lastName: string,
   phoneNumber: string,
@@ -15,7 +16,7 @@ export type NewVendorProfile = {
   businessAddress: string,
   businessName: string,
   serviceCategories: ServiceCategoryId[],
-  vendorServices: VendorService[],
+  // vendorServices: VendorService[],
 }
 
 export type ServiceCategory = {
@@ -23,12 +24,22 @@ export type ServiceCategory = {
   description: string,
 }
 
+type VendorUserId = id;
 export type ServiceCategoryId = id;
 type id = string;
 
-export type VendorService = {
+
+export type NewVendorService = {
+  categoryId: string,
   name: string,
   description: string,
-  duration: string, // in mili sec
+  durationInSeconds: number, // in seconds
   cost: string,
+}
+
+export type NewVendorSpa = {
+  userId: VendorUserId,
+  name: string,
+  description: string,
+  // services: VendorService[],
 }

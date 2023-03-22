@@ -1,7 +1,5 @@
-import { NavLink, Outlet, useNavigate, useOutletContext } from "react-router-dom";
 
-
-export default function SPASPage() {
+export default function SpasPage() {
 
   return (
     <div className="flex">

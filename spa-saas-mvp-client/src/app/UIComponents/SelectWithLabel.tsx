@@ -32,7 +32,7 @@ export default function selectWithLabel(
         value={selected}     
         onChange={ e => setSelected(e.currentTarget.value) }
       >
-        <option value={'default'} disabled hidden>{defaultText}</option>
+        <option value={''} disabled hidden>{defaultText}</option>
         { selectionsHTML }
       </select>
 
