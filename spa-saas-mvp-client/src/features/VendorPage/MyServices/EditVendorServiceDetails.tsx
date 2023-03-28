@@ -40,7 +40,7 @@ export default function EditVendorServiceDetails() {
   }
 
   return (
-    <div className="flex border border-b-black/50 justify-around">
+    <div className="flex justify-around">
       <VendorServiceForm 
         initialForm={initialForm} 
         cancelText="CANCEL"

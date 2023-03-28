@@ -35,10 +35,10 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="flex">
+    <div className="flex h-full w-full justify-center">
       {clientProfile ? <ViewProfile profile={clientProfile} /> : <CreateProfile />}
       {clientProfile && 
-      <div className="flex h-[50px]">
+      <div className="flex h-[50px] mt-5">
         <Button 
           actionType="secondary"
           actionText="EDIT"

@@ -21,32 +21,31 @@ export default function ViewServiceCategoryDetailsPage() {
 
   const serviceCategoryDetails = serviceCategoryDetailsAsync.value;
 
-  const handleBackButtonClick = () => {
-    window.location.href = `/admin/service-categories`
+  const handleDeleteServiceCategory = () => {
+    
   }
+
 
   const handleEditServiceCategory = () => {
     window.location.href = `/admin/service-categories/edit/${serviceCategoryDetails._id}`
   }
   
   return (
-    <div className="flex">
-      <div className="flex h-[50px]">
-        <Button 
-          actionType="tertiary"
-          actionText="BACK"
-          actionHandler={handleBackButtonClick} 
-        />
-      </div>
-      <div>
-        <p>{serviceCategoryDetails.name}</p>
-        <p>{serviceCategoryDetails.description}</p>
+    <div className="flex border border-b-black/50 justify-around">
+      <div className="flex flex-col">
+        <p>Name: {serviceCategoryDetails.name}</p>
+        <p>Description: {serviceCategoryDetails.description}</p>
       </div>
       <div className="flex h-[50px]">
         <Button 
           actionType="secondary"
           actionText="EDIT"
-          actionHandler={handleEditServiceCategory} 
+          actionHandler={handleEditServiceCategory}        
+        />
+        <Button 
+          actionType="danger"
+          actionText="DELETE"
+          actionHandler={handleDeleteServiceCategory}        
         />
       </div>
     </div>

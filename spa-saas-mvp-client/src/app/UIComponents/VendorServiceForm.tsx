@@ -86,7 +86,7 @@ export default function VendorServiceForm(
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col justify-center">
       <div className="mb-5">
         <SelectWithLabel 
           label="category"

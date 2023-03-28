@@ -9,7 +9,7 @@ export default function CreateMySpa() {
   const tryCreate = async (spa: T.NewSpa) => {
     const res = await createMySpa(spa);
     if (res.status === 200) {
-      window.location.href = '/vendor/my-services';
+      window.location.href = '/vendor/my-spa';
     } else {
       return (<ErrorIndicator />);
     }

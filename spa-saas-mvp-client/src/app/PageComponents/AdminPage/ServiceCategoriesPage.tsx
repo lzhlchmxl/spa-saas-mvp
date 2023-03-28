@@ -20,23 +20,21 @@ export default function ServiceCategoriesPage() {
   }
 
   const serviceCategories = serviceCategoriesAsync.value;
-  const serviceCategoriesHTML = <ul>{serviceCategories.map(serviceCategory => {
+  const serviceCategoriesHTML = serviceCategories.map(serviceCategory => {
     return (
-      <li 
+      <div
+        onClick={ () => handleViewServiceCategoryDetails(serviceCategory._id)}
         key={serviceCategory._id}
+        className="flex border border-borders hover:bg-highlight transition-colors duration-200 cursor-pointer"
       >
-        <p 
-          onClick={() => handleViewServiceCategoryDetails(serviceCategory._id)}
-          className="hover:cursor-pointer"
-        >
-          {serviceCategory.name}
-        </p>
-      </li>
+        <p className="w-1/2 p-4 text-textsIcons font-medium">{serviceCategory.name}</p>
+        <p className="w-1/2 p-4 text-textsIcons">{serviceCategory.description}</p>
+      </div>
     )
-  })}</ul>
+  })
 
   const handleViewServiceCategoryDetails = (id: T.ServiceCategoryId) => {
-    window.location.href = `/admin/service-categories/view/${id}`
+    window.location.href = `/admin/service-categories/${id}`
   }
 
   const handleCreateServiceCategory = () => {
@@ -44,14 +42,24 @@ export default function ServiceCategoriesPage() {
   }
 
   return (
-    <div className="flex">
-     {serviceCategoriesHTML}
-      <div className="flex h-[50px]">
-        <Button 
-          actionType="primary"
-          actionText="NEW CATEGORY"
-          actionHandler={handleCreateServiceCategory} 
-        />
+    <div className="flex w-full">
+      <div className="flex w-full justify-center items-center flex-col">
+        <div className="flex flex-col w-[80%] h-full">
+          <div className="flex self-end">
+            <Button 
+              actionType="primary" 
+              actionText="New Category"
+              actionHandler={handleCreateServiceCategory}      
+            />
+          </div>
+          <div className="flex border border-borders font-medium bg-backgrounds">
+            <p className="w-1/2 p-4 text-textsIcons">Name</p>
+            <p className="w-1/2 p-4 text-textsIcons">Description</p>
+          </div>
+          <div className="overflow-y-auto">
+            {serviceCategoriesHTML}
+          </div>
+        </div>
       </div>
       <Outlet />
     </div>

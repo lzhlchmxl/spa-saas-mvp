@@ -27,11 +27,11 @@ export default function MyServicesPage() {
       <div
         onClick={ () => handleViewServiceDetails(myServiceHeader._id)}
         key={myServiceHeader._id}
-        className="flex border border-b-black/50 justify-around hover:cursor-pointer"
+        className="flex border border-borders hover:bg-highlight transition-colors duration-200 cursor-pointer"
       >
-        <p>{myServiceHeader.name}</p>
-        <p>{myServiceHeader.cost}</p>
-        <p>{duration.hours}h {duration.minutes}m</p>
+        <p className="w-1/2 p-4 text-textsIcons font-medium">{myServiceHeader.name}</p>
+        <p className="w-1/2 p-4 text-textsIcons">{myServiceHeader.cost}</p>
+        <p className="w-1/2 p-4 text-textsIcons">{duration.hours}h {duration.minutes}m</p>
       </div>
     )
   })
@@ -44,19 +44,24 @@ export default function MyServicesPage() {
     window.location.pathname = `/vendor/my-services/${vendorServiceId}`
   }
 
-  const showCreateButton = window.location.pathname === '/vendor/my-services';
-
   return (
-    <div className="flex">
-      <div className="flex flex-col">
-        <div className={showCreateButton ? "flex" : "hidden"}>
-          <Button 
-            actionType={"primary"} 
-            actionText="New Service"
-            actionHandler={handleCreateMyService}      
-          />
+    <div className="flex w-full">
+      <div className="flex w-full justify-center items-center flex-col">
+        <div className="flex flex-col w-[80%]">
+          <div className="flex self-end">
+            <Button 
+              actionType="primary" 
+              actionText="New Service"
+              actionHandler={handleCreateMyService}      
+            />
+          </div>
+          <div className="flex border border-borders font-medium bg-backgrounds">
+            <p className="w-1/3 p-4 text-textsIcons">Name</p>
+            <p className="w-1/3 p-4 text-textsIcons">Cost Per Session</p>
+            <p className="w-1/3 p-4 text-textsIcons">Duration</p>
+          </div>
+          {myServiceHeadersHTML}
         </div>
-        {myServiceHeadersHTML}
       </div>
       <Outlet />
     </div>

@@ -28,18 +28,6 @@ export default function MySpaForm({
 
   const [isAnyFieldChanged, setIsAnyFieldChanged] = useState(false);
   const areAllFieldsValid = name !== "" && description !== "";
-
-  // const serviceCategoriesAsync = useAsync(() => getServiceCategories(), []);
-
-  // if ( serviceCategoriesAsync.status === "pending" ) {
-  //   return <LoadingIndicator />;
-  // }
-
-  // if ( serviceCategoriesAsync.status === "rejected" ) {
-  //   return <ErrorIndicator />;
-  // }
-
-  // const serviceCategories = serviceCategoriesAsync.value;
   
   const handleSetter = (v: string, setter: (v: string) => void) => {
     setter(v);
@@ -68,35 +56,37 @@ export default function MySpaForm({
   }
 
   return (
-    <div className="flex flex-col w-full">
-      <InputWithLabel 
-        label="name"
-        name="name" 
-        type="text"
-        value={name} 
-        setValue={(v) => handleSetter(v, setName)}        
-      />
-      <InputWithLabel 
-        label="description"
-        name="description" 
-        type="text"
-        value={description} 
-        setValue={(v) => handleSetter(v, setDescription)}        
-      />
-      <div className="flex justify-evenly mt-5">
-        <Button 
-          actionHandler={tryPassCreationInfoToParent}
-          actionText={actionText}
-          actionType="primary"
+    <div className="flex flex-col w-full justify-center items-center">
+      <div className="w-[80%] max-w-[500px]">
+        <InputWithLabel 
+          label="name"
+          name="name" 
+          type="text"
+          value={name} 
+          setValue={(v) => handleSetter(v, setName)}        
         />
-        {
-          initialForm &&
+        <InputWithLabel 
+          label="description"
+          name="description" 
+          type="text"
+          value={description} 
+          setValue={(v) => handleSetter(v, setDescription)}        
+        />
+        <div className="flex justify-evenly mt-5">
           <Button 
-            actionHandler={tryCancel}
-            actionText={cancelText}
-            actionType="secondary"
+            actionHandler={tryPassCreationInfoToParent}
+            actionText={actionText}
+            actionType="primary"
           />
-        }
+          {
+            initialForm &&
+            <Button 
+              actionHandler={tryCancel}
+              actionText={cancelText}
+              actionType="secondary"
+            />
+          }
+        </div>
       </div>
     </div>
   )

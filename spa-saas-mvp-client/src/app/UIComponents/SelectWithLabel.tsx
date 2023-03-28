@@ -23,10 +23,10 @@ export default function selectWithLabel(
   })
 
   return (
-    <div className='flex flex-col'>
-      <label className="capitalize" htmlFor={name}>{label}</label>
+    <div className='flex flex-col text-textsIcons'>
+      <label className="capitalize font-semibold" htmlFor={name}>{label}</label>
       <select
-        className="border border-black/50"
+        className="bg-white border border-lightGray rounded-md"
         name={name}
         id={name}
         value={selected}     

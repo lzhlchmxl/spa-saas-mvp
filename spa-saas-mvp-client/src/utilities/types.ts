@@ -1,8 +1,11 @@
+import { IconDefinition } from "@fortawesome/fontawesome-svg-core";
+
 export type User = {
   username: string,
   password: string,
-  role: 'client' | 'vendor' | 'admin',
+  role: userRole,
 }
+export type userRole = 'client' | 'vendor' | 'admin';
 
 /*
   Client Types 
@@ -94,4 +97,14 @@ export type HTTPStatusCode = number;
 export type Duration = {
   hours: number,
   minutes: number,
+}
+
+
+/* 
+  UI Types
+*/
+export type MenuData = {
+  link: string,
+  text: string,
+  icon: IconDefinition,
 }

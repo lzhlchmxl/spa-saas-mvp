@@ -15,7 +15,7 @@ import EditProfile from './features/ClientPage/EditProfile';
 import Register from './features/Register';
 import VendorPage from './app/PageComponents/VendorPage/VendorPage';
 import VendorProfilePage from './app/PageComponents/VendorPage/ProfilePage';
-import VendorEditProfilePage from './features/VendorPage/EditProfile';
+import VendorEditProfilePage from './features/VendorPage/Profile/EditProfile';
 import AdminPage from './app/PageComponents/AdminPage/AdminPage';
 import ServiceCategoriesPage from './app/PageComponents/AdminPage/ServiceCategoriesPage';
 import MySpaPage from './app/PageComponents/VendorPage/MySpaPage';
@@ -25,6 +25,9 @@ import CreateVendorService from './features/VendorPage/MyServices/CreateVendorSe
 import ViewVendorServiceDetails from './features/VendorPage/MyServices/ViewVendorServiceDetails';
 import EditVendorServiceDetails from './features/VendorPage/MyServices/EditVendorServiceDetails';
 import ViewSpaDetails from './features/ClientPage/ViewSpaDetails';
+import ViewServiceCategoryDetailsPage from './features/AdminPage/ViewServiceCategoryDetails';
+import EditServiceCategoryDetailsPage from './features/AdminPage/EditServiceCategoryDetails';
+import CreateServiceCategoryDetailsPage from './features/AdminPage/CreateServiceCategoryDetails';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -39,7 +42,7 @@ root.render(
           <Route path='register' element={<Register />} />
           <Route path="logout" element={<Logout />} />
           <Route path="client" element={<ClientPage />} >
-            <Route index element={<div>Welcome to the Client portal</div>} />
+            <Route index element={<div className='flex w-full justify-center items-center'>Welcome to the Client portal</div>} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path='profile/edit' element={<EditProfile />} />
             <Route path="spas" element={<SpasPage />} />
@@ -48,21 +51,26 @@ root.render(
             <Route path="history" element={<HistoryPage />} />
           </Route>
           <Route path="vendor" element={<VendorPage />} >
-            <Route index element={<div>Welcome to the Vendor portal</div>} />
+            <Route index element={<div className='flex w-full justify-center items-center'>Welcome to the Vendor portal</div>} />
             <Route path="profile" element={<VendorProfilePage />} />
             <Route path='profile/edit' element={<VendorEditProfilePage />} />
             <Route path="my-spa" element={<MySpaPage />} />
             <Route path="my-spa/edit" element={<EditMySpa />} />
             <Route path="my-services" element={<MyServicesPage />}> 
-              <Route index element={<p>Select a service from the list or create a new service</p>} />
+              <Route index element={<p className='flex w-full justify-center items-center'>Click on a service to view details or create a new service</p>} />
               <Route path=":vendorServiceId" element={<ViewVendorServiceDetails />} />
               <Route path="edit/:vendorServiceId" element={< EditVendorServiceDetails/>} />
               <Route path="create" element={<CreateVendorService />} />
             </Route>
           </Route>
           <Route path="admin" element={<AdminPage />} >
-            <Route index element={<div>Welcome to the Admin portal</div>} />
-            <Route path="service-categories" element={<ServiceCategoriesPage />}></Route>
+            <Route index element={<div className='flex w-full justify-center items-center'>Welcome to the Admin portal</div>} />
+            <Route path="service-categories" element={<ServiceCategoriesPage />}>
+            <Route index element={<p className='flex w-full justify-center items-center'>Click on a service to view details or create a new service</p>} />
+              <Route path=":serviceCategoryId" element={<ViewServiceCategoryDetailsPage />} />
+              <Route path="edit/:serviceCategoryId" element={< EditServiceCategoryDetailsPage/>} />
+              <Route path="create" element={<CreateServiceCategoryDetailsPage />} />
+            </Route>
           </Route>
         </Route>
       </Routes>

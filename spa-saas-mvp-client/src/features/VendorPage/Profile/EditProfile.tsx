@@ -1,9 +1,9 @@
-import ErrorIndicator from "../../app/UIComponents/ErrorIndicator";
-import LoadingIndicator from "../../app/UIComponents/LoadingIndicator";
-import VendorProfileForm from "../../app/UIComponents/VendorProfileForm";
-import { getVendorProfile, updateVendorProfile } from "../../utilities/api";
-import { useAsync } from "../../utilities/customHooks";
-import * as T from "../../utilities/types";
+import ErrorIndicator from "../../../app/UIComponents/ErrorIndicator";
+import LoadingIndicator from "../../../app/UIComponents/LoadingIndicator";
+import VendorProfileForm from "../../../app/UIComponents/VendorProfileForm";
+import { getVendorProfile, updateVendorProfile } from "../../../utilities/api";
+import { useAsync } from "../../../utilities/customHooks";
+import * as T from "../../../utilities/types";
 
 export default function EditProfile() {
 

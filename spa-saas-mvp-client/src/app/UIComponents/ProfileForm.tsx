@@ -5,7 +5,7 @@ import InputWithLabel from "./InputWithLabel";
 import DatePickerWithLabel from "./DatePickerWithLabel";
 
 function ProfileForm({
-    initialProfile,
+    initialForm: initialProfile,
     cancelText,
     cancelLink,
     actionText,
@@ -13,7 +13,7 @@ function ProfileForm({
   }
   : 
   {
-    initialProfile: T.ClientProfile | null,
+    initialForm: T.ClientProfile | null,
     cancelText: string,
     cancelLink: string,
     actionText: string,
@@ -26,11 +26,16 @@ function ProfileForm({
   const [phoneNumber, setPhoneNumber] = useState(initialProfile ? initialProfile.phoneNumber : "");
   const [emailAddress, setEmailAddress] = useState(initialProfile ? initialProfile.emailAddress : "");
   const [homeAddress, setHomeAddress] = useState(initialProfile ? initialProfile.homeAddress : "");
-  const [dateOfBirth, setDateOfBirth] = useState<Date | null>(initialProfile ? initialProfile.dateOfBirth : null);
+  const [dateOfBirth, setDateOfBirth] = useState<Date | null>(initialProfile ?initialProfile.dateOfBirth : null);
 
   const areAllFieldsValid = firstName !== "" && lastName !== "" && phoneNumber !== "" && emailAddress !== "" && homeAddress !== "" && dateOfBirth !== null;
-  const isAnyFieldChanged = firstName !== "" || lastName !== "" || phoneNumber !== "" || emailAddress !== "" || homeAddress !== "" || dateOfBirth !== null;
+  const [isAnyFieldChanged, setIsAnyFieldChanged] = useState(false);
   
+  const handleSetter = <T,>(v: T, setter: (v: T) => void) => {
+    setter(v);
+    setIsAnyFieldChanged(true)
+  }
+
   const tryCancel = () => {
     if (isAnyFieldChanged) {
       if(window.confirm("Unsaved changes will be discard. Confirm?")) {
@@ -57,63 +62,65 @@ function ProfileForm({
   }
 
   return (
-    <div className="flex flex-col w-full">
-      <InputWithLabel 
-        label="firstname"
-        name="first-name" 
-        type="text"
-        value={firstName} 
-        setValue={setFirstName}        
-      />
-      <InputWithLabel 
-        label="lastname"
-        name="last-name" 
-        type="text"
-        value={lastName} 
-        setValue={setLastName}        
-      />
-      <InputWithLabel 
-        label="phone number"
-        name="phone-number" 
-        type="text"
-        value={phoneNumber} 
-        setValue={setPhoneNumber}        
-      />
-      <InputWithLabel 
-        label="email address"
-        name="email-address" 
-        type="email"
-        value={emailAddress} 
-        setValue={setEmailAddress}        
-      />
-      <InputWithLabel 
-        label="home address"
-        name="home-address" 
-        type="text"
-        value={homeAddress} 
-        setValue={setHomeAddress}        
-      />
-      <DatePickerWithLabel 
-        label="date of birth"
-        name="date-of-birth" 
-        value={dateOfBirth} 
-        setValue={setDateOfBirth}        
-      />
-
-      <div className="flex justify-evenly mt-5">
-        <Button 
-          actionHandler={tryPassCreationInfoToParent}
-          actionText={actionText}
-          actionType="primary"
+    <div className="flex flex-col w-full justify-center items-center">
+      <div className="w-[80%] max-w-[500px]">
+        <InputWithLabel 
+          label="firstname"
+          name="first-name" 
+          type="text"
+          value={firstName} 
+          setValue={(v) => handleSetter(v, setFirstName)}        
         />
-        {
-          initialProfile &&
+        <InputWithLabel 
+          label="lastname"
+          name="last-name" 
+          type="text"
+          value={lastName} 
+          setValue={(v) => handleSetter(v, setLastName)}        
+        />
+        <InputWithLabel 
+          label="phone number"
+          name="phone-number" 
+          type="text"
+          value={phoneNumber} 
+          setValue={(v) => handleSetter(v, setPhoneNumber)}        
+        />
+        <InputWithLabel 
+          label="email address"
+          name="email-address" 
+          type="email"
+          value={emailAddress} 
+          setValue={(v) => handleSetter(v, setEmailAddress)}        
+        />
+        <InputWithLabel 
+          label="home address"
+          name="home-address" 
+          type="text"
+          value={homeAddress} 
+          setValue={(v) => handleSetter(v, setHomeAddress)}        
+        />
+        <DatePickerWithLabel 
+          label="date of birth"
+          name="date-of-birth" 
+          value={dateOfBirth} 
+          setValue={(v) => handleSetter(v, setDateOfBirth)}        
+        />
+
+        <div className="flex justify-evenly mt-5">
           <Button 
-            actionHandler={tryCancel}
-            actionText={cancelText}
-            actionType="secondary"
+            actionHandler={tryPassCreationInfoToParent}
+            actionText={actionText}
+            actionType="primary"
           />
-        }
+          {
+            initialProfile &&
+            <Button 
+              actionHandler={tryCancel}
+              actionText={cancelText}
+              actionType="secondary"
+            />
+          }
+        </div>
       </div>
     </div>
   )

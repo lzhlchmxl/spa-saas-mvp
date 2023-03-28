@@ -62,64 +62,65 @@ function VendorProfileForm({
   }
 
   return (
-    <div className="flex flex-col w-full">
-      <InputWithLabel 
-        label="firstname"
-        name="first-name" 
-        type="text"
-        value={firstName} 
-        setValue={(v) => handleSetter(v, setFirstName)}        
-      />
-      <InputWithLabel 
-        label="lastname"
-        name="last-name" 
-        type="text"
-        value={lastName} 
-        setValue={(v) => handleSetter(v, setLastName)}        
-      />
-      <InputWithLabel 
-        label="phone number"
-        name="phone-number" 
-        type="text"
-        value={phoneNumber} 
-        setValue={(v) => handleSetter(v, setPhoneNumber)}        
-      />
-      <InputWithLabel 
-        label="email address"
-        name="email-address" 
-        type="email"
-        value={emailAddress} 
-        setValue={(v) => handleSetter(v, setEmailAddress)}        
-      />
-      <InputWithLabel 
-        label="business name"
-        name="business-name" 
-        type="text"
-        value={businessName} 
-        setValue={(v) => handleSetter(v, setBusinessName)}        
-      />
-      <InputWithLabel 
-        label="business address"
-        name="business-address" 
-        type="text"
-        value={businessAddress} 
-        setValue={(v) => handleSetter(v, setBusinessAddress)}        
-      />
-
-      <div className="flex justify-evenly mt-5">
-        <Button 
-          actionHandler={tryPassCreationInfoToParent}
-          actionText={actionText}
-          actionType="primary"
+    <div className="flex flex-col w-full justify-center items-center">
+      <div className="w-[80%] max-w-[500px]">
+        <InputWithLabel 
+          label="firstname"
+          name="first-name" 
+          type="text"
+          value={firstName} 
+          setValue={(v) => handleSetter(v, setFirstName)}        
         />
-        {
-          initialProfile &&
+        <InputWithLabel 
+          label="lastname"
+          name="last-name" 
+          type="text"
+          value={lastName} 
+          setValue={(v) => handleSetter(v, setLastName)}        
+        />
+        <InputWithLabel 
+          label="phone number"
+          name="phone-number" 
+          type="text"
+          value={phoneNumber} 
+          setValue={(v) => handleSetter(v, setPhoneNumber)}        
+        />
+        <InputWithLabel 
+          label="email address"
+          name="email-address" 
+          type="email"
+          value={emailAddress} 
+          setValue={(v) => handleSetter(v, setEmailAddress)}        
+        />
+        <InputWithLabel 
+          label="business name"
+          name="business-name" 
+          type="text"
+          value={businessName} 
+          setValue={(v) => handleSetter(v, setBusinessName)}        
+        />
+        <InputWithLabel 
+          label="business address"
+          name="business-address" 
+          type="text"
+          value={businessAddress} 
+          setValue={(v) => handleSetter(v, setBusinessAddress)}        
+        />
+        <div className="flex justify-evenly mt-5">
           <Button 
-            actionHandler={tryCancel}
-            actionText={cancelText}
-            actionType="secondary"
+            actionHandler={tryPassCreationInfoToParent}
+            actionText={actionText}
+            actionType="primary"
           />
-        }
+          {
+            initialProfile &&
+            <Button 
+              actionHandler={tryCancel}
+              actionText={cancelText}
+              actionType="secondary"
+            />
+          }
+        </div>
       </div>
     </div>
   )

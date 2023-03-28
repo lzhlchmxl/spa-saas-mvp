@@ -34,10 +34,10 @@ export default function MySpaPage() {
   }
 
   return (
-    <div className="flex">
+    <div className="flex w-full justify-center">
       {mySpa ? <ViewMySpa mySpa={mySpa} /> : <CreateMySpa />}
       {mySpa && 
-      <div className="flex h-[50px]">
+      <div className="flex h-[50px] mt-10">
         <Button 
           actionType="secondary"
           actionText="EDIT"

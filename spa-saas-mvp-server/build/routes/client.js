@@ -120,8 +120,7 @@ router.route('/spas/:vendorSpaId').get(middleware_1.isAuthenticated, middleware_
     const vendorSpaId = req.params.vendorSpaId;
     try {
         const spa = yield mySpa_model_1.default.findOne({ _id: vendorSpaId });
-        const services = yield vendorService_model_1.default.find({ vendorSpaId: vendorSpaId });
-        console.log(services);
+        const services = yield vendorService_model_1.default.find({ vendorSpaId });
         if (spa === null || services === null) {
             throw new Error("No results found with the given vendorSpaId");
         }

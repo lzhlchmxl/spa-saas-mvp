@@ -35,7 +35,7 @@ export default function EditProfile() {
 
   return (
     <ProfileForm 
-      initialProfile={clientProfile}
+      initialForm={clientProfile}
       cancelText="CANCEL"
       cancelLink="/client/profile"
       actionText="SAVE"

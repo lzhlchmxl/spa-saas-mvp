@@ -1,3 +1,68 @@
+import { icon } from '@fortawesome/fontawesome-svg-core/import.macro';
+import { faSpa, faGears, faClockRotateLeft, faHandsHolding } from '@fortawesome/free-solid-svg-icons';
+import * as T from '../utilities/types';
+
+export const adminPageSideMenuData = [
+  {
+    link: '/admin/service-categories',
+    text: 'Service Categories',
+    icon: faGears,
+  }
+]
+
+
+export const clientPageSideMenuData: T.MenuData[] = [
+  {
+    link: '/client/profile',
+    text: 'Profile',
+    icon: icon({name: 'user', style: 'regular'}),
+  },
+  {
+    link: '/client/spas',
+    text: 'Spas',
+    icon: faSpa, // [TODO] for some reason icon({name: 'spa'}) wont work, prob due to inproper babel config setting
+  },
+  {
+    link: '/client/appointments',
+    text: 'Appointments',
+    icon: icon({name: 'calendar-check', style: 'regular'}),
+  },
+  {
+    link: '/client/history',
+    text: 'History',
+    icon: faClockRotateLeft,
+  },
+]
+
+export const vendorPageSideMenuData = [
+  {
+    link: '/vendor/profile',
+    text: 'Profile',
+    icon: icon({name: 'user', style: 'regular'}),
+  },
+  {
+    link: '/vendor/my-spa',
+    text: 'My Spa',
+    icon: faSpa,
+  },
+  {
+    link: '/vendor/my-services',
+    text: 'My Services',
+    icon: faHandsHolding,
+  },
+  {
+    link: '/vendor/appointments',
+    text: 'Appointments',
+    icon: icon({name: 'calendar-check', style: 'regular'}),
+  },
+  {
+    link: '/vendor/history',
+    text: 'History',
+    icon: faClockRotateLeft,
+  },
+];
+
+
 export const hydroSPAServices = [
     {
     "name": "Hydrotherapy",

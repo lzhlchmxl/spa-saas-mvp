@@ -15,13 +15,13 @@ export default function Button(
   const buttonTypeClassNames = () => {
     switch(actionType) {
       case "primary":
-        return "bg-black hover:bg-gray-700 text-white";
+        return "bg-darkGray hover:bg-lightGray hover:text-darkGray text-white";
       case "secondary":
-        return "text-blue-900 hover:bg-gray-100 hover:text-black border-gray-700";
+        return "text-textsIcons hover:bg-secondary hover:text-black border-shadowsGradients";
       case "tertiary":
         return "";
       case "danger":
-        return "border-red-500 text-red-500 hover:bg-red-500 hover:text-white";
+        return "border-danger text-danger hover:bg-danger hover:text-white";
       default:
         throw new Error("Unknown button actionType");
     }

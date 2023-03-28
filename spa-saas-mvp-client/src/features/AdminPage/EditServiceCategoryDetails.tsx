@@ -30,7 +30,7 @@ export default function EditServiceCategoryDetailsPage() {
     const responseStatus = await updateServiceCategoryDetails(updatedServiceCategoryDetails);
 
     if (responseStatus === 200) {
-      window.location.href = `/admin/service-categories/view/${initialServiceCategoryDetails._id}`
+      window.location.href = `/admin/service-categories/${initialServiceCategoryDetails._id}`
     } else {
       window.alert('Error updating service-category, redirectig...');
       window.location.href = `/admin/service-categories`
@@ -38,15 +38,13 @@ export default function EditServiceCategoryDetailsPage() {
   }
   
   return (
-    <div className="flex">
-      <ServiceCategoryDetailsForm 
-        initialForm={initialServiceCategoryDetails} 
-        cancelText='CANCEL' 
-        cancelLink='/admin/service-categories' 
-        actionText='EDIT' 
-        actionCallback={handleEditServiceCategory} 
-        />
-    </div>
+    <ServiceCategoryDetailsForm 
+      initialForm={initialServiceCategoryDetails} 
+      cancelText='CANCEL' 
+      cancelLink='/admin/service-categories' 
+      actionText='EDIT' 
+      actionCallback={handleEditServiceCategory} 
+    />
   )
 
 }

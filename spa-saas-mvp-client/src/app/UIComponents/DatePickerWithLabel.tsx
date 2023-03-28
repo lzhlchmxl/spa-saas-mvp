@@ -1,3 +1,4 @@
+import moment from 'moment';
 import DatePicker from 'react-date-picker';
 
 export default function DatePickerWithLabel(
@@ -13,17 +14,19 @@ export default function DatePickerWithLabel(
     label: string,
     name: string,
     value: Date | null,
-    setValue: (value: Date) => void,
+    setValue: (value: Date | null) => void,
     disabled?: boolean,
   }
 ) {
+
+  const date = value ? moment(value).toDate() : null;
 
   return (
     <div className='flex flex-col mb-5'>
       <label className="capitalize" htmlFor={name}>{label}</label>
       <DatePicker 
         name={name}
-        value={value}
+        value={date}
         onChange={setValue}
       />
     </div>

@@ -1,14 +1,14 @@
-import * as T from "../../utilities/types";
-import { createVendorProfile } from "../../utilities/api";
-import VendorProfileForm from "../../app/UIComponents/VendorProfileForm";
-import ErrorIndicator from "../../app/UIComponents/ErrorIndicator";
+import * as T from "../../../utilities/types";
+import { createVendorProfile } from "../../../utilities/api";
+import VendorProfileForm from "../../../app/UIComponents/VendorProfileForm";
+import ErrorIndicator from "../../../app/UIComponents/ErrorIndicator";
 
 export default function CreateProfile() {                                                                                                                                                        
 
   const tryCreate = async (profile: T.VendorProfile) => {
     const statusCode = await createVendorProfile(profile);
     if (statusCode === 200) {
-      window.location.href = '/client/profile';
+      window.location.href = '/vendor/profile';
     } else {
       return (<ErrorIndicator />);
     }
@@ -17,7 +17,7 @@ export default function CreateProfile() {
   return (
     <VendorProfileForm 
       initialProfile={null}
-      cancelLink='/client/profile'
+      cancelLink='/vendor/profile'
       cancelText="cancel"
       actionText="create"
       actionCallback={ (profile: T.VendorProfile) => tryCreate(profile)}

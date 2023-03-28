@@ -16,7 +16,7 @@ export default function CreateProfile() {
 
   return (
     <ProfileForm 
-      initialProfile={null}
+      initialForm={null}
       cancelLink='/client/profile'
       cancelText="cancel"
       actionText="create"

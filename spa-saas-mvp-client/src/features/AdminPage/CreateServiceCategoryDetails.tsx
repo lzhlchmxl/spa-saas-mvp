@@ -14,22 +14,20 @@ export default function CreateServiceCategoryDetailsPage() {
     window.alert(`${responseJSON.message} Redirecting...`);
 
     if (responseJSON.id) {
-      window.location.href = `/admin/service-categories/view/${responseJSON.id}`
+      window.location.href = `/admin/service-categories/${responseJSON.id}`
     } else {
       window.location.href = `/admin/service-categories`
     }
   }
   
   return (
-    <div className="flex">
-      <ServiceCategoryDetailsForm 
-        initialForm={null} 
-        cancelText='CANCEL' 
-        cancelLink='/admin/service-categories' 
-        actionText='CREATE' 
-        actionCallback={handleCreateServiceCategory}
-      />
-    </div>
+    <ServiceCategoryDetailsForm 
+      initialForm={null} 
+      cancelText='CANCEL' 
+      cancelLink='/admin/service-categories' 
+      actionText='CREATE' 
+      actionCallback={handleCreateServiceCategory}
+    />
   )
 
 }
