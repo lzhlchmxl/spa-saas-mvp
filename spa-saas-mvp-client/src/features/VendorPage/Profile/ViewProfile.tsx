@@ -10,9 +10,9 @@ export default function ViewProfile(prop: {profile: T.VendorProfile}) {
   }</ul>
 
   return (
-    <div className="flex flex-col text-lg text-textsIcons self-center">
-      <p className="text-2xl font-semibold">{firstName}'s Profile</p>
-      <div className="flex flex-col bg-backgrounds rounded-lg p-4 my-4">
+    <div className="flex flex-col text-lg text-textsIcons w-fit">
+      <p className="text-3xl font-semibold">{firstName}'s Profile</p>
+      <div className="flex flex-col rounded-lg my-4">
         <p className="my-3">First Name: {firstName}</p>
         <p className="my-3">Last Name: {lastName}</p>
         <p className="my-3">Business Name: {businessName}</p>

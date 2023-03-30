@@ -5,7 +5,7 @@ import SideMenuNavButton from './SideMenuNavButton';
 
 export default function SideMenu({userRole} : {userRole: T.userRole}) {
 
-  const getMenuDataSet = () => {
+  const getMenuDataSet = (): T.MenuData[] => {
 
     switch (userRole) {
       case 'client':
@@ -19,23 +19,45 @@ export default function SideMenu({userRole} : {userRole: T.userRole}) {
     }
   }
 
-  const menuHTML = getMenuDataSet().map( ({link, text, icon}) => {
+  // [TODO] hard code; support nested menu for more than two layers
+  const menuHTML = getMenuDataSet().map( menuData  => {
+    const text = menuData.text;
+    const children = menuData.children;
+    const childrenMenuHTML = 
+    <div className='ml-[26px]'>
+      {children?.map( (childMenuData, index) => {
+        return (
+          <SideMenuNavButton key={index} link={childMenuData.link} text={childMenuData.text} icon={childMenuData.icon} />
+
+        )
+      })}
+    </div>
+
+ 
+
     return (
-      <SideMenuNavButton link={link} text={text} icon={icon} />
+      <div className='flex flex-col'>
+        <SideMenuNavButton key={text} link={menuData.link} text={text} icon={menuData.icon} />
+        {
+          children && childrenMenuHTML
+        }
+      </div>
     )
   })
 
   return (
     <div
       className='bg-backgrounds text-textsIcons h-full flex flex-col w-64 
-                justify-between items-start'
+                justify-between items-center'
     >
-      <div className='m-[20px] flex flex-col'>
-        <h1 className='font-semibold text-lg'>Dashboard</h1>
-        <p className='pt-1 text-sm text-highlight'>Logged in as a {userRole}</p>
-      </div>
-      <div className='flex flex-col w-[calc(100%-20px)] self-center'>
-        {menuHTML}
+      <div className='flex flex-col w-[calc(100%-20px)]'>
+        <div className='mx-[10px] my-[20px]'>
+          <h1 className='font-semibold text-lg'>Dashboard</h1>
+          <p className='pt-1 text-sm text-highlight'>Logged in as a {userRole}</p>
+        </div>
+        <div className='flex flex-col w-full self-center '>
+          {menuHTML}
+        </div>
       </div>
       <div className='flex flex-col w-[calc(100%-20px)] self-center mb-3'>
         <SideMenuNavButton link='/logout' text='Log out' icon={faArrowRightFromBracket} />

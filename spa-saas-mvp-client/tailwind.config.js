@@ -7,12 +7,14 @@ module.exports = {
     colors: {
       "highlight": "#FAE69E", // light yellow
       "danger": "#ef4444",
+      "black": "#000",
       "white": "#EFF3F6",
       "darkGray": "#394251",
       "lightGray": "#343541",
-      "borders": "#2C333E", // for borders and accents
-      "backgrounds": "#202123", // for backgrounds: 111825
-      "textsIcons":  "#E9EDF2", //"#5c3d1e", // for text and icons:
+      "borders": "#2C333E", 
+      "backgrounds": "#202123", // darker gray
+      "lightBackgrounds": "#343541", // blue-ish gray
+      "textsIcons":  "#E9EDF2", 
       "shadowsGradients": "#4d4d33", // for shadows and gradients
       "headerFooterText": "#fff",
     },
@@ -29,6 +31,9 @@ module.exports = {
       },
       padding: {
         'iconPadding': '10px',
+      },
+      margin: {
+        'contentPageTopMargin': '105px',
       }
     },
   },

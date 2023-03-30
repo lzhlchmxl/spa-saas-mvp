@@ -39,7 +39,7 @@ export default function App() {
         </div>
       }
       {isAuthenticated &&
-        <div className='flex h-full'>
+        <div className='flex h-full w-full'>
           <SideMenu userRole={userRole} />
           <Outlet context={ {isAuthenticated, userRole} }/>
         </div>

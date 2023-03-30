@@ -14,7 +14,7 @@ export default function SideMenuNavButton({link, text, icon}: T.MenuData) {
         to={link} 
         className="p-iconPadding w-full"
       >
-        <FontAwesomeIcon className='w-iconWidth h-iconHeight pr-iconPadding' icon={icon} />
+        {icon && <FontAwesomeIcon className='w-iconWidth h-iconHeight pr-iconPadding' icon={icon} />}
         {text}
       </NavLink>
     </div>

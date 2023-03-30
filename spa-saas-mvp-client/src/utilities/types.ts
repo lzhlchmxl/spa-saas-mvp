@@ -70,6 +70,36 @@ export type VendorServiceForm = {
 export type VendorServiceId = id;
 export type VendorService = VendorServiceForm & { _id: VendorServiceId };
 
+export type DateTimeRange = {
+  startDateTime: Date,
+  endDateTime: Date,
+}
+
+export type SpaEmployee = {
+  id: SpaEmployeeId,
+  username: string,
+  password: string,
+  firstName: string,
+  lastName: string,
+  unavilableDateTimeRanges: DateTimeRange[],
+}
+type SpaEmployeeId = id;
+
+export type SpaResource = {
+  id: SpaResourceId,
+  name: string,
+  type: "ingradient" | "supply" | "spot" | "room",
+}
+type SpaResourceId = id; 
+
+export type VendorSpa = {
+  name: string,
+  description: string,
+  services: VendorService[],
+  employees: SpaEmployee[],
+  resources: SpaResource[],
+}
+
 export type NewSpa = {
   name: string,
   description: string,
@@ -106,5 +136,13 @@ export type Duration = {
 export type MenuData = {
   link: string,
   text: string,
-  icon: IconDefinition,
+  icon?: IconDefinition,
+  children?: MenuData[],
+}
+
+export type FormData = {
+  stateName: string;
+  setStateName: string;
+  initialStateValue: "" | [];
+  inputType: "text" | "undefined"
 }

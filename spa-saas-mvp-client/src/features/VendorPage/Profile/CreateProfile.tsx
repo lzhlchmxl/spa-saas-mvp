@@ -1,12 +1,23 @@
 import * as T from "../../../utilities/types";
 import { createVendorProfile } from "../../../utilities/api";
-import VendorProfileForm from "../../../app/UIComponents/VendorProfileForm";
 import ErrorIndicator from "../../../app/UIComponents/ErrorIndicator";
+import Form, { FormState } from "../../../app/UIComponents/Form";
 
 export default function CreateProfile() {                                                                                                                                                        
 
-  const tryCreate = async (profile: T.VendorProfile) => {
-    const statusCode = await createVendorProfile(profile);
+  const tryCreate = async (updatedForm: FormState) => {
+
+    const newForm: T.VendorProfile = {
+      firstName: updatedForm["firstName"] as string,
+      lastName: updatedForm["lastName"] as string,
+      phoneNumber: updatedForm["phoneNumber"] as string,
+      emailAddress: updatedForm["emailAddress"] as string,
+      businessName: updatedForm["businessName"] as string,
+      businessAddress: updatedForm["businessAddress"] as string,
+      serviceCategories: [],
+    }
+
+    const statusCode = await createVendorProfile(newForm);
     if (statusCode === 200) {
       window.location.href = '/vendor/profile';
     } else {
@@ -15,12 +26,13 @@ export default function CreateProfile() {
   }
 
   return (
-    <VendorProfileForm 
-      initialProfile={null}
+    <Form 
+      initialForm={null} 
+      formName="vendorProfileForm" 
+      cancelText="Cancel"
       cancelLink='/vendor/profile'
-      cancelText="cancel"
-      actionText="create"
-      actionCallback={ (profile: T.VendorProfile) => tryCreate(profile)}
+      actionText={"Create"} 
+      actionCallback={(updatedForm) => tryCreate(updatedForm)}    
     />
   )
 }

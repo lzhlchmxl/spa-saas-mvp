@@ -15,9 +15,9 @@ export default function Button(
   const buttonTypeClassNames = () => {
     switch(actionType) {
       case "primary":
-        return "bg-darkGray hover:bg-lightGray hover:text-darkGray text-white";
+        return "bg-textsIcons text-backgrounds border-borders hover:bg-backgrounds hover:text-textsIcons";
       case "secondary":
-        return "text-textsIcons hover:bg-secondary hover:text-black border-shadowsGradients";
+        return "text-textsIcons hover:bg-backgrounds";
       case "tertiary":
         return "";
       case "danger":

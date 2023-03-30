@@ -1,5 +1,5 @@
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro';
-import { faSpa, faGears, faClockRotateLeft, faHandsHolding } from '@fortawesome/free-solid-svg-icons';
+import { faSpa, faGears, faClockRotateLeft, faHandsHolding, faUserPlus, faWarehouse } from '@fortawesome/free-solid-svg-icons';
 import * as T from '../utilities/types';
 
 export const adminPageSideMenuData = [
@@ -29,12 +29,12 @@ export const clientPageSideMenuData: T.MenuData[] = [
   },
   {
     link: '/client/history',
-    text: 'History',
+    text: 'Histories',
     icon: faClockRotateLeft,
   },
 ]
 
-export const vendorPageSideMenuData = [
+export const vendorPageSideMenuData: T.MenuData[] = [
   {
     link: '/vendor/profile',
     text: 'Profile',
@@ -44,11 +44,23 @@ export const vendorPageSideMenuData = [
     link: '/vendor/my-spa',
     text: 'My Spa',
     icon: faSpa,
-  },
-  {
-    link: '/vendor/my-services',
-    text: 'My Services',
-    icon: faHandsHolding,
+    children: [
+      {
+        link: '#services',
+        text: 'Services',
+        icon: faHandsHolding,
+      },
+      {
+        link: '#employees',
+        text: 'Employees',
+        icon: faUserPlus,
+      },
+      {
+        link: '#resources',
+        text: 'Resources',
+        icon: faWarehouse,
+      },
+    ]
   },
   {
     link: '/vendor/appointments',
@@ -57,7 +69,7 @@ export const vendorPageSideMenuData = [
   },
   {
     link: '/vendor/history',
-    text: 'History',
+    text: 'Histories',
     icon: faClockRotateLeft,
   },
 ];
@@ -104,4 +116,49 @@ export const hydroSPAServices = [
     "name": "Facials",
     "description": "These treatments involve cleansing, exfoliating, and moisturizing the face to promote healthy skin and reduce signs of aging."
     }
+  ]
+
+  export const vendorProfileFormData: T.FormData[] = [
+    {
+      stateName: "firstName",
+      setStateName: "setFirstName",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "lastName",
+      setStateName: "setLastName",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "phoneNumber",
+      setStateName: "setPhoneNumber",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "emailAddress",
+      setStateName: "setEmailAddress",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "businessAddress",
+      setStateName: "setBusinessAddress",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "businessName",
+      setStateName: "setBusinessName",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "serviceCategories",
+      setStateName: "setServiceCategories",
+      initialStateValue: [],
+      inputType: "undefined",
+    },
   ]

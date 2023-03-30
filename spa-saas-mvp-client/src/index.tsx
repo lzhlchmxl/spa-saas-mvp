@@ -42,29 +42,26 @@ root.render(
           <Route path='register' element={<Register />} />
           <Route path="logout" element={<Logout />} />
           <Route path="client" element={<ClientPage />} >
-            <Route index element={<div className='flex w-full justify-center items-center'>Welcome to the Client portal</div>} />
-            <Route path="profile" element={<ProfilePage />} />
+            <Route index path="*" element={<ProfilePage />} />
             <Route path='profile/edit' element={<EditProfile />} />
             <Route path="spas" element={<SpasPage />} />
             <Route path="spas/:vendorSpaId" element={<ViewSpaDetails />} />
             <Route path="appointments" element={<AppointmentsPage />} />
             <Route path="history" element={<HistoryPage />} />
           </Route>
-          <Route path="vendor" element={<VendorPage />} >
-            <Route index element={<div className='flex w-full justify-center items-center'>Welcome to the Vendor portal</div>} />
-            <Route path="profile" element={<VendorProfilePage />} />
+          <Route path="vendor" element={<VendorPage />} >           
+            <Route index path="*" element={<VendorProfilePage />} />
             <Route path='profile/edit' element={<VendorEditProfilePage />} />
             <Route path="my-spa" element={<MySpaPage />} />
             <Route path="my-spa/edit" element={<EditMySpa />} />
             <Route path="my-services" element={<MyServicesPage />}> 
-              <Route index element={<p className='flex w-full justify-center items-center'>Click on a service to view details or create a new service</p>} />
+              <Route index path="*" element={<p className='flex w-full justify-center items-center'>Click on a service to view details or create a new service</p>} />
               <Route path=":vendorServiceId" element={<ViewVendorServiceDetails />} />
               <Route path="edit/:vendorServiceId" element={< EditVendorServiceDetails/>} />
               <Route path="create" element={<CreateVendorService />} />
             </Route>
           </Route>
           <Route path="admin" element={<AdminPage />} >
-            <Route index element={<div className='flex w-full justify-center items-center'>Welcome to the Admin portal</div>} />
             <Route path="service-categories" element={<ServiceCategoriesPage />}>
             <Route index element={<p className='flex w-full justify-center items-center'>Click on a service to view details or create a new service</p>} />
               <Route path=":serviceCategoryId" element={<ViewServiceCategoryDetailsPage />} />

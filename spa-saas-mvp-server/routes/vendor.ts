@@ -2,6 +2,7 @@ import express from 'express';
 import { isAuthenticated, isAuthorized } from '../middleware';
 import VendorProfile from '../models/vendorProfile.model';
 import VendorService from '../models/vendorService.model';
+import SpaEmployee from '../models/spaEmployee.model';
 import MySpa from '../models/mySpa.model';
 import * as T from '../utilities/types';
 
@@ -88,12 +89,28 @@ router.route('/profile/delete').delete(isAuthenticated, isAuthorized, async (req
     Response body: NewSpa
 */
 router.route('/my-spa').get(isAuthenticated, isAuthorized, async (req, res) => {
+    
   try {
     const mySpa = await MySpa.findOne({ userId: req.session.data?.userId });
+
     if (mySpa === null) {
       res.status(404).json(null);
     } else {
-      res.status(200).json(mySpa);
+      const spaEmployees = await Promise.all(mySpa.employees.map( async employeeId => {
+        const spaEmployee = await SpaEmployee.findOne({ _id: employeeId });
+        if (spaEmployee === null) {
+          throw new Error("No match employee found");
+        }
+        return spaEmployee;
+      }));
+
+      const spa = {
+        name: mySpa.name,
+        description: mySpa.description,
+        employees: spaEmployees,
+      }
+
+      res.status(200).json(spa);
     }
   } catch(err) {
     console.log(err)
@@ -102,12 +119,12 @@ router.route('/my-spa').get(isAuthenticated, isAuthorized, async (req, res) => {
 });
 
 /*
-    POST /api/vendor/my-spa/create
+    POST /api/vendor/my-spa/info/create
     Description: 
     Request body: NewSpa
     Response body: 
 */
-router.route('/my-spa/create').post(isAuthenticated, isAuthorized, async (req, res) => {
+router.route('/my-spa/info/create').post(isAuthenticated, isAuthorized, async (req, res) => {
 
   const spa: T.NewVendorSpa = {...req.body, userId: req.session.data?.userId};
  
@@ -123,12 +140,12 @@ router.route('/my-spa/create').post(isAuthenticated, isAuthorized, async (req, r
 });
 
 /*
-    PUT /api/vendor/my-spa/update
+    PUT /api/vendor/my-spa/info/update
     Description: 
     Request body: NewSpa
     Response body: 
 */
-router.route('/my-spa/update').put(isAuthenticated, isAuthorized, async (req, res) => {
+router.route('/my-spa/info/update').put(isAuthenticated, isAuthorized, async (req, res) => {
 
   try {
     await MySpa.findOneAndUpdate({ userId: req.session.data?.userId }, req.body);
@@ -141,12 +158,12 @@ router.route('/my-spa/update').put(isAuthenticated, isAuthorized, async (req, re
 });
 
 /*
-    DELETE /api/vendor/my-spa/delete
+    DELETE /api/vendor/my-spa/info/delete
     Description: 
     Request body: 
     Response body: 
 */
-router.route('/my-spa/delete').delete(isAuthenticated, isAuthorized, async (req, res) => {
+router.route('/my-spa/info/delete').delete(isAuthenticated, isAuthorized, async (req, res) => {
 
   try {
     await MySpa.findOneAndDelete({ userId: req.session.data?.userId });

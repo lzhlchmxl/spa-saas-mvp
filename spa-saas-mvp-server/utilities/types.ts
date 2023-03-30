@@ -66,3 +66,8 @@ type VendorServiceForm = {
 }
 type VendorServiceId = id;
 type VendorService = VendorServiceForm & { _id: VendorServiceId };
+
+export type DateTimeRange = {
+  startDateTime: Date,
+  endDateTime: Date,
+}

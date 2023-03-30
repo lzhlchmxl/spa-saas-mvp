@@ -1,13 +1,13 @@
 import ErrorIndicator from "../../../app/UIComponents/ErrorIndicator";
 import MySpaForm from "../../../app/UIComponents/MySpaForm";
-import { createMySpa} from "../../../utilities/api";
+import { createMySpaInfo} from "../../../utilities/api";
 import * as T from "../../../utilities/types";
 
 export default function CreateMySpa() {
 
 
   const tryCreate = async (spa: T.NewSpa) => {
-    const res = await createMySpa(spa);
+    const res = await createMySpaInfo(spa);
     if (res.status === 200) {
       window.location.href = '/vendor/my-spa';
     } else {

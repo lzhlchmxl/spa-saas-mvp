@@ -1,7 +1,7 @@
 import ErrorIndicator from "../../../app/UIComponents/ErrorIndicator";
 import LoadingIndicator from "../../../app/UIComponents/LoadingIndicator";
 import MySpaForm from "../../../app/UIComponents/MySpaForm";
-import { getMySpa, updateMySpa } from "../../../utilities/api";
+import { getMySpa, updateMySpaInfo } from "../../../utilities/api";
 import { useAsync } from "../../../utilities/customHooks";
 import * as T from "../../../utilities/types";
 
@@ -25,7 +25,7 @@ export default function EditMySpa() {
   }
 
   const handleSaveMySpa = async (updatedSpa: T.NewSpa) => {
-    const statusCode = await updateMySpa(updatedSpa);
+    const statusCode = await updateMySpaInfo(updatedSpa);
     if (statusCode === 200) {
       window.location.href = '/vendor/my-spa';
     } else {
