@@ -20,15 +20,14 @@ export default function SideMenu({userRole} : {userRole: T.userRole}) {
   }
 
   // [TODO] hard code; support nested menu for more than two layers
-  const menuHTML = getMenuDataSet().map( menuData  => {
+  const menuHTML = getMenuDataSet().map( (menuData, index)  => {
     const text = menuData.text;
     const children = menuData.children;
     const childrenMenuHTML = 
     <div className='ml-[26px]'>
-      {children?.map( (childMenuData, index) => {
+      {children?.map( (childMenuData) => {
         return (
-          <SideMenuNavButton key={index} link={childMenuData.link} text={childMenuData.text} icon={childMenuData.icon} />
-
+          <SideMenuNavButton key={childMenuData.text} link={childMenuData.link} text={childMenuData.text} icon={childMenuData.icon} />
         )
       })}
     </div>
@@ -37,7 +36,7 @@ export default function SideMenu({userRole} : {userRole: T.userRole}) {
 
     return (
       <div className='flex flex-col'>
-        <SideMenuNavButton key={text} link={menuData.link} text={text} icon={menuData.icon} />
+        <SideMenuNavButton key={index} link={menuData.link} text={text} icon={menuData.icon} />
         {
           children && childrenMenuHTML
         }

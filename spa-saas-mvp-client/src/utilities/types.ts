@@ -145,6 +145,6 @@ export type MenuData = {
 export type FormData = {
   stateName: string;
   setStateName: string;
-  initialStateValue: "" | [];
-  inputType: "text" | "undefined"
+  initialStateValue: "" | [] | 0;
+  inputType: "text" | "undefined" | "duration"
 }

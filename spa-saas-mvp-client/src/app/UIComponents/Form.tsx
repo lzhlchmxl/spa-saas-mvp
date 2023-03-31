@@ -2,12 +2,15 @@ import * as T from "../../utilities/types";
 import { useState } from "react";
 import Button from "./Button";
 import InputWithLabel from "./InputWithLabel";
-import { vendorProfileFormData, vendorSpaInfoFormData } from "../../utilities/data";
+import { vendorProfileFormData, vendorSpaInfoFormData, vendorSpaServiceFormData } from "../../utilities/data";
 import { useNavigate } from "react-router-dom";
+import DurationPicker from "./DurationPicker";
 
 export interface FormState {
-  [key: string]: string | T.ServiceCategory[] | T.VendorService[] | T.SpaEmployee[] | T.SpaResource[];
+  [key: string]: FormStateValue;
 }
+
+type FormStateValue = string | number | T.ServiceCategory[] | T.VendorService[] | T.SpaEmployee[] | T.SpaResource[];
 
 export default function Form({
     initialForm,
@@ -34,6 +37,8 @@ export default function Form({
         return vendorProfileFormData;
       case 'vendorSpaInfoForm':
         return vendorSpaInfoFormData;
+      case 'vendorSpaServiceForm':
+        return vendorSpaServiceFormData;
       default:
         throw new Error("Unknown form name.")
     }  
@@ -53,7 +58,7 @@ export default function Form({
   // const areAllFieldsValid = firstName !== "" && lastName !== "" && phoneNumber !== "" && emailAddress !== "" && businessAddress !== "" && businessName !== null;
   const areAllFieldsValid = true;
 
-  const updateState = (name: string, value: string | T.ServiceCategory[] | T.VendorService[] | T.SpaEmployee[] | T.SpaResource[]) => {
+  const updateState = (name: string, value: FormStateValue) => {
     setState((prevState) => ({ ...prevState, [name]: value }));
     setIsAnyFieldChanged(true)
   };
@@ -97,6 +102,15 @@ export default function Form({
                   />
                 </div>
               )
+            case "duration":
+              return (
+                <div key={key}>
+                  <DurationPicker 
+                    initialTotalSeconds={state[key] as number} 
+                    setDurationInSeconds={(v) => updateState(key, v)}      
+                  />
+                </div>
+              )
             case "undefined":
               break;
             default:
@@ -109,14 +123,11 @@ export default function Form({
             actionText={actionText}
             actionType="primary"
           />
-          {
-            initialForm &&
-            <Button 
-              actionHandler={tryCancel}
-              actionText={cancelText}
-              actionType="secondary"
-            />
-          }
+          <Button 
+            actionHandler={tryCancel}
+            actionText={cancelText}
+            actionType="secondary"
+          />
         </div>
       </div>
     </div>

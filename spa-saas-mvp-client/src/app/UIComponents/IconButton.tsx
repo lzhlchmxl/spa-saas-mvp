@@ -14,7 +14,10 @@ export default function IconButton({
   return (
     <div 
         className="hover:cursor-pointer w-fit"
-        onClick={actionCallback}
+        onClick={ (e) => {
+          e.stopPropagation();
+          actionCallback();
+        }}
       >
         <FontAwesomeIcon className="text-textsIcons" icon={icon} />
     </div>

@@ -2,6 +2,8 @@ import express from 'express';
 import dotenv from 'dotenv';
 import User, { UserInterface } from '../models/user.model';
 import bcrypt from 'bcrypt';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
 
 
 dotenv.config();
@@ -56,28 +58,31 @@ router.route('/register').post( async (req, res) => {
     const newUser = new User(userReqBody);
     await newUser.save();
 
-    if (!req.session) {
-      throw new Error('Session middleware not set up correctly');
-    }
+    // if (!req.session) {
+    //   throw new Error('Session middleware not set up correctly');
+    // }
 
-    // Add new user data to session
-    req.session.data = {
-      userId: newUser._id.toString(),
-      role: newUser.role,
-    }
+    // // Add new user data to session
+    // req.session.data = {
+    //   userId: newUser._id.toString(),
+    //   role: newUser.role,
+    // }
 
-    req.session.save((err) => {
-      if (err) {
-        throw err;
-      }
+    // req.session.save((err) => {
+    //   if (err) {
+    //     throw err;
+    //   }
 
-      res.status(200).json({ redirect: `/${newUser.role}` });
-    });
+    //   res.status(200).json({ redirect: `/${newUser.role}` });
+    // });
+    res.status(200).json({ redirect: `/login` });
     
   } catch (err) {
     res.status(400).json('Error ' + err);
   } 
 });
+
+
 
 /* 
   POST user login
@@ -97,6 +102,7 @@ router.route('/login').post( async (req, res) => {
   }
 
   try {
+    
     if (!req.session) {
       throw new Error('Session middleware not set up correctly');
     }

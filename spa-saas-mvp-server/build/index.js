@@ -36,7 +36,7 @@ connection.once('open', () => {
 exports.app.use((0, express_session_1.default)({
     secret: process.env.SESSION_SECRET || "supersecret",
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
     store: connect_mongo_1.default.create({
         mongoUrl: process.env.ATLAS_URI,
         ttl: 14 * 24 * 60 * 60,

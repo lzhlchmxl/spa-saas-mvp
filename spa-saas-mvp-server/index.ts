@@ -36,12 +36,12 @@ connection.once('open', () => {
 app.use(session({
   secret: process.env.SESSION_SECRET || "supersecret",
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   store: MongoStore.create({
     mongoUrl: process.env.ATLAS_URI,
     ttl: 14 * 24 * 60 * 60, // 14 days
     autoRemove: 'native' 
-})
+  })
 }))
 
 // Serve static files from the latest production React app build

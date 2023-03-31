@@ -345,24 +345,24 @@ export async function deleteMySpaInfo(): Promise<T.HTTPStatusCode> {
 }
 
 /* GET a list of vendor service info based on vendorId*/
-export async function getMyServiceHeaders(): Promise<T.VendorServiceHeader[]> {
-  const response = await fetch(`/api/vendor/my-services`);
+export async function getSpaServiceHeaders(): Promise<T.VendorServiceHeader[]> {
+  const response = await fetch(`/api/vendor/my-spa/services`);
 
   if (response.status === 401 || response.status === 403) {
     window.location.href = '/login';
   }
 
   if (response.status !== 200 && response.status !== 404) {
-    throw new Error(`/api/vendor/my-services: returned HTTP status code: ${response.status}`);
+    throw new Error(`/api/vendor/my-spa/services: returned HTTP status code: ${response.status}`);
   }
 
   return await response.json();
 }
 
 
-export async function getMyServiceDetails(vendorServiceId: T.VendorServiceId): Promise<T.VendorService> {
+export async function getSpaServiceDetails(vendorServiceId: T.VendorServiceId): Promise<T.VendorService> {
 
-  const response = await fetch(`/api/vendor/my-services/${vendorServiceId}`);
+  const response = await fetch(`/api/vendor/my-spa/services/${vendorServiceId}`);
 
   if (response.status === 401 || response.status === 403) {
     window.location.href = '/login';
@@ -370,18 +370,18 @@ export async function getMyServiceDetails(vendorServiceId: T.VendorServiceId): P
 
   if (response.status === 404) {
     window.alert('No service found with the given id. Redirecting...');
-    window.location.pathname = '/vendor/my-services';
+    window.location.pathname = '/vendor/my-spa/services';
     throw new Error('No service found with the given id.');
   }
 
   if (response.status !== 200) {
-    throw new Error(`/api/vendor/my-services: returned HTTP status code: ${response.status}`);
+    throw new Error(`/api/vendor/my-spa/services: returned HTTP status code: ${response.status}`);
   }
 
   return await response.json();
 }
 
-export async function createMyService(newService: T.VendorServiceForm): Promise<Response> {
+export async function createSpaService(newService: T.VendorServiceForm): Promise<Response> {
 
   const requestOptions = {
     method: 'post',
@@ -389,20 +389,20 @@ export async function createMyService(newService: T.VendorServiceForm): Promise<
     body: JSON.stringify(newService)
   }
 
-  const response = await fetch(`/api/vendor/my-services/create`, requestOptions);
+  const response = await fetch(`/api/vendor/my-spa/services/create`, requestOptions);
 
   if (response.status === 401 || response.status === 403) {
     window.location.href = '/login';
   }
 
   if (response.status !== 200) {
-    throw new Error(`/api/vendor/my-services/create returned HTTP status code: ${response.status}`);
+    throw new Error(`/api/vendor/my-spa/services/create returned HTTP status code: ${response.status}`);
   }
 
   return response;
 }
 
-export async function updateMyServiceById(updatedService: T.VendorService): Promise<T.HTTPStatusCode> {
+export async function updateSpaServiceById(updatedService: T.VendorService): Promise<T.HTTPStatusCode> {
 
   const requestOptions = {
     method: 'put',
@@ -410,33 +410,33 @@ export async function updateMyServiceById(updatedService: T.VendorService): Prom
     body: JSON.stringify(updatedService)
   }
 
-  const response = await fetch(`/api/vendor/my-services/update`, requestOptions);
+  const response = await fetch(`/api/vendor/my-spa/services/update`, requestOptions);
 
   if (response.status === 401 || response.status === 403) {
     window.location.href = '/login';
   }
 
   if (response.status !== 200) {
-    throw new Error(`/api/vendor/my-services/update returned HTTP status code: ${response.status}`);
+    throw new Error(`/api/vendor/my-spa/services/update returned HTTP status code: ${response.status}`);
   }
 
   return response.status;
 }
 
-export async function deleteMyServiceById(id: T.VendorServiceId): Promise<T.HTTPStatusCode> {
+export async function deleteSpaServiceById(id: T.VendorServiceId): Promise<T.HTTPStatusCode> {
 
   const requestOptions = {
     method: 'delete'
   }
 
-  const response = await fetch(`/api/vendor/my-services/delete/${id}`, requestOptions);
+  const response = await fetch(`/api/vendor/my-spa/services/${id}/delete`, requestOptions);
 
   if (response.status === 401 || response.status === 403) {
     window.location.href = '/login';
   }
 
   if (response.status !== 200) {
-    throw new Error(`/api/vendor/my-services/delete/ returned HTTP status code: ${response.status}`);
+    throw new Error(`/api/vendor/my-spa/services/${id}/delete returned HTTP status code: ${response.status}`);
   }
 
   return response.status;

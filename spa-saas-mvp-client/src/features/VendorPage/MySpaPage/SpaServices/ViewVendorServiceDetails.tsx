@@ -1,16 +1,15 @@
-import Button from "../../../app/UIComponents/Button";
-import ErrorIndicator from "../../../app/UIComponents/ErrorIndicator";
-import LoadingIndicator from "../../../app/UIComponents/LoadingIndicator";
-import { deleteMyServiceById, getMyServiceDetails, getMyServiceHeaders } from "../../../utilities/api";
-import { useAsync, useRequiredParams } from "../../../utilities/customHooks";
-import { secondsToDuration } from "../../../utilities/utilityFunctions";
+import ErrorIndicator from "../../../../app/UIComponents/ErrorIndicator";
+import LoadingIndicator from "../../../../app/UIComponents/LoadingIndicator";
+import { deleteSpaServiceById, getSpaServiceDetails, getSpaServiceHeaders } from "../../../../utilities/api";
+import { useAsync, useRequiredParams } from "../../../../utilities/customHooks";
+import { secondsToDuration } from "../../../../utilities/utilityFunctions";
 
 export default function ViewVendorServiceDetails() {
 
   const vendorServiceId = useRequiredParams('vendorServiceId')
 
-  const myServiceHeadersAsync = useAsync(() => getMyServiceHeaders(), []);
-  const myServiceDetailsAsync = useAsync(() => getMyServiceDetails(vendorServiceId), []);
+  const myServiceHeadersAsync = useAsync(() => getSpaServiceHeaders(), []);
+  const myServiceDetailsAsync = useAsync(() => getSpaServiceDetails(vendorServiceId), [vendorServiceId]);
   
   if ( myServiceDetailsAsync.status === "pending" || myServiceHeadersAsync.status === "pending" ) {
     return <LoadingIndicator />;
@@ -32,7 +31,7 @@ export default function ViewVendorServiceDetails() {
   }
 
   const handleDeleteVendorService = async () => {
-    const httpStatusCode = await deleteMyServiceById(vendorServiceId);
+    const httpStatusCode = await deleteSpaServiceById(vendorServiceId);
 
     if (httpStatusCode !== 200) {
       window.alert('Deletion unsuccessful. Redirecting...');
@@ -44,9 +43,9 @@ export default function ViewVendorServiceDetails() {
   }
 
   return (
-    <div className="flex bg-white p-4 rounded-md shadow-md h-fit self-center">
+    <div className="flex bg-lightBackgrounds p-4 rounded-md shadow-md h-fit self-center">
       <div className="flex flex-col">
-        <div className="flex h-[50px]">
+        {/* <div className="flex h-[50px]">
           <Button 
             actionType="secondary"
             actionText="EDIT"
@@ -57,7 +56,7 @@ export default function ViewVendorServiceDetails() {
             actionText="DELETE"
             actionHandler={handleDeleteVendorService}        
           />
-        </div>
+        </div> */}
         <div className="text-lg text-textsIcons min-w-[200px]">
           <p></p>
           <p className="font-semibold">Name: {myServiceDetails.name}</p>

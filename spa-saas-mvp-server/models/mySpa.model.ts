@@ -1,11 +1,13 @@
 import { Schema, model, Document } from "mongoose";
 import { SpaEmployeeInterface } from './spaEmployee.model';
+import { VendorServiceInterface } from "./vendorService.model";
 
 export interface MySpaInterface extends Document {
   userId: string,
   name: string,
   description: string,
   employees: SpaEmployeeInterface['_id'],
+  serviceIds: VendorServiceInterface['_id'],
 }
 
 const mySpaSchema = new Schema<MySpaInterface>({
@@ -27,7 +29,12 @@ const mySpaSchema = new Schema<MySpaInterface>({
     type: [Schema.Types.ObjectId],
     required: true,
     unique: false,
+  },
+  serviceIds: {
+    type: [Schema.Types.ObjectId],
+    required: true,
   }
+
     
 }, {
   timestamps: true,

@@ -20,10 +20,9 @@ import AdminPage from './app/PageComponents/AdminPage/AdminPage';
 import ServiceCategoriesPage from './app/PageComponents/AdminPage/ServiceCategoriesPage';
 import MySpaPage from './app/PageComponents/VendorPage/MySpaPage';
 import EditMySpaInfo from './features/VendorPage/MySpaPage/EditMySpaInfo';
-import MyServicesPage from './app/PageComponents/VendorPage/MyServicesPage';
-import CreateVendorService from './features/VendorPage/MyServices/CreateVendorService';
-import ViewVendorServiceDetails from './features/VendorPage/MyServices/ViewVendorServiceDetails';
-import EditVendorServiceDetails from './features/VendorPage/MyServices/EditVendorServiceDetails';
+import CreateVendorService from './features/VendorPage/MySpaPage/SpaServices/CreateVendorService';
+import ViewVendorServiceDetails from './features/VendorPage/MySpaPage/SpaServices/ViewVendorServiceDetails';
+import EditVendorServiceDetails from './features/VendorPage/MySpaPage/SpaServices/EditVendorServiceDetails';
 import ViewSpaDetails from './features/ClientPage/ViewSpaDetails';
 import ViewServiceCategoryDetailsPage from './features/AdminPage/ViewServiceCategoryDetails';
 import EditServiceCategoryDetailsPage from './features/AdminPage/EditServiceCategoryDetails';
@@ -56,15 +55,18 @@ root.render(
             <Route path="my-spa" element={<MySpaPage />}> 
               <Route path="edit" element={<EditMySpaInfo />} />
               <Route path='employees/:employeeId' element={<ViewSpaEmployeeDetails />} />
+              <Route path="services/:vendorServiceId" element={<ViewVendorServiceDetails />} />
+              <Route path="services/:vendorServiceId/edit" element={<EditVendorServiceDetails />} />
+              <Route path="services/create" element={<CreateVendorService />} />           
             </Route>
             
 
-            <Route path="my-services" element={<MyServicesPage />}> 
+            {/* <Route path="my-services" element={<MyServicesPage />}> 
               <Route index path="*" element={<p className='flex w-full justify-center items-center'>Click on a service to view details or create a new service</p>} />
               <Route path=":vendorServiceId" element={<ViewVendorServiceDetails />} />
               <Route path="edit/:vendorServiceId" element={< EditVendorServiceDetails/>} />
               <Route path="create" element={<CreateVendorService />} />
-            </Route>
+            </Route> */}
           </Route>
           <Route path="admin" element={<AdminPage />} >
             <Route path="service-categories" element={<ServiceCategoriesPage />}>

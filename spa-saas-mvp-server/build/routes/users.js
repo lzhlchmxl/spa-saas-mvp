@@ -51,20 +51,21 @@ router.route('/register').post((req, res) => __awaiter(void 0, void 0, void 0, f
         userReqBody.password = hashedPassword;
         const newUser = new user_model_1.default(userReqBody);
         yield newUser.save();
-        if (!req.session) {
-            throw new Error('Session middleware not set up correctly');
-        }
-        // Add new user data to session
-        req.session.data = {
-            userId: newUser._id.toString(),
-            role: newUser.role,
-        };
-        req.session.save((err) => {
-            if (err) {
-                throw err;
-            }
-            res.status(200).json({ redirect: `/${newUser.role}` });
-        });
+        // if (!req.session) {
+        //   throw new Error('Session middleware not set up correctly');
+        // }
+        // // Add new user data to session
+        // req.session.data = {
+        //   userId: newUser._id.toString(),
+        //   role: newUser.role,
+        // }
+        // req.session.save((err) => {
+        //   if (err) {
+        //     throw err;
+        //   }
+        //   res.status(200).json({ redirect: `/${newUser.role}` });
+        // });
+        res.status(200).json({ redirect: `/login` });
     }
     catch (err) {
         res.status(400).json('Error ' + err);

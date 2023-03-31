@@ -13,7 +13,7 @@ export interface VendorServiceInterface extends Document {
 const vendorServiceSchema = new Schema<VendorServiceInterface>({
   categoryId: {
     type: String,
-    required: true,
+    // required: true,
     unique: false,
   },
   // [TODO] replace all usage of vendorUserId in vendorServices with vendorSpaId
@@ -30,7 +30,7 @@ const vendorServiceSchema = new Schema<VendorServiceInterface>({
   name: {
     type: String,
     required: true,
-    unique: true
+    unique: false,
   },
   description: {
     type: String,

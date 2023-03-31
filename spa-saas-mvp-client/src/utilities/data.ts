@@ -46,14 +46,14 @@ export const vendorPageSideMenuData: T.MenuData[] = [
     icon: faSpa,
     children: [
       {
-        link: '#services',
-        text: 'Services',
-        icon: faHandsHolding,
-      },
-      {
         link: '#employees',
         text: 'Employees',
         icon: faUserPlus,
+      },
+      {
+        link: '#services',
+        text: 'Services',
+        icon: faHandsHolding,
       },
       {
         link: '#resources',
@@ -115,6 +115,33 @@ export const hydroSPAServices = [
     {
     "name": "Facials",
     "description": "These treatments involve cleansing, exfoliating, and moisturizing the face to promote healthy skin and reduce signs of aging."
+    }
+  ]
+
+  export const vendorSpaServiceFormData: T.FormData[] = [
+    {
+      stateName: "name",
+      setStateName: "setName",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "description",
+      setStateName: "setDescription",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "durationInSeconds",
+      setStateName: "setDurationInSeconds",
+      initialStateValue: 0,
+      inputType: "duration",
+    },
+    {
+      stateName: "cost",
+      setStateName: "setCost",
+      initialStateValue: "",
+      inputType: "text",
     }
   ]
 
