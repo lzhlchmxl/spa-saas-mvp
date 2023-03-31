@@ -7,6 +7,8 @@ export interface SpaEmployeeInterface extends Document {
   password: string,
   firstName: string,
   lastName: string,
+  status: "active" | "vacation" | "off-work",
+  permission: "basic" | "advanced",
   unavilableDateTimeRanges: T.DateTimeRange[],
 }
 
@@ -14,7 +16,7 @@ export const spaEmployeeSchema = new Schema<SpaEmployeeInterface>({
   spaId: {
     type: String,
     required: true,
-    unique: true,
+    unique: false,
   },
   // spaCode: {
   //   type: String,
@@ -35,6 +37,14 @@ export const spaEmployeeSchema = new Schema<SpaEmployeeInterface>({
     required: true,
   },
   lastName: {
+    type: String,
+    required: true,
+  },
+  status: {
+    type: String,
+    required: true,
+  },
+  permission: {
     type: String,
     required: true,
   },

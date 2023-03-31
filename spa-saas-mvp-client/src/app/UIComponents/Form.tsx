@@ -2,10 +2,11 @@ import * as T from "../../utilities/types";
 import { useState } from "react";
 import Button from "./Button";
 import InputWithLabel from "./InputWithLabel";
-import { vendorProfileFormData } from "../../utilities/data";
+import { vendorProfileFormData, vendorSpaInfoFormData } from "../../utilities/data";
+import { useNavigate } from "react-router-dom";
 
 export interface FormState {
-  [key: string]: string | T.ServiceCategory[];
+  [key: string]: string | T.ServiceCategory[] | T.VendorService[] | T.SpaEmployee[] | T.SpaResource[];
 }
 
 export default function Form({
@@ -26,10 +27,13 @@ export default function Form({
     actionCallback: (form: FormState) => void,
   }) {
 
+  const navigate = useNavigate();
   const getFormData = () => {
     switch(formName) {
       case 'vendorProfileForm':
         return vendorProfileFormData;
+      case 'vendorSpaInfoForm':
+        return vendorSpaInfoFormData;
       default:
         throw new Error("Unknown form name.")
     }  
@@ -43,15 +47,13 @@ export default function Form({
     return acc;
   }, {});
 
-  
-  
   const [state, setState] = useState(initialState);
 
   const [isAnyFieldChanged, setIsAnyFieldChanged] = useState(false);
   // const areAllFieldsValid = firstName !== "" && lastName !== "" && phoneNumber !== "" && emailAddress !== "" && businessAddress !== "" && businessName !== null;
   const areAllFieldsValid = true;
 
-  const updateState = (name: string, value: string | T.ServiceCategory[]) => {
+  const updateState = (name: string, value: string | T.ServiceCategory[] | T.VendorService[] | T.SpaEmployee[] | T.SpaResource[]) => {
     setState((prevState) => ({ ...prevState, [name]: value }));
     setIsAnyFieldChanged(true)
   };
@@ -59,10 +61,10 @@ export default function Form({
   const tryCancel = () => {
     if (isAnyFieldChanged) {
       if(window.confirm("Unsaved changes will be discard. Confirm?")) {
-        window.location.href = cancelLink;
+        navigate(cancelLink);
       }
     } else {
-      window.location.href = cancelLink;
+      navigate(cancelLink);
     }
   }
 

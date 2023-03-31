@@ -5,7 +5,7 @@ export interface MySpaInterface extends Document {
   userId: string,
   name: string,
   description: string,
-  employees: SpaEmployeeInterface['_id'][],
+  employees: SpaEmployeeInterface['_id'],
 }
 
 const mySpaSchema = new Schema<MySpaInterface>({
@@ -28,6 +28,7 @@ const mySpaSchema = new Schema<MySpaInterface>({
     required: true,
     unique: false,
   }
+    
 }, {
   timestamps: true,
 });

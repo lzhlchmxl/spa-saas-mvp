@@ -96,7 +96,7 @@ router.route('/my-spa').get(isAuthenticated, isAuthorized, async (req, res) => {
     if (mySpa === null) {
       res.status(404).json(null);
     } else {
-      const spaEmployees = await Promise.all(mySpa.employees.map( async employeeId => {
+      const spaEmployees = await Promise.all(mySpa.employees.map( async (employeeId: string) => {
         const spaEmployee = await SpaEmployee.findOne({ _id: employeeId });
         if (spaEmployee === null) {
           throw new Error("No match employee found");
@@ -156,7 +156,7 @@ router.route('/my-spa/info/update').put(isAuthenticated, isAuthorized, async (re
     res.status(500).json({ message: 'An error has occurred when updating the spa.'})
   }
 });
-
+ 
 /*
     DELETE /api/vendor/my-spa/info/delete
     Description: 
@@ -166,12 +166,12 @@ router.route('/my-spa/info/update').put(isAuthenticated, isAuthorized, async (re
 router.route('/my-spa/info/delete').delete(isAuthenticated, isAuthorized, async (req, res) => {
 
   try {
-    await MySpa.findOneAndDelete({ userId: req.session.data?.userId });
+    await MySpa.findOneAndUpdate({ userId: req.session.data?.userId }, {name: "", description: ""});
     
-    res.status(200).json({ message: 'MySpa sucessfully deleted.'});
+    res.status(200).json({ message: 'MySpa info sucessfully deleted.'});
   } catch(err) {
     console.log(err)
-    res.status(500).json({ message: 'An error has occurred when deleting MySpa.'})
+    res.status(500).json({ message: 'An error has occurred when deleting MySpa info.'})
   }
 });
 

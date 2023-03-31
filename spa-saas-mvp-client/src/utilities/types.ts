@@ -76,11 +76,13 @@ export type DateTimeRange = {
 }
 
 export type SpaEmployee = {
-  id: SpaEmployeeId,
+  _id: SpaEmployeeId,
   username: string,
   password: string,
   firstName: string,
   lastName: string,
+  status: "active" | "vacation" | "off-work",
+  permission: "basic" | "advanced",
   unavilableDateTimeRanges: DateTimeRange[],
 }
 type SpaEmployeeId = id;

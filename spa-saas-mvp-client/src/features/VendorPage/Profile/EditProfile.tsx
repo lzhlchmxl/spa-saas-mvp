@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import ErrorIndicator from "../../../app/UIComponents/ErrorIndicator";
 import Form, { FormState } from "../../../app/UIComponents/Form";
 import LoadingIndicator from "../../../app/UIComponents/LoadingIndicator";
-import VendorProfileForm from "../../../app/UIComponents/[Pending Deletion]VendorProfileForm";
 import { getVendorProfile, updateVendorProfile } from "../../../utilities/api";
 import { useAsync } from "../../../utilities/customHooks";
 import * as T from "../../../utilities/types";
