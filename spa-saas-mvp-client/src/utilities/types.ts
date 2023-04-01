@@ -87,12 +87,15 @@ export type SpaEmployee = {
 }
 type SpaEmployeeId = id;
 
-export type SpaResource = {
-  id: SpaResourceId,
+
+export type SpaResource = SpaResourceForm & { _id: SpaResourceId }
+export type SpaResourceForm = {
   name: string,
-  type: "ingradient" | "supply" | "spot" | "room",
+  avilableCount: number,
+  type: SpaResourceTypes,
 }
-type SpaResourceId = id; 
+export type SpaResourceTypes = "ingradient" | "supply" | "spot" | "room";
+export type SpaResourceId = id; 
 
 export type VendorSpa = {
   name: string,
@@ -146,5 +149,5 @@ export type FormData = {
   stateName: string;
   setStateName: string;
   initialStateValue: "" | [] | 0;
-  inputType: "text" | "undefined" | "duration"
+  inputType: "text" | "undefined" | "duration" | "number" | "dropdown"
 }

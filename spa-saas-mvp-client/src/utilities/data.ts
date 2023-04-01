@@ -118,6 +118,27 @@ export const hydroSPAServices = [
     }
   ]
 
+  export const vendorSpaResourceFormData: T.FormData[] = [
+    {
+      stateName: "name",
+      setStateName: "setName",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "avilableCount",
+      setStateName: "setAvilableCount",
+      initialStateValue: 0,
+      inputType: "number",
+    },
+    {
+      stateName: "type",
+      setStateName: "setType",
+      initialStateValue: "",
+      inputType: "text",
+    }
+  ]
+
   export const vendorSpaServiceFormData: T.FormData[] = [
     {
       stateName: "name",

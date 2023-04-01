@@ -2,7 +2,7 @@ import * as T from "../../utilities/types";
 import { useState } from "react";
 import Button from "./Button";
 import InputWithLabel from "./InputWithLabel";
-import { vendorProfileFormData, vendorSpaInfoFormData, vendorSpaServiceFormData } from "../../utilities/data";
+import { vendorProfileFormData, vendorSpaInfoFormData, vendorSpaResourceFormData, vendorSpaServiceFormData } from "../../utilities/data";
 import { useNavigate } from "react-router-dom";
 import DurationPicker from "./DurationPicker";
 
@@ -39,6 +39,8 @@ export default function Form({
         return vendorSpaInfoFormData;
       case 'vendorSpaServiceForm':
         return vendorSpaServiceFormData;
+      case 'vendorSpaResourceForm':
+        return vendorSpaResourceFormData;
       default:
         throw new Error("Unknown form name.")
     }  
@@ -91,12 +93,13 @@ export default function Form({
           }
           switch(formData.inputType) {
             case "text":
+            case "number":
               return (
                 <div key={key}>
                   <InputWithLabel 
                     label={key}
                     name={key}
-                    type="text"
+                    type={formData.inputType}
                     value={state[key]} 
                     setValue={(v) => updateState(key, v)}        
                   />

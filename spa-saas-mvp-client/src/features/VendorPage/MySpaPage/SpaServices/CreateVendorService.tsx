@@ -14,8 +14,6 @@ export default function CreateVendorService() {
       cost: updatedForm['cost'] as string,
       durationInSeconds: updatedForm['durationInSeconds'] as number,
     }
-
-    console.log(updatedSpaService)
   
     const res = await createSpaService(updatedSpaService);
     if (res.status === 200) {

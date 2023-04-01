@@ -69,6 +69,29 @@ export default function MySpaPage() {
     }
   }
 
+  const handleCreateSpaResource = () => {
+    navigate(`/vendor/my-spa/resources/create`)
+  }
+
+  const handleViewSpaResourceDetails = (resourceId: string) => {
+    navigate(`/vendor/my-spa/resources/${resourceId}`)
+  }
+
+  const handleEditSpaResourceDetails = (resourceId: string) => {
+    navigate(`/vendor/my-spa/resources/${resourceId}/edit`)
+  }
+
+  const handleDeleteSpaResource = async (resourceId: string) => {
+    // if(window.confirm("Deleting spa service. Confirm?")) {
+    //   const statusCode = await deleteSpaResourceById(resourceId);   
+    //   if (statusCode === 200) {
+    //     window.location.href = '/vendor/my-spa'
+    //   } else {
+    //     return <ErrorIndicator />
+    //   }
+    // }
+  }
+
   const handleCreateSpaService = () => {
     navigate(`/vendor/my-spa/services/create`)
   }
@@ -99,8 +122,6 @@ export default function MySpaPage() {
     )
   })
 
-  // console.log(mySpa)
-
   const spaServicesHTML = mySpa.services.map( (service, index) => {
     return (
       <div 
@@ -120,6 +141,31 @@ export default function MySpaPage() {
           </div>
           <div className="flex ml-3 w-[30px] h-[30px] justify-center items-center hover:bg-textsIcons/10 rounded-md">
             <IconButton icon={faTrashCan} actionCallback={ () => handleDeleteSpaService(service._id)} />
+          </div>
+        </div>
+      </div>  
+    )
+  });
+
+  const spaResourcesHTML = mySpa.resources.map( (resource, index) => {
+    return (
+      <div 
+        key={resource._id} 
+        className="group capitalize flex h-[50px] hover:bg-textsIcons/5 items-center rounded-sm hover:cursor-pointer mb-1"
+        onClick={() => handleViewSpaResourceDetails(resource._id)}
+      >
+        <p className="w-1/12 pl-[15px]">{index + 1}</p>
+        <div className="w-1/2 flex">
+          {resource.name}
+        </div>
+        <p className="w-1/6">{resource.type}</p>
+        <p className="w-1/6">{resource.avilableCount}</p>
+        <div className="hidden group-hover:flex w-1/12">
+          <div className="flex w-[30px] h-[30px] justify-center items-center hover:bg-textsIcons/10 rounded-md">
+            <IconButton icon={faPenToSquare} actionCallback={() => handleEditSpaResourceDetails(resource._id)} />
+          </div>
+          <div className="flex ml-3 w-[30px] h-[30px] justify-center items-center hover:bg-textsIcons/10 rounded-md">
+            <IconButton icon={faTrashCan} actionCallback={ () => handleDeleteSpaResource(resource._id)} />
           </div>
         </div>
       </div>  
@@ -191,6 +237,30 @@ export default function MySpaPage() {
               {spaServicesHTML}
             </div>
           </div>
+          {/* Resources */}
+          <div className="relative my-5 flex flex-col w-full rounded-md border-[1px] border-textsIcons/30 p-5">
+            <div 
+              className="flex absolute top-5 right-5 hover:cursor-pointer hover:bg-textsIcons/5 py-1 px-2 rounded-sm"
+              onClick={handleCreateSpaResource}        
+            >
+              <div className="pr-1">
+                <IconButton icon={faPlus} actionCallback={handleCreateSpaResource} />
+              </div>
+              Add Resource
+            </div>
+            <h1 className="text-2xl font-semibold capitalize">resources</h1>
+            <div className="flex flex-col mt-3">
+              <div className="flex mb-1">
+                <p className="w-1/12">Index</p>
+                <p className="w-1/2">Name</p>
+                <p className="w-1/6">Type</p>
+                <p className="w-1/6">Avilable Count</p>
+                <p className="w-1/12"></p>
+              </div>
+              {spaResourcesHTML}
+            </div>
+          </div>
+          <div className="h-10 w-1">&nbsp;</div>
         </div>
       </div>
       <div className={`w-[45%] ${outletShown ? "flex" : "hidden"}`}>

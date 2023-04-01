@@ -471,3 +471,88 @@ export async function getSpaDetailsById(vendorSpaId: T.VendorSpaId): Promise<T.S
 
   return await response.json();
 }
+
+
+/* API calls for spa resources */
+
+// export async function getSpaResourceDetails(spaResourceId: T.SpaResourceId): Promise<T.VendorService> {
+
+//   const response = await fetch(`/api/vendor/my-spa/services/${vendorServiceId}`);
+
+//   if (response.status === 401 || response.status === 403) {
+//     window.location.href = '/login';
+//   }
+
+//   if (response.status === 404) {
+//     window.alert('No service found with the given id. Redirecting...');
+//     window.location.pathname = '/vendor/my-spa/services';
+//     throw new Error('No service found with the given id.');
+//   }
+
+//   if (response.status !== 200) {
+//     throw new Error(`/api/vendor/my-spa/services: returned HTTP status code: ${response.status}`);
+//   }
+
+//   return await response.json();
+// }
+
+export async function createSpaResource(newResource: T.SpaResourceForm): Promise<Response> {
+
+  const requestOptions = {
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(newResource)
+  }
+
+  const response = await fetch(`/api/vendor/my-spa/resources/create`, requestOptions);
+
+  if (response.status === 401 || response.status === 403) {
+    window.location.href = '/login';
+  }
+
+  if (response.status !== 200) {
+    throw new Error(`/api/vendor/my-spa/resources/create returned HTTP status code: ${response.status}`);
+  }
+
+  return response;
+}
+
+// export async function updateSpaResourceById(updatedService: T.VendorService): Promise<T.HTTPStatusCode> {
+
+//   const requestOptions = {
+//     method: 'put',
+//     headers: { 'Content-Type': 'application/json' },
+//     body: JSON.stringify(updatedService)
+//   }
+
+//   const response = await fetch(`/api/vendor/my-spa/services/update`, requestOptions);
+
+//   if (response.status === 401 || response.status === 403) {
+//     window.location.href = '/login';
+//   }
+
+//   if (response.status !== 200) {
+//     throw new Error(`/api/vendor/my-spa/services/update returned HTTP status code: ${response.status}`);
+//   }
+
+//   return response.status;
+// }
+
+// export async function deleteSpaResourceById(id: T.VendorServiceId): Promise<T.HTTPStatusCode> {
+
+//   const requestOptions = {
+//     method: 'delete'
+//   }
+
+//   const response = await fetch(`/api/vendor/my-spa/services/${id}/delete`, requestOptions);
+
+//   if (response.status === 401 || response.status === 403) {
+//     window.location.href = '/login';
+//   }
+
+//   if (response.status !== 200) {
+//     throw new Error(`/api/vendor/my-spa/services/${id}/delete returned HTTP status code: ${response.status}`);
+//   }
+
+//   return response.status;
+// }
