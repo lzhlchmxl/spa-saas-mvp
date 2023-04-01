@@ -25,13 +25,15 @@ export default function CreateVendorService() {
   }
 
   return (
-    <Form 
-      initialForm={null}
-      formName="vendorSpaServiceForm"
-      cancelText="Cancel"
-      cancelLink="/vendor/my-spa#services"
-      actionText="Create"
-      actionCallback={handleCreateVendorService}     
-    />
+    <div className="flex w-innerContentContainerWidth items-center">
+      <Form 
+        initialForm={null}
+        formName="vendorSpaServiceForm"
+        cancelText="Cancel"
+        cancelLink="/vendor/my-spa#services"
+        actionText="Create"
+        actionCallback={handleCreateVendorService}     
+      />
+    </div>
   )
 } 

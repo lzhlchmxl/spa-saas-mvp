@@ -32,8 +32,6 @@ export default function SideMenu({userRole} : {userRole: T.userRole}) {
       })}
     </div>
 
- 
-
     return (
       <div className='flex flex-col'>
         <SideMenuNavButton key={index} link={menuData.link} text={text} icon={menuData.icon} />

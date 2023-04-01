@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { NavLink } from "react-router-dom"
 import * as T from "../../utilities/types"
+import { NavHashLink } from "react-router-hash-link"
 
 export default function SideMenuNavButton({link, text, icon}: T.MenuData) {
 
@@ -10,13 +11,14 @@ export default function SideMenuNavButton({link, text, icon}: T.MenuData) {
                  rounded-sm'
       key={link}
     >
-      <NavLink 
+      <NavHashLink 
+        smooth 
         to={link} 
         className="p-iconPadding w-full"
       >
         {icon && <FontAwesomeIcon className='w-iconWidth h-iconHeight pr-iconPadding' icon={icon} />}
         {text}
-      </NavLink>
+      </NavHashLink>
     </div>
   )
 }

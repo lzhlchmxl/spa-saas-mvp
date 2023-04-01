@@ -7,12 +7,15 @@ import { useAsync } from "../../../utilities/customHooks";
 import ErrorIndicator from "../../UIComponents/ErrorIndicator";
 import IconButton from "../../UIComponents/IconButton";
 import LoadingIndicator from "../../UIComponents/LoadingIndicator";
+import { useRef } from "react";
+
 
 export default function MySpaPage() {
 
+  const employeesRef = useRef(null);
   const navigate = useNavigate();
   const mySpaAsync = useAsync(() => getMySpa(), []);
-
+  
   if ( mySpaAsync.status === "pending" ) {
     return <LoadingIndicator />;
   }
@@ -172,7 +175,9 @@ export default function MySpaPage() {
     )
   });
 
-  const outletShown = window.location.pathname !== "/vendor/my-spa"
+  const pathname = window.location.pathname;
+  const hash = window.location.hash;
+  const outletShown = pathname !== "/vendor/my-spa" && hash !== "#services" && hash !== "#employees" && hash !== "#resources" 
 
   return (
     <div className="flex h-full w-full justify-around">
@@ -202,7 +207,7 @@ export default function MySpaPage() {
             <p className="mt-3 text-lg">Description: {mySpa.description}</p>
           </div>
           {/* Employees */}
-          <div className="my-5 flex flex-col w-full rounded-md border-[1px] border-textsIcons/30 p-5">
+          <div id="employees" ref={employeesRef} className="my-5 flex flex-col w-full rounded-md border-[1px] border-textsIcons/30 p-5">
             <h1 className="text-2xl font-semibold capitalize">employees</h1>
             <div className="flex flex-col mt-3">
               <div className="flex mb-1">
@@ -216,7 +221,7 @@ export default function MySpaPage() {
             </div>
           </div>
           {/* Services */}
-          <div className="relative my-5 flex flex-col w-full rounded-md border-[1px] border-textsIcons/30 p-5">
+          <div id="services" className="relative my-5 flex flex-col w-full rounded-md border-[1px] border-textsIcons/30 p-5">
             <div 
               className="flex absolute top-5 right-5 hover:cursor-pointer hover:bg-textsIcons/5 py-1 px-2 rounded-sm"
               onClick={handleCreateSpaService}        
@@ -239,7 +244,7 @@ export default function MySpaPage() {
             </div>
           </div>
           {/* Resources */}
-          <div className="relative my-5 flex flex-col w-full rounded-md border-[1px] border-textsIcons/30 p-5">
+          <div id="resources" className="relative my-5 flex flex-col w-full rounded-md border-[1px] border-textsIcons/30 p-5">
             <div 
               className="flex absolute top-5 right-5 hover:cursor-pointer hover:bg-textsIcons/5 py-1 px-2 rounded-sm"
               onClick={handleCreateSpaResource}        

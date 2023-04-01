@@ -46,17 +46,17 @@ export const vendorPageSideMenuData: T.MenuData[] = [
     icon: faSpa,
     children: [
       {
-        link: '#employees',
+        link: '/vendor/my-spa/#employees',
         text: 'Employees',
         icon: faUserPlus,
       },
       {
-        link: '#services',
+        link: '/vendor/my-spa/#services',
         text: 'Services',
         icon: faHandsHolding,
       },
       {
-        link: '#resources',
+        link: '/vendor/my-spa/#resources',
         text: 'Resources',
         icon: faWarehouse,
       },

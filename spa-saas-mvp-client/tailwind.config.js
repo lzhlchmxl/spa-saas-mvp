@@ -21,6 +21,7 @@ module.exports = {
     extend: {
       width: {
         'contentWidth': '85%', 
+        'innerContentContainerWidth': '80%',
         'iconWidth': '16px',
       },
       height: {
