@@ -4,7 +4,7 @@ export interface SpaResourceInterface extends Document {
   spaId: string,
   vendorId: string,
   name: string,
-  avilableCount: number,
+  availableCount: number,
   type: "ingradient" | "supply" | "spot" | "room",
 }
 
@@ -24,7 +24,7 @@ export const spaResourceSchema = new Schema<SpaResourceInterface>({
     required: true,
     unique: false,
   },
-  avilableCount: {
+  availableCount: {
     type: Number,
     required: true,
   },

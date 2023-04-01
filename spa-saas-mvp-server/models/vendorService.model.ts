@@ -1,4 +1,5 @@
 import { Schema, model, Document } from "mongoose";
+import { SpaResourceInterface } from "./spaResources.model";
 
 export interface VendorServiceInterface extends Document {
   categoryId: string,
@@ -8,6 +9,7 @@ export interface VendorServiceInterface extends Document {
   description: string,
   durationInSeconds: number,
   cost: string,
+  requiredSpaResources: { spaResourceId: SpaResourceInterface['_id'], requiredCount: number  }[],
 }
 
 const vendorServiceSchema = new Schema<VendorServiceInterface>({
@@ -47,6 +49,10 @@ const vendorServiceSchema = new Schema<VendorServiceInterface>({
     required: true,
     unique: false,
   },
+  requiredSpaResources: {
+    type: [{ spaResourceId: Schema.Types.ObjectId, requiredCount: Number }],
+    required: true,
+  }
 }, {
   timestamps: true,
 });

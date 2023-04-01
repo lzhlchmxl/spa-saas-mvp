@@ -224,12 +224,33 @@ router.route('/my-spa/info/delete').delete(isAuthenticated, isAuthorized, async 
 */
 router.route('/my-spa/services/:vendorServiceId').get(isAuthenticated, isAuthorized, async (req, res) => {
   try {
-    const myServiceDetails = await VendorService.findOne({ _id: req.params.vendorServiceId });
-    if (myServiceDetails === null) {
-      res.status(404).send(null);
-    } else {
-      res.status(200).json(myServiceDetails);
+    const spaServiceDetails = await VendorService.findOne({ _id: req.params.vendorServiceId });
+    if (spaServiceDetails === null) {
+      throw new Error("No matching serviceDetails found based on given service id.");
     }
+    const requiredSpaResources = await Promise.all(spaServiceDetails.requiredSpaResources.map( async (requiredSpaResource) => {
+      
+      const spaResource = await SpaResource.findOne({ _id: requiredSpaResource.spaResourceId });
+      if (spaResource === null) {
+        throw new Error("No matching resource found");
+      }
+      return {
+        spaResource,
+        requiredCount: requiredSpaResource.requiredCount,
+      }
+    }));
+
+    const spaServiceDetailsWithResources = {
+      categoryId: spaServiceDetails.categoryId,
+      name: spaServiceDetails.name,
+      description: spaServiceDetails.description,
+      cost: spaServiceDetails.cost,
+      durationInSeconds: spaServiceDetails.durationInSeconds,
+      requiredSpaResources,
+    }
+
+    res.status(200).json(spaServiceDetailsWithResources);
+
   } catch(err) {
     console.log(err)
     res.status(500).json({ message: 'An error has occurred when getting vendor services by id.'})
@@ -313,19 +334,45 @@ router.route('/my-spa/services/:vendorServiceId/delete').delete(isAuthenticated,
 });
 
 
-// Resources
-
+// ---------------------Resources--------------------- //
 
 /*
-    GET /api/vendor/my-spa/:spaId/resources/:resourceId
-    Description: 
+    GET /api/vendor/my-spa/resources
+    Description: Get a list of resources 
     Request body: no request body
     Response body:
 */
-router.route('/my-spa/:spaId/resources/:resourceId').get(isAuthenticated, isAuthorized, async (req, res) => {
+router.route('/my-spa/resources').get(isAuthenticated, isAuthorized, async (req, res) => {
   try {
 
-    const vendorSpa = await MySpa.find({ _id: req.params.spaId })
+    const vendorUserId = req.session.data?.userId;
+    const vendorSpa = await MySpa.findOne({ userId: vendorUserId })
+
+    if (vendorSpa === null) {
+      throw new Error('Unable to find the spa associated with the given vendorId');
+    }
+
+    const spaResource = await SpaResource.find();
+
+    res.status(200).json(spaResource);
+    
+  } catch(err) {
+    console.log(err)
+    res.status(500).json({ message: 'An error has occurred when getting spa resources'})
+  }
+});
+
+/*
+    GET /api/vendor/my-spa/resources/:resourceId
+    Description: Get resource detail by ID
+    Request body: no request body
+    Response body:
+*/
+router.route('/my-spa/resources/:resourceId').get(isAuthenticated, isAuthorized, async (req, res) => {
+  try {
+
+    const vendorUserId = req.session.data?.userId;
+    const vendorSpa = await MySpa.findOne({ userId: vendorUserId })
 
     if (vendorSpa === null) {
       throw new Error('Unable to find the spa associated with the given vendorId');
