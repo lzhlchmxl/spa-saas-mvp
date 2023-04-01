@@ -66,7 +66,9 @@ export type VendorServiceForm = {
   description: string,
   cost: string,
   durationInSeconds: number,
+  requiredSpaResources: RequiredSpaResource[],
 }
+export type RequiredSpaResource = { spaResource: SpaResource, requiredCount: number };
 export type VendorServiceId = id;
 export type VendorService = VendorServiceForm & { _id: VendorServiceId };
 
@@ -83,7 +85,7 @@ export type SpaEmployee = {
   lastName: string,
   status: "active" | "vacation" | "off-work",
   permission: "basic" | "advanced",
-  unavilableDateTimeRanges: DateTimeRange[],
+  unavailableDateTimeRanges: DateTimeRange[],
 }
 type SpaEmployeeId = id;
 
@@ -91,7 +93,7 @@ type SpaEmployeeId = id;
 export type SpaResource = SpaResourceForm & { _id: SpaResourceId }
 export type SpaResourceForm = {
   name: string,
-  avilableCount: number,
+  availableCount: number,
   type: SpaResourceTypes,
 }
 export type SpaResourceTypes = "ingradient" | "supply" | "spot" | "room";
@@ -149,5 +151,5 @@ export type FormData = {
   stateName: string;
   setStateName: string;
   initialStateValue: "" | [] | 0;
-  inputType: "text" | "undefined" | "duration" | "number" | "dropdown"
+  inputType: "text" | "undefined" | "duration" | "number" | "dropdown" | "requiredSpaResourcesTable"
 }

@@ -3,11 +3,13 @@ import * as util from "../../utilities/utilityFunctions";
 
 function DurationPicker(
   { 
+    label,
     initialTotalSeconds,
     setDurationInSeconds,
   }
   : 
   { 
+    label: string,
     initialTotalSeconds: number,
     setDurationInSeconds: (seconds: number) => void,
   }) {
@@ -47,39 +49,42 @@ function DurationPicker(
   } 
 
   return (
-    <div
-      className="text-lg "
-    >
-      <label>
-        <input
-          value={h.toString()}
-          className="w-10 text-center rounded-md border border-black/50"
-          type="number"
-          onChange={ (e) => handleHoursUpdate(e.target.valueAsNumber) }
-          onFocus={ () => {
-            setH("")
-          }}
-          onBlur={ () => {
-            setH(tempH);
-          }}
-        />
-        <span className="m-1 text-sm">h</span>
-      </label>
-      <label>
-        <input 
-          value={m.toString()}
-          className="w-10 text-center rounded-md border border-black/50"
-          type="number"
-          onChange={ (e) => handleMinutesUpdate(e.target.valueAsNumber) }
-          onFocus={ () => {
-            setM("")
-          }}
-          onBlur={ () => {
-            setM(tempM);
-          }}
-        />
-        <span className="m-1 text-sm">m</span>
-      </label>
+    <div className='flex flex-col mb-5 w-full text-textsIcons'>
+      <label className="capitalize font-semibold mb-1">{label}</label>
+      <div
+        className="text-lg text-textsIcons"
+      >
+        <label>
+          <input
+            value={h.toString()}
+            className="w-12 bg-lightBackgrounds border border-white/30 rounded-md py-1 pl-2 pr-0"
+            type="number"
+            onChange={ (e) => handleHoursUpdate(e.target.valueAsNumber) }
+            onFocus={ () => {
+              setH("")
+            }}
+            onBlur={ () => {
+              setH(tempH);
+            }}
+          />
+          <span className="m-1 text-md">h</span>
+        </label>
+        <label>
+          <input 
+            value={m.toString()}
+            className="w-12 bg-lightBackgrounds border border-white/30 rounded-md py-1 pl-2 pr-0"
+            type="number"
+            onChange={ (e) => handleMinutesUpdate(e.target.valueAsNumber) }
+            onFocus={ () => {
+              setM("")
+            }}
+            onBlur={ () => {
+              setM(tempM);
+            }}
+          />
+          <span className="m-1 text-md">m</span>
+        </label>
+      </div>
     </div>
   )
 }

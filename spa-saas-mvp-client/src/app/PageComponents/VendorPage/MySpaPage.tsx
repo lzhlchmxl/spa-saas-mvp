@@ -76,7 +76,7 @@ export default function MySpaPage() {
   const handleViewSpaResourceDetails = (resourceId: string) => {
     navigate(`/vendor/my-spa/resources/${resourceId}`)
   }
-
+  
   const handleEditSpaResourceDetails = (resourceId: string) => {
     navigate(`/vendor/my-spa/resources/${resourceId}/edit`)
   }
@@ -159,7 +159,7 @@ export default function MySpaPage() {
           {resource.name}
         </div>
         <p className="w-1/6">{resource.type}</p>
-        <p className="w-1/6">{resource.avilableCount}</p>
+        <p className="w-1/6 ">{resource.availableCount}</p>
         <div className="hidden group-hover:flex w-1/12">
           <div className="flex w-[30px] h-[30px] justify-center items-center hover:bg-textsIcons/10 rounded-md">
             <IconButton icon={faPenToSquare} actionCallback={() => handleEditSpaResourceDetails(resource._id)} />
@@ -176,9 +176,10 @@ export default function MySpaPage() {
 
   return (
     <div className="flex h-full w-full justify-around">
-      <div className="flex h-full w-full justify-center overflow-y-auto scrollbar-thin scrollbar-thumb-textsIcons/50 scrollbar-track-darkGray scrollbar-thumb-rounded">
-        <div className={`flex flex-col w-contentWidth max-w-maxContentWidth h-full items-center
-        text-textsIcons `}>
+      <div className={`${outletShown ? "w-[55%]" : "w-full" } flex h-full justify-center overflow-y-auto scrollbar-thin
+       scrollbar-thumb-textsIcons/50 scrollbar-track-darkGray scrollbar-thumb-rounded`}>
+        <div className="flex flex-col w-contentWidth max-w-maxContentWidth h-full items-center
+        text-textsIcons">
           <div 
             className="mt-contentPageTopMargin flex justify-between items-center w-full"
           >
@@ -186,7 +187,7 @@ export default function MySpaPage() {
           </div>
           <div className="my-5 flex flex-col w-full">
             <h1 className="text-3xl font-semibold">My Spa Management</h1>
-            <p className="mt-3 text-">Manage your spa's serivces, employees and resources all in one place</p>
+            <p className="mt-3 text-textsIcons/50">Manage your spa's serivces, employees and resources all in one place</p>
           </div>
           {/* Spa Information */}
           <div className="relative my-5 flex flex-col w-full rounded-md border-[1px] border-textsIcons/30 p-5">
@@ -254,7 +255,7 @@ export default function MySpaPage() {
                 <p className="w-1/12">Index</p>
                 <p className="w-1/2">Name</p>
                 <p className="w-1/6">Type</p>
-                <p className="w-1/6">Avilable Count</p>
+                <p className="w-1/6"># Avilable</p>
                 <p className="w-1/12"></p>
               </div>
               {spaResourcesHTML}
@@ -263,7 +264,7 @@ export default function MySpaPage() {
           <div className="h-10 w-1">&nbsp;</div>
         </div>
       </div>
-      <div className={`w-[45%] ${outletShown ? "flex" : "hidden"}`}>
+      <div className={`w-[45%] ${outletShown ? "flex" : "hidden"} justify-center`}>
         <Outlet />
       </div>
     </div>

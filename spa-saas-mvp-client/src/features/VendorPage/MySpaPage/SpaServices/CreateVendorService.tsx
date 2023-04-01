@@ -13,6 +13,7 @@ export default function CreateVendorService() {
       description: updatedForm['description'] as string,
       cost: updatedForm['cost'] as string,
       durationInSeconds: updatedForm['durationInSeconds'] as number,
+      requiredSpaResources: updatedForm['requiredSpaResources'] as T.RequiredSpaResource[],
     }
   
     const res = await createSpaService(updatedSpaService);

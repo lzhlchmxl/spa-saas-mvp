@@ -71,7 +71,7 @@ export const vendorPageSideMenuData: T.MenuData[] = [
     link: '/vendor/history',
     text: 'Histories',
     icon: faClockRotateLeft,
-  },
+  }
 ];
 
 
@@ -163,6 +163,12 @@ export const hydroSPAServices = [
       setStateName: "setCost",
       initialStateValue: "",
       inputType: "text",
+    },
+    {
+      stateName: "requiredSpaResources",
+      setStateName: "requiredSpaResources",
+      initialStateValue: [],
+      inputType: "requiredSpaResourcesTable"
     }
   ]
 

@@ -21,7 +21,7 @@ export default function InputWithLabel<T>(
 ) {
 
   return (
-    <div className='flex flex-col mb-5  text-textsIcons'>
+    <div className='flex flex-col mb-5 w-full  text-textsIcons'>
       <label className="capitalize font-semibold mb-1" htmlFor={name}>{label}</label>
       <input
         disabled={disabled !== undefined ? disabled : false}
@@ -30,7 +30,7 @@ export default function InputWithLabel<T>(
         placeholder={placeholder}
         name={name}
         id={name}
-        className='bg-lightBackgrounds border border-white/30 rounded-md p-2 px-2' 
+        className='bg-lightBackgrounds border border-white/30 rounded-md p-2' 
         onChange={ e => setValue(e.currentTarget.value as T) }
       />
     </div>

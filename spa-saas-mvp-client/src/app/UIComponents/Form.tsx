@@ -4,13 +4,17 @@ import Button from "./Button";
 import InputWithLabel from "./InputWithLabel";
 import { vendorProfileFormData, vendorSpaInfoFormData, vendorSpaResourceFormData, vendorSpaServiceFormData } from "../../utilities/data";
 import { useNavigate } from "react-router-dom";
-import DurationPicker from "./DurationPicker";
+import DurationPickerWithLabel from "./DurationPickerWithLabel";
+import { useAsync } from "../../utilities/customHooks";
+import { getSpaResources } from "../../utilities/api";
+import LoadingIndicator from "./LoadingIndicator";
+import ErrorIndicator from "./ErrorIndicator";
 
 export interface FormState {
   [key: string]: FormStateValue;
 }
 
-type FormStateValue = string | number | T.ServiceCategory[] | T.VendorService[] | T.SpaEmployee[] | T.SpaResource[];
+type FormStateValue = string | number | T.ServiceCategory[] | T.VendorService[] | T.SpaEmployee[] | T.SpaResource[] | T.RequiredSpaResource[];
 
 export default function Form({
     initialForm,
@@ -85,7 +89,7 @@ export default function Form({
 
   return (
     <div className="flex flex-col w-full justify-center items-center">
-      <div className="w-[80%] max-w-[500px]">
+      {/* <div className="w-[80%] max-w-[500px]"> */}
         {Object.keys(state).map( key => {
           const formData = data.find( entry => entry.stateName === key);
           if (formData === undefined) {
@@ -95,27 +99,33 @@ export default function Form({
             case "text":
             case "number":
               return (
-                <div key={key}>
-                  <InputWithLabel 
-                    label={key}
-                    name={key}
-                    type={formData.inputType}
-                    value={state[key]} 
-                    setValue={(v) => updateState(key, v)}        
-                  />
-                </div>
+                <InputWithLabel 
+                  key={key}
+                  label={key}
+                  name={key}
+                  type={formData.inputType}
+                  value={state[key]} 
+                  setValue={(v) => updateState(key, v)}        
+                />
               )
             case "duration":
               return (
-                <div key={key}>
-                  <DurationPicker 
-                    initialTotalSeconds={state[key] as number} 
-                    setDurationInSeconds={(v) => updateState(key, v)}      
-                  />
-                </div>
+                <DurationPickerWithLabel 
+                  label={"Duration"}
+                  key={key}
+                  initialTotalSeconds={state[key] as number} 
+                  setDurationInSeconds={(v) => updateState(key, v)}      
+                />
               )
-            case "undefined":
-              break;
+            case "requiredSpaResourcesTable":
+              return (
+                <RequiredSpaResourcesTable
+                  key={key}
+                  label="Required Resources"
+                  requiredSpaResources={state[key] as T.RequiredSpaResource[]}
+                  setRequiredSpaResources={(v) => updateState(key, v)}               
+                />
+              )
             default:
               throw new Error("Unknown formData input type.");
           }
@@ -132,7 +142,114 @@ export default function Form({
             actionType="secondary"
           />
         </div>
+      {/* </div> */}
+    </div>
+  )
+}
+
+
+function RequiredSpaResourcesTable({
+  label,
+  requiredSpaResources,
+  setRequiredSpaResources,
+}
+:
+{
+  label: string,
+  requiredSpaResources: T.RequiredSpaResource [],
+  setRequiredSpaResources: (v: T.RequiredSpaResource[]) => void
+}
+) {
+
+  const spaResourcesAsync = useAsync(getSpaResources, []);
+
+  if (spaResourcesAsync.status === "pending") {
+    return <LoadingIndicator />
+  }
+
+  if (spaResourcesAsync.status === "rejected") {
+    return <ErrorIndicator />
+  }
+
+  const spaResources = spaResourcesAsync.value;
+
+  const handleIsRequiredResourceToggle = (isRequired: boolean, resource: T.SpaResource) => {
+    
+    let updatedRequiredSpaResources = [...requiredSpaResources];
+
+    if (isRequired) {
+      updatedRequiredSpaResources.push({spaResource: resource, requiredCount: 0});
+    } else {
+      updatedRequiredSpaResources = requiredSpaResources.filter( requiredSpaResource => requiredSpaResource.spaResource._id !== resource._id);
+    }
+
+    setRequiredSpaResources(updatedRequiredSpaResources);
+  }
+
+  const handleResourceRequiredCountUpdate = (requiredCount: number, resourceId: string) => {
+    
+    const updatedRequiredSpaResources = [...requiredSpaResources];
+
+    const targetResource = updatedRequiredSpaResources.find(updatedRequiredSpaResource => updatedRequiredSpaResource.spaResource._id === resourceId)
+    
+    if (targetResource === undefined) {
+      throw new Error("No matching target resource found when updating required count.");
+    }
+    
+    targetResource.requiredCount = requiredCount;
+    
+    setRequiredSpaResources(updatedRequiredSpaResources);
+  }
+
+
+  const spaResourcesHTML = spaResources.map( spaResource => {
+
+    const requiredSpaResource = requiredSpaResources.find( requiredSpaResource => requiredSpaResource.spaResource._id === spaResource._id);
+    const isRequired = requiredSpaResource !== undefined;
+    
+    return (
+      <div 
+        className="flex flex-col mt-1 text-textsIcons"
+        key={spaResource._id}
+      >
+        <div className="flex mb-1 items-center">
+          <div className="flex w-1/12 justify-center ">
+            <input 
+              checked={isRequired}
+              type="checkbox"
+              onChange={ (e) => handleIsRequiredResourceToggle(e.currentTarget.checked, spaResource)}
+            />
+          </div>
+          <div className="w-3/12 flex justify-center">
+              <input
+                disabled={!isRequired}
+                type="number"
+                value={requiredSpaResource ? requiredSpaResource.requiredCount : 0}
+                className='bg-lightBackgrounds border border-white/30 rounded-md p-2 w-[60%]' 
+                onChange={ (e) => handleResourceRequiredCountUpdate(parseFloat(e.currentTarget.value), spaResource._id) }
+              />
+            </div>
+          <p className="w-1/6">{spaResource.type}</p>
+          <p className="w-1/3">{spaResource.name}</p>
+          <p className="w-1/6 text-center">{spaResource.availableCount}</p> 
+        </div>
+      </div> 
+    )
+  })
+
+  return (
+    <div className='flex flex-col mb-5 w-full  text-textsIcons'>
+      <label className="capitalize font-semibold mb-1">{label}</label>
+      <div className="flex flex-col mt-1 text-textsIcons">
+        <div className="flex mb-1">
+          <p className="w-1/12"></p>
+          <p className="w-3/12 text-center"># Required</p>
+          <p className="w-1/6">Type</p>
+          <p className="w-1/3">Name</p>
+          <p className="w-1/6"># Available</p>
+        </div>
       </div>
+      {spaResourcesHTML} 
     </div>
   )
 }

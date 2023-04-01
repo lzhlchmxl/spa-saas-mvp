@@ -44,13 +44,15 @@ export default function EditMySpaInfo() {
   }
 
   return (
-    <Form 
-      initialForm={mySpa} 
-      formName="vendorSpaInfoForm" 
-      cancelText="Cancel"
-      cancelLink="/vendor/my-spa"
-      actionText="Save"
-      actionCallback={(form) => handleSaveMySpaInfo(form)}    
-    />
+    <div className="flex w-[80%] items-center">
+      <Form 
+        initialForm={mySpa} 
+        formName="vendorSpaInfoForm" 
+        cancelText="Cancel"
+        cancelLink="/vendor/my-spa"
+        actionText="Save"
+        actionCallback={(form) => handleSaveMySpaInfo(form)}    
+      />
+    </div>
   )
 }

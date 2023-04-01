@@ -9,7 +9,7 @@ export default function CreateSpaResource() {
 
     const updatedSpaResource: T.SpaResourceForm = {
       name: updatedForm['name'] as string,
-      avilableCount: updatedForm['avilableCount'] as number,
+      availableCount: updatedForm['avilableCount'] as number,
       type: updatedForm['type'] as T.SpaResourceTypes,
     }
 
@@ -22,13 +22,15 @@ export default function CreateSpaResource() {
   }
 
   return (
-    <Form 
-      initialForm={null}
-      formName="vendorSpaResourceForm"
-      cancelText="Cancel"
-      cancelLink="/vendor/my-spa#resources"
-      actionText="Create"
-      actionCallback={handleCreateSpaResource}     
-    />
+    <div className="flex items-center w-[80%]">
+      <Form 
+        initialForm={null}
+        formName="vendorSpaResourceForm"
+        cancelText="Cancel"
+        cancelLink="/vendor/my-spa#resources"
+        actionText="Create"
+        actionCallback={handleCreateSpaResource}     
+      />
+    </div>
   )
 } 
