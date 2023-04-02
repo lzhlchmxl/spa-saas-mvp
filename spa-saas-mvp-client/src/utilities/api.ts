@@ -575,3 +575,21 @@ export async function createSpaResource(newResource: T.SpaResourceForm): Promise
 
 //   return response.status;
 // }
+
+/* ---------- Booking Service ----------- */
+
+export async function getUnavailableDatesByServiceId(spaId: T.VendorSpaId, serviceId: T.VendorServiceId): Promise<Date[]> {
+
+  const res = await fetch(`/api/client/spas/${spaId}/bookService/${serviceId}`);
+
+  if (res.status === 401 || res.status === 403) {
+    window.location.href = '/login';
+  }
+
+  if (res.status !== 200) {
+    throw new Error(`/api/client/spas/${spaId}/bookService/${serviceId}: returned HTTP status code: ${res.status}`);
+  }
+
+  return await res.json();
+}
+

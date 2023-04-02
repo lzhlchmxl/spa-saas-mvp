@@ -17,6 +17,8 @@ const middleware_1 = require("../middleware");
 const clientProfile_model_1 = __importDefault(require("../models/clientProfile.model"));
 const mySpa_model_1 = __importDefault(require("../models/mySpa.model"));
 const vendorService_model_1 = __importDefault(require("../models/vendorService.model"));
+const record_model_1 = __importDefault(require("../models/record.model"));
+const processorFunctions_1 = require("../utilities/processorFunctions");
 const router = express_1.default.Router();
 /*
     GET /api/client/profile
@@ -151,13 +153,22 @@ router.route('/spas/:spaId/bookService/:serviceId').get(middleware_1.isAuthentic
         if (spa === null) {
             throw new Error("No results found with the given spaId");
         }
-        const spaServices = yield vendorService_model_1.default.find({ vendorSpaId: spa._id });
+        const occupiedRecords = yield Promise.all(spa.recordIds.map((recordId) => __awaiter(void 0, void 0, void 0, function* () {
+            const record = yield record_model_1.default.findOne({ _id: recordId });
+            if (record === null) {
+                throw new Error("No Record found with the given id");
+            }
+            const serviceStage = record.serviceStage;
+            if (serviceStage === "booking" || serviceStage === "booked" || serviceStage === "rescheduling") {
+                return record;
+            }
+        })));
         const bookingService = yield vendorService_model_1.default.findOne({ _id: serviceId });
-        if (spaServices === null || bookingService === null) {
+        if (bookingService === null) {
             throw new Error("No results found with the given spaId or serviceId");
         }
-        // const occupiedRecords = spaServices.map()
-        res.status(200).send();
+        const unavailableDates = (0, processorFunctions_1.getUnavailableDates)(occupiedRecords, bookingService);
+        res.status(200).json(unavailableDates);
     }
     catch (err) {
         console.log(err);

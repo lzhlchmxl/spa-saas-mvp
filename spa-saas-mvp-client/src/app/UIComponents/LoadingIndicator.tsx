@@ -3,7 +3,7 @@ import spinner from "../../assets/spinner.svg"
 function LoadingIndicator() {
 
   return (
-    <div className="flex h-screen w-full bg-backgrounds justify-center items-center">
+    <div className="flex h-full w-full bg-backgrounds justify-center items-center">
       <img 
         className=""
         src={spinner} 

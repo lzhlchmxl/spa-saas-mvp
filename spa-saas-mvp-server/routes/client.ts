@@ -1,9 +1,11 @@
 import express from 'express';
 import { isAuthenticated, isAuthorized } from '../middleware';
-import ClientProfile, {ClientProfileInterface} from '../models/clientProfile.model';
+import ClientProfile from '../models/clientProfile.model';
 import MySpa from '../models/mySpa.model';
 import VendorService from '../models/vendorService.model';
+import Record from '../models/record.model';
 import * as T from '../utilities/types';
+import { getUnavailableDates } from '../utilities/processorFunctions';
 
 const router = express.Router();
 
@@ -158,18 +160,26 @@ router.route('/spas/:spaId/bookService/:serviceId').get(isAuthenticated, isAutho
     if (spa === null) {
       throw new Error("No results found with the given spaId");
     }
-    const spaServices = await VendorService.find({ vendorSpaId: spa._id  })
+    const occupiedRecords = await Promise.all(spa.recordIds.map( async (recordId: string) => {
+      const record = await Record.findOne({_id: recordId});
+      if (record === null) {
+        throw new Error("No Record found with the given id");
+      }
+      const serviceStage = record.serviceStage;
+      if (serviceStage === "booking" || serviceStage === "booked" || serviceStage === "rescheduling") {
+        return record;
+      }
+    }))
     const bookingService = await VendorService.findOne({ _id: serviceId });
 
-    if (spaServices === null || bookingService === null) {
+    if (bookingService === null) {
       throw new Error("No results found with the given spaId or serviceId");
     }
 
-    // const occupiedRecords = spaServices.map()
-
+    const unavailableDates = getUnavailableDates(occupiedRecords, bookingService);
 
     
-    res.status(200).send();
+    res.status(200).json(unavailableDates);
   } catch(err) {
     console.log(err)
     res.status(500).json({ message: 'An error has occurred when retriving spaDetails.'})
