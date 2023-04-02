@@ -23,7 +23,11 @@ export default function ViewSpaDetails() {
   const spaDetails = spaDetailsAsync.value;
 
   const handleBookService = (serviceId: string) => {
-    window.alert("Feature under constructions.");
+    
+  }
+
+  const handleBookNextAvailableService = (serviceId: string) => {
+    window.alert("Under construction.");
   }
 
   const serviceHTML = spaDetails.services.map((service) => {
@@ -36,6 +40,11 @@ export default function ViewSpaDetails() {
           actionType="primary"
           actionText="Book Service" 
           actionHandler={() => handleBookService(service._id)}        
+        />
+        <Button 
+          actionType="secondary"
+          actionText="Book Next Available" 
+          actionHandler={() => handleBookNextAvailableService(service._id)}        
         />
         </div>
         <h2 className="text-2xl font-bold mb-2">{service.name}</h2>

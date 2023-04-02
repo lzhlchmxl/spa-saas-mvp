@@ -2,6 +2,7 @@ import { Schema, model, Document } from "mongoose";
 import { SpaEmployeeInterface } from './spaEmployee.model';
 import { VendorServiceInterface } from "./vendorService.model";
 import { SpaResourceInterface } from "./spaResources.model";
+import { RecordInterface } from "./record.model";
 
 export interface MySpaInterface extends Document {
   userId: string,
@@ -10,6 +11,7 @@ export interface MySpaInterface extends Document {
   employees: SpaEmployeeInterface['_id'],
   serviceIds: VendorServiceInterface['_id'],
   resourceIds: SpaResourceInterface['_id'],
+  recordIds: RecordInterface['_id'],
 }
 
 const mySpaSchema = new Schema<MySpaInterface>({
@@ -20,12 +22,12 @@ const mySpaSchema = new Schema<MySpaInterface>({
   },
   name: {
     type: String,
-    required: true,
+    required: false,
     unique: true,
   },
   description: {
     type: String,
-    required: true,
+    required: false,
   },
   employees: {
     type: [Schema.Types.ObjectId],
@@ -37,6 +39,10 @@ const mySpaSchema = new Schema<MySpaInterface>({
     required: true,
   },
   resourceIds: {
+    type: [Schema.Types.ObjectId],
+    required: true,
+  },
+  recordIds: {
     type: [Schema.Types.ObjectId],
     required: true,
   }

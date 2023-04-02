@@ -139,4 +139,41 @@ router.route('/spas/:vendorSpaId').get(isAuthenticated, isAuthorized, async (req
   }
 });
 
+// ------------ Booking ------------ //
+
+
+/*
+    GET /api/client/spas/:spaId/bookService/:serviceId
+    Description: 
+    Request body: 
+    Response body: 
+*/
+router.route('/spas/:spaId/bookService/:serviceId').get(isAuthenticated, isAuthorized, async (req, res) => {
+  
+  const spaId = req.params.spaId;
+  const serviceId = req.params.serviceId;
+
+  try {
+    const spa = await MySpa.findOne({ _id: spaId});
+    if (spa === null) {
+      throw new Error("No results found with the given spaId");
+    }
+    const spaServices = await VendorService.find({ vendorSpaId: spa._id  })
+    const bookingService = await VendorService.findOne({ _id: serviceId });
+
+    if (spaServices === null || bookingService === null) {
+      throw new Error("No results found with the given spaId or serviceId");
+    }
+
+    // const occupiedRecords = spaServices.map()
+
+
+    
+    res.status(200).send();
+  } catch(err) {
+    console.log(err)
+    res.status(500).json({ message: 'An error has occurred when retriving spaDetails.'})
+  }
+});
+
 export default router;

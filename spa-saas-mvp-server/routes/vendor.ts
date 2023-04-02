@@ -3,7 +3,7 @@ import { isAuthenticated, isAuthorized } from '../middleware';
 import VendorProfile from '../models/vendorProfile.model';
 import VendorService from '../models/vendorService.model';
 import SpaEmployee from '../models/spaEmployee.model';
-import SpaResource from '../models/spaResources.model';
+import SpaResource, { SpaResourceInterface } from '../models/spaResources.model';
 import MySpa from '../models/mySpa.model';
 import * as T from '../utilities/types';
 import { Schema } from 'mongoose';
@@ -351,10 +351,12 @@ router.route('/my-spa/resources').get(isAuthenticated, isAuthorized, async (req,
     if (vendorSpa === null) {
       throw new Error('Unable to find the spa associated with the given vendorId');
     }
+    
+    const spaResources = await Promise.all(vendorSpa.resourceIds.map( async (resourceId: string) => {
+      return await SpaResource.findOne({ _id: resourceId });
+    }))
 
-    const spaResource = await SpaResource.find();
-
-    res.status(200).json(spaResource);
+    res.status(200).json(spaResources);
     
   } catch(err) {
     console.log(err)

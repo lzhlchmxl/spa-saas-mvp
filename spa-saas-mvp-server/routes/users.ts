@@ -1,10 +1,8 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import User, { UserInterface } from '../models/user.model';
+import MySpa, { MySpaInterface } from '../models/mySpa.model';
 import bcrypt from 'bcrypt';
-import session from 'express-session';
-import MongoStore from 'connect-mongo';
-
 
 dotenv.config();
 
@@ -56,29 +54,40 @@ router.route('/register').post( async (req, res) => {
     const hashedPassword = await bcrypt.hash(userReqBody.password, 10);
     userReqBody.password = hashedPassword;
     const newUser = new User(userReqBody);
+    
+    const newSpa = new MySpa({
+      userId: newUser._id,
+      name: "",
+      description: "",
+      employees: [], 
+      serviceIds: [],
+      resourceIds: [],
+      recordIds: [],
+    })
+    await newSpa.save();
     await newUser.save();
 
-    // if (!req.session) {
-    //   throw new Error('Session middleware not set up correctly');
-    // }
+    if (!req.session) {
+      throw new Error('Session middleware not set up correctly');
+    }
 
-    // // Add new user data to session
-    // req.session.data = {
-    //   userId: newUser._id.toString(),
-    //   role: newUser.role,
-    // }
+    // Add new user data to session
+    req.session.data = {
+      userId: newUser._id.toString(),
+      role: newUser.role,
+    }
 
-    // req.session.save((err) => {
-    //   if (err) {
-    //     throw err;
-    //   }
+    req.session.save((err) => {
+      if (err) {
+        throw err;
+      }
 
-    //   res.status(200).json({ redirect: `/${newUser.role}` });
-    // });
-    res.status(200).json({ redirect: `/login` });
+      res.status(200).json({ redirect: `/${newUser.role}` });
+    });
     
   } catch (err) {
-    res.status(400).json('Error ' + err);
+    console.log(err)
+    res.status(500).json('Error ' + err);
   } 
 });
 

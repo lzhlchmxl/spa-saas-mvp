@@ -18,7 +18,7 @@ export default function CreateVendorService() {
   
     const res = await createSpaService(updatedSpaService);
     if (res.status === 200) {
-      window.location.href = '/vendor/my-spa';
+      window.location.href = '/vendor/my-spa/#services';
     } else {
       return (<ErrorIndicator />);
     }
@@ -30,7 +30,7 @@ export default function CreateVendorService() {
         initialForm={null}
         formName="vendorSpaServiceForm"
         cancelText="Cancel"
-        cancelLink="/vendor/my-spa#services"
+        cancelLink="/vendor/my-spa/#services"
         actionText="Create"
         actionCallback={handleCreateVendorService}     
       />

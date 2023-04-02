@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const user_model_1 = __importDefault(require("../models/user.model"));
+const mySpa_model_1 = __importDefault(require("../models/mySpa.model"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 dotenv_1.default.config();
 const router = express_1.default.Router();
@@ -50,25 +51,35 @@ router.route('/register').post((req, res) => __awaiter(void 0, void 0, void 0, f
         const hashedPassword = yield bcrypt_1.default.hash(userReqBody.password, 10);
         userReqBody.password = hashedPassword;
         const newUser = new user_model_1.default(userReqBody);
+        const newSpa = new mySpa_model_1.default({
+            userId: newUser._id,
+            name: "",
+            description: "",
+            employees: [],
+            serviceIds: [],
+            resourceIds: [],
+            recordIds: [],
+        });
+        yield newSpa.save();
         yield newUser.save();
-        // if (!req.session) {
-        //   throw new Error('Session middleware not set up correctly');
-        // }
-        // // Add new user data to session
-        // req.session.data = {
-        //   userId: newUser._id.toString(),
-        //   role: newUser.role,
-        // }
-        // req.session.save((err) => {
-        //   if (err) {
-        //     throw err;
-        //   }
-        //   res.status(200).json({ redirect: `/${newUser.role}` });
-        // });
-        res.status(200).json({ redirect: `/login` });
+        if (!req.session) {
+            throw new Error('Session middleware not set up correctly');
+        }
+        // Add new user data to session
+        req.session.data = {
+            userId: newUser._id.toString(),
+            role: newUser.role,
+        };
+        req.session.save((err) => {
+            if (err) {
+                throw err;
+            }
+            res.status(200).json({ redirect: `/${newUser.role}` });
+        });
     }
     catch (err) {
-        res.status(400).json('Error ' + err);
+        console.log(err);
+        res.status(500).json('Error ' + err);
     }
 }));
 /*

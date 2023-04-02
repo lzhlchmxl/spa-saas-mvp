@@ -136,4 +136,32 @@ router.route('/spas/:vendorSpaId').get(middleware_1.isAuthenticated, middleware_
         res.status(500).json({ message: 'An error has occurred when retriving spaDetails.' });
     }
 }));
+// ------------ Booking ------------ //
+/*
+    GET /api/client/spas/:spaId/bookService/:serviceId
+    Description:
+    Request body:
+    Response body:
+*/
+router.route('/spas/:spaId/bookService/:serviceId').get(middleware_1.isAuthenticated, middleware_1.isAuthorized, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const spaId = req.params.spaId;
+    const serviceId = req.params.serviceId;
+    try {
+        const spa = yield mySpa_model_1.default.findOne({ _id: spaId });
+        if (spa === null) {
+            throw new Error("No results found with the given spaId");
+        }
+        const spaServices = yield vendorService_model_1.default.find({ vendorSpaId: spa._id });
+        const bookingService = yield vendorService_model_1.default.findOne({ _id: serviceId });
+        if (spaServices === null || bookingService === null) {
+            throw new Error("No results found with the given spaId or serviceId");
+        }
+        // const occupiedRecords = spaServices.map()
+        res.status(200).send();
+    }
+    catch (err) {
+        console.log(err);
+        res.status(500).json({ message: 'An error has occurred when retriving spaDetails.' });
+    }
+}));
 exports.default = router;
