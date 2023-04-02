@@ -7,12 +7,9 @@ import { useAsync } from "../../../utilities/customHooks";
 import ErrorIndicator from "../../UIComponents/ErrorIndicator";
 import IconButton from "../../UIComponents/IconButton";
 import LoadingIndicator from "../../UIComponents/LoadingIndicator";
-import { useRef } from "react";
-
 
 export default function MySpaPage() {
 
-  const employeesRef = useRef(null);
   const navigate = useNavigate();
   const mySpaAsync = useAsync(() => getMySpa(), []);
   
@@ -207,7 +204,7 @@ export default function MySpaPage() {
             <p className="mt-3 text-lg">Description: {mySpa.description}</p>
           </div>
           {/* Employees */}
-          <div id="employees" ref={employeesRef} className="my-5 flex flex-col w-full rounded-md border-[1px] border-textsIcons/30 p-5">
+          <div id="employees" className="my-5 flex flex-col w-full rounded-md border-[1px] border-textsIcons/30 p-5">
             <h1 className="text-2xl font-semibold capitalize">employees</h1>
             <div className="flex flex-col mt-3">
               <div className="flex mb-1">

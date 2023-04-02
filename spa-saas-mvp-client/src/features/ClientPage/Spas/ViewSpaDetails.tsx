@@ -1,9 +1,10 @@
-import Button from "../../app/UIComponents/Button";
-import ErrorIndicator from "../../app/UIComponents/ErrorIndicator";
-import LoadingIndicator from "../../app/UIComponents/LoadingIndicator";
-import { getSpaDetailsById } from "../../utilities/api";
-import { useAsync, useRequiredParams } from "../../utilities/customHooks";
-import { secondsToDuration } from "../../utilities/utilityFunctions";
+import Button from "../../../app/UIComponents/Button";
+import ContentPageTopButtons from "../../../app/UIComponents/ContentPageTopButtons";
+import ErrorIndicator from "../../../app/UIComponents/ErrorIndicator";
+import LoadingIndicator from "../../../app/UIComponents/LoadingIndicator";
+import { getSpaDetailsById } from "../../../utilities/api";
+import { useAsync, useRequiredParams } from "../../../utilities/customHooks";
+import { secondsToDuration } from "../../../utilities/utilityFunctions";
 
 export default function ViewSpaDetails() {
 
@@ -29,7 +30,7 @@ export default function ViewSpaDetails() {
     const duration = secondsToDuration(service.durationInSeconds);
   
     return (
-      <div className="bg-white p-4 rounded-lg shadow-md my-4 relative">
+      <div className="p-5 rounded-lg shadow-lg my-5 relative border border-white/50">
         <div className="absolute top-4 right-4">
         <Button 
           actionType="primary"
@@ -50,8 +51,13 @@ export default function ViewSpaDetails() {
   });
   
   return (
-    <div className=" w-full flex justify-center items-center">
-      <div className="bg-backgrounds p-4 rounded-lg shadow-md w-[90%] h-[90%]">
+    <div className="relative flex flex-col h-full w-contentWidth max-w-maxContentWidth items-center text-textsIcons">
+      <ContentPageTopButtons 
+        hideEditDeleteButtons={true}
+        editCallback={() => {}} 
+        deleteCallback={() => {}} 
+      />
+      <div className="bg-lightBackgrounds w-full mt-10">
         <h1 className="text-3xl font-bold text-accent mb-2">
           {spaDetails.name}
         </h1>

@@ -231,3 +231,42 @@ export const hydroSPAServices = [
       inputType: "undefined",
     },
   ]
+
+  export const clientProfileFormData: T.FormData[] = [
+    {
+      stateName: "firstName",
+      setStateName: "setFirstName",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "lastName",
+      setStateName: "setLastName",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "phoneNumber",
+      setStateName: "setPhoneNumber",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "emailAddress",
+      setStateName: "setEmailAddress",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "homeAddress",
+      setStateName: "setHomeAddress",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "dateOfBirth",
+      setStateName: "dateOfBirth",
+      initialStateValue: "",
+      inputType: "date",
+    },
+  ]

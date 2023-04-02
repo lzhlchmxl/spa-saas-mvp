@@ -1,4 +1,5 @@
 
+import { useNavigate } from "react-router-dom";
 import CreateProfile from "../../../features/VendorPage/Profile/CreateProfile";
 import ViewProfile from "../../../features/VendorPage/Profile/ViewProfile";
 import { deleteVendorProfile, getVendorProfile } from "../../../utilities/api";
@@ -10,6 +11,7 @@ import LoadingIndicator from "../../UIComponents/LoadingIndicator";
 
 export default function ProfilePage() {
 
+  const navigate = useNavigate();
   const vendorProfileAsync = useAsync(() => getVendorProfile(), []);
 
   if ( vendorProfileAsync.status === "pending" ) {
@@ -23,7 +25,7 @@ export default function ProfilePage() {
   const vendorProfile = vendorProfileAsync.value;
 
   const handleEditProfile = () => {
-    window.location.href = '/vendor/profile/edit'
+    navigate('/vendor/profile/edit');
   }
 
   const handleTryDeleteProfile = async () => {

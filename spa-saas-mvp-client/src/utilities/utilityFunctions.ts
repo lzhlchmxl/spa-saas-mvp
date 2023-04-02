@@ -37,3 +37,7 @@ export function secondsToDuration(seconds: number): T.Duration {
 
   return duration;
 }
+
+export function addSpaceBeforeCapitalLetters(s: string): string {
+  return s.replace(/([A-Z])/g, ' $1').trim();
+}

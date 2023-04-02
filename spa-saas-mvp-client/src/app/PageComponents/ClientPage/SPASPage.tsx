@@ -3,6 +3,7 @@ import { useAsync } from "../../../utilities/customHooks"
 import ErrorIndicator from "../../UIComponents/ErrorIndicator";
 import LoadingIndicator from "../../UIComponents/LoadingIndicator";
 import * as T from "../../../utilities/types";
+import ContentPageTopButtons from "../../UIComponents/ContentPageTopButtons";
 
 export default function SpasPage() {
 
@@ -27,7 +28,7 @@ export default function SpasPage() {
       <div
         onClick={() => handleViewSpaDetails(vendorSpaHeader.vendorSpaId)}
         key={vendorSpaHeader.vendorSpaId}
-        className="flex border border-borders hover:bg-highlight transition-colors duration-200 cursor-pointer"
+        className="flex border border-borders hover:bg-textsIcons/5 transition-colors duration-200 cursor-pointer"
       >
         <p className="w-1/2 p-4 text-textsIcons font-medium">{vendorSpaHeader.name}</p>
         <p className="w-1/2 p-4 text-textsIcons">{vendorSpaHeader.description}</p>
@@ -36,8 +37,13 @@ export default function SpasPage() {
   });
   
   return (
-    <div className="flex w-full justify-center items-center">
-      <div className="flex flex-col w-[80%]">
+    <div className="relative flex flex-col h-full w-contentWidth max-w-maxContentWidth items-center">
+      <ContentPageTopButtons 
+        hideEditDeleteButtons={true}
+        editCallback={() => {}} 
+        deleteCallback={() => {}} 
+      />
+      <div className="flex flex-col w-full mt-10">
         <div className="flex border border-borders font-medium bg-backgrounds">
           <p className="w-1/2 p-4 text-textsIcons">Name</p>
           <p className="w-1/2 p-4 text-textsIcons">Description</p>

@@ -2,13 +2,15 @@ import CreateProfile from "../../../features/ClientPage/CreateProfile";
 import ViewProfile from "../../../features/ClientPage/ViewProfile";
 import { deleteClientProfile, getClientProfile } from "../../../utilities/api";
 import { useAsync } from "../../../utilities/customHooks";
-import Button from "../../UIComponents/Button";
+import ContentPageTopButtons from "../../UIComponents/ContentPageTopButtons";
 import ErrorIndicator from "../../UIComponents/ErrorIndicator";
 import LoadingIndicator from "../../UIComponents/LoadingIndicator";
+import { useNavigate } from "react-router-dom";
 
 
 export default function ProfilePage() {
 
+  const navigate = useNavigate();
   const clientProfileAsync = useAsync(() => getClientProfile(), []);
 
   if ( clientProfileAsync.status === "pending" ) {
@@ -22,7 +24,7 @@ export default function ProfilePage() {
   const clientProfile = clientProfileAsync.value;
 
   const handleEditProfile = () => {
-    window.location.href = '/client/profile/edit'
+    navigate('/client/profile/edit');
   }
 
   const handleTryDeleteProfile = async () => {
@@ -35,21 +37,15 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="flex h-full w-full justify-center">
-      {clientProfile ? <ViewProfile profile={clientProfile} /> : <CreateProfile />}
-      {clientProfile && 
-      <div className="flex h-[50px] mt-5">
-        <Button 
-          actionType="secondary"
-          actionText="EDIT"
-          actionHandler={handleEditProfile} 
-        />
-        <Button 
-          actionType="danger"
-          actionText="DELETE"
-          actionHandler={handleTryDeleteProfile} 
-        />
-      </div>}
+    <div className="relative flex flex-col h-full w-contentWidth max-w-maxContentWidth items-center">
+      <ContentPageTopButtons 
+        hideEditDeleteButtons={clientProfile === null}
+        editCallback={handleEditProfile} 
+        deleteCallback={handleTryDeleteProfile} 
+      />
+      <div className="absolute top-1/2 translate-y-[-50%]">
+        {clientProfile ? <ViewProfile profile={clientProfile} /> : <CreateProfile />}
+      </div>
     </div>
   )
 

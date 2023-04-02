@@ -23,7 +23,7 @@ import EditMySpaInfo from './features/VendorPage/MySpaPage/EditMySpaInfo';
 import CreateVendorService from './features/VendorPage/MySpaPage/SpaServices/CreateVendorService';
 import ViewVendorServiceDetails from './features/VendorPage/MySpaPage/SpaServices/ViewVendorServiceDetails';
 import EditVendorServiceDetails from './features/VendorPage/MySpaPage/SpaServices/EditVendorServiceDetails';
-import ViewSpaDetails from './features/ClientPage/ViewSpaDetails';
+import ViewSpaDetails from './features/ClientPage/Spas/ViewSpaDetails';
 import ViewServiceCategoryDetailsPage from './features/AdminPage/ViewServiceCategoryDetails';
 import EditServiceCategoryDetailsPage from './features/AdminPage/EditServiceCategoryDetails';
 import CreateServiceCategoryDetailsPage from './features/AdminPage/CreateServiceCategoryDetails';

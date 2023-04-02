@@ -151,5 +151,5 @@ export type FormData = {
   stateName: string;
   setStateName: string;
   initialStateValue: "" | [] | 0;
-  inputType: "text" | "undefined" | "duration" | "number" | "dropdown" | "requiredSpaResourcesTable"
+  inputType: "text" | "undefined" | "duration" | "number" | "dropdown" | "requiredSpaResourcesTable" | "date";
 }

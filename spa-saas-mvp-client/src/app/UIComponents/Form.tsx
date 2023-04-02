@@ -2,19 +2,21 @@ import * as T from "../../utilities/types";
 import { useState } from "react";
 import Button from "./Button";
 import InputWithLabel from "./InputWithLabel";
-import { vendorProfileFormData, vendorSpaInfoFormData, vendorSpaResourceFormData, vendorSpaServiceFormData } from "../../utilities/data";
+import { clientProfileFormData, vendorProfileFormData, vendorSpaInfoFormData, vendorSpaResourceFormData, vendorSpaServiceFormData } from "../../utilities/data";
 import { useNavigate } from "react-router-dom";
 import DurationPickerWithLabel from "./DurationPickerWithLabel";
 import { useAsync } from "../../utilities/customHooks";
 import { getSpaResources } from "../../utilities/api";
 import LoadingIndicator from "./LoadingIndicator";
 import ErrorIndicator from "./ErrorIndicator";
+import DatePickerWithLabel from "./DatePickerWithLabel";
+import { addSpaceBeforeCapitalLetters } from "../../utilities/utilityFunctions";
 
 export interface FormState {
   [key: string]: FormStateValue;
 }
 
-type FormStateValue = string | number | T.ServiceCategory[] | T.VendorService[] | T.SpaEmployee[] | T.SpaResource[] | T.RequiredSpaResource[];
+type FormStateValue = null | string | number | Date | T.ServiceCategory[] | T.VendorService[] | T.SpaEmployee[] | T.SpaResource[] | T.RequiredSpaResource[];
 
 export default function Form({
     initialForm,
@@ -45,6 +47,8 @@ export default function Form({
         return vendorSpaServiceFormData;
       case 'vendorSpaResourceForm':
         return vendorSpaResourceFormData;
+      case 'clientProfileForm':
+        return clientProfileFormData;
       default:
         throw new Error("Unknown form name.")
     }  
@@ -101,7 +105,7 @@ export default function Form({
               return (
                 <InputWithLabel 
                   key={key}
-                  label={key}
+                  label={addSpaceBeforeCapitalLetters(key)}
                   name={key}
                   type={formData.inputType}
                   value={state[key]} 
@@ -117,6 +121,16 @@ export default function Form({
                   setDurationInSeconds={(v) => updateState(key, v)}      
                 />
               )
+            case "date":
+              return (
+                <DatePickerWithLabel 
+                  key={key} 
+                  label={addSpaceBeforeCapitalLetters(key)} 
+                  name={key} 
+                  value={state[key] as Date} 
+                  setValue={(v) => updateState(key, v)}    
+                />
+              )
             case "requiredSpaResourcesTable":
               return (
                 <RequiredSpaResourcesTable
@@ -126,6 +140,9 @@ export default function Form({
                   setRequiredSpaResources={(v) => updateState(key, v)}               
                 />
               )
+            // [Note]: temp type for under-construction item 
+            case "undefined":
+              return <div key={key}></div>;
             default:
               throw new Error("Unknown formData input type.");
           }

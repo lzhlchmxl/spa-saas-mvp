@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-import { VendorProfile } from "../../../utilities/types";
 
 export default function VendorPage() {
   

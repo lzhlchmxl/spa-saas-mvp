@@ -22,8 +22,8 @@ export default function DatePickerWithLabel(
   const date = value ? moment(value).toDate() : null;
 
   return (
-    <div className='flex flex-col mb-5'>
-      <label className="capitalize" htmlFor={name}>{label}</label>
+    <div className='flex flex-col mb-5 w-full  text-textsIcons'>
+      <label className="capitalize font-semibold mb-1" htmlFor={name}>{label}</label>
       <DatePicker 
         name={name}
         value={date}
