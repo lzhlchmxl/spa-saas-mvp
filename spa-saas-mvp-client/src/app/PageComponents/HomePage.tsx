@@ -8,10 +8,10 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-col self-center relative w-full h-[calc(100%-130px)] justify-center items-center">
-      <img 
+      {/* <img 
         className="absolute top-0 left-0 z-0 opacity-70 h-full w-full"
         src={landingPageBg}
-      />
+      /> */}
       <h1 className="z-10 font-bold text-textsIcons">SPA SaaS MVP Landing Page</h1>
       {
         isAuthenticated && 

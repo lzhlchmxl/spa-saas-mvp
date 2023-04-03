@@ -114,7 +114,7 @@ export type NewSpa = {
 }
 export type VendorSpaId = id; 
 export type VendorSpaHeader = {
-  vendorSpaId: VendorSpaId;
+  spaId: VendorSpaId;
   name: string,
   description: string,
 }

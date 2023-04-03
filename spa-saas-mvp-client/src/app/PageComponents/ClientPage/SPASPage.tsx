@@ -26,8 +26,8 @@ export default function SpasPage() {
   const vendorSpaHeadersHTML = vendorSpaHeaders.map(vendorSpaHeader => {
     return (
       <div
-        onClick={() => handleViewSpaDetails(vendorSpaHeader.vendorSpaId)}
-        key={vendorSpaHeader.vendorSpaId}
+        onClick={() => handleViewSpaDetails(vendorSpaHeader.spaId)}
+        key={vendorSpaHeader.spaId}
         className="flex border border-borders hover:bg-textsIcons/5 transition-colors duration-200 cursor-pointer"
       >
         <p className="w-1/2 p-4 text-textsIcons font-medium">{vendorSpaHeader.name}</p>

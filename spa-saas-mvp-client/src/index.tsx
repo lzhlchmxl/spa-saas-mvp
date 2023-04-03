@@ -30,6 +30,7 @@ import CreateServiceCategoryDetailsPage from './features/AdminPage/CreateService
 import ViewSpaEmployeeDetails from './features/VendorPage/MySpaPage/SpaEmployees/ViewSpaEmployeeDetails';
 import CreateSpaResource from './features/VendorPage/MySpaPage/SpaResources/CreateSpaResource';
 import CreateSpaEmployee from './features/VendorPage/MySpaPage/SpaEmployees/CreateSpaEmployee';
+import ViewSpaResourceDetails from './features/VendorPage/MySpaPage/SpaResources/ViewSpaResourceDetails';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -61,7 +62,7 @@ root.render(
               <Route path="services/:vendorServiceId" element={<ViewVendorServiceDetails />} />
               <Route path="services/:vendorServiceId/edit" element={<EditVendorServiceDetails />} />
               <Route path="services/create" element={<CreateVendorService />} />    
-              {/* <Route path="resources/:spaResourceId" element={<ViewVendorServiceDetails />} /> */}
+              <Route path="resources/:spaResourceId" element={<ViewSpaResourceDetails />} />
               {/* <Route path="resources/:spaResourceId/edit" element={<EditVendorServiceDetails />} /> */}
               <Route path="resources/create" element={<CreateSpaResource />} />        
             </Route>
