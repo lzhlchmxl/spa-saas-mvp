@@ -9,7 +9,7 @@ export default function CreateSpaResource() {
 
     const updatedSpaResource: T.SpaResourceForm = {
       name: updatedForm['name'] as string,
-      availableCount: updatedForm['avilableCount'] as number,
+      availableCount: updatedForm['availableCount'] as number,
       type: updatedForm['type'] as T.SpaResourceTypes,
     }
 

@@ -59,7 +59,7 @@ export default function EditProfile() {
         formName="clientProfileForm" 
         cancelText="Cancel"
         cancelLink='/client/profile'
-        actionText={"Save"} 
+        actionText="Save"
         actionCallback={(updatedForm) => handleTrySaveProfile(updatedForm)}    
       />
     </div>

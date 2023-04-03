@@ -27,6 +27,7 @@ app.use(cors({
 app.use(Express.json());
 
 const uri = process.env.ATLAS_URI || "";
+
 mongoose.connect(uri);
 const connection = mongoose.connection;
 connection.once('open', () => {

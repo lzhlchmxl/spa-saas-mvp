@@ -89,9 +89,9 @@ export default function ViewSpaDetails() {
     setSelectedBookingDateTime(date);
     if (date !== null) {
       setIsModalLoading(true);
-      const { availablePractitionerNames, avilableStartingTimeRanges } = await findAvailablePractitionerNamesAndTimeRanges(selectedBookingDateTime);
-      setAvailablePractitionerNames(availablePractitionerNames);
-      setAvailableStartingTimeRanges(avilableStartingTimeRanges);
+      // const { availablePractitionerNames, avilableStartingTimeRanges } = await findAvailablePractitionerNamesAndTimeRanges(selectedBookingDateTime);
+      // setAvailablePractitionerNames(availablePractitionerNames);
+      // setAvailableStartingTimeRanges(avilableStartingTimeRanges);
       setIsModalLoading(false);
     }
   }

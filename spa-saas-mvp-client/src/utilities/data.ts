@@ -126,8 +126,8 @@ export const hydroSPAServices = [
       inputType: "text",
     },
     {
-      stateName: "avilableCount",
-      setStateName: "setAvilableCount",
+      stateName: "availableCount",
+      setStateName: "setAvailableCount",
       initialStateValue: 0,
       inputType: "number",
     },
