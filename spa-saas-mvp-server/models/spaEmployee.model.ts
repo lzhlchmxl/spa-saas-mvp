@@ -2,6 +2,7 @@ import { Schema, model, Document } from "mongoose";
 import * as T from '../utilities/types';
 
 export interface SpaEmployeeInterface extends Document {
+  vendorId: string,
   spaId: string,
   username: string,
   password: string,
@@ -13,6 +14,11 @@ export interface SpaEmployeeInterface extends Document {
 }
 
 export const spaEmployeeSchema = new Schema<SpaEmployeeInterface>({
+  vendorId: {
+    type: String,
+    required: true,
+    unique: false,
+  },
   spaId: {
     type: String,
     required: true,

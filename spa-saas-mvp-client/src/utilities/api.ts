@@ -383,10 +383,20 @@ export async function getSpaServiceDetails(vendorServiceId: T.VendorServiceId): 
 
 export async function createSpaService(newService: T.VendorServiceForm): Promise<Response> {
 
+  const newServiceWithResourceIds = {
+    ...newService,
+    requiredSpaResources: newService.requiredSpaResources.map( requiredSpaResource => {
+      return {
+        spaResourceId: requiredSpaResource.spaResource._id,
+        requiredCount: requiredSpaResource.requiredCount,
+      }
+    })
+  }
+
   const requestOptions = {
     method: 'post',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(newService)
+    body: JSON.stringify(newServiceWithResourceIds)
   }
 
   const response = await fetch(`/api/vendor/my-spa/services/create`, requestOptions);

@@ -96,7 +96,7 @@ router.route('/spas').get(isAuthenticated, isAuthorized, async (req, res) => {
     const vendorSpaHeaders:T.VendorSpaHeader[] = vendorSpas.map( vendorSpa => {
       return (
         {
-          vendorSpaId: vendorSpa._id,
+          spaId: vendorSpa._id,
           name: vendorSpa.name,
           description: vendorSpa.description,
         }
@@ -111,21 +111,21 @@ router.route('/spas').get(isAuthenticated, isAuthorized, async (req, res) => {
 });
 
 /*
-    GET /api/client/spas/:vendorSpaId
+    GET /api/client/spas/:spaId
     Description: 
     Request body: no request body
     Response body: VendorSpaHeader[]
 */
-router.route('/spas/:vendorSpaId').get(isAuthenticated, isAuthorized, async (req, res) => {
+router.route('/spas/:spaId').get(isAuthenticated, isAuthorized, async (req, res) => {
   
-  const vendorSpaId = req.params.vendorSpaId;
+  const spaId = req.params.spaId;
 
   try {
-    const spa = await MySpa.findOne({ _id: vendorSpaId});
-    const services = await VendorService.find({ vendorSpaId });
+    const spa = await MySpa.findOne({ _id: spaId});
+    const services = await VendorService.find({ spaId: spaId });
 
     if (spa === null || services === null) {
-      throw new Error("No results found with the given vendorSpaId");
+      throw new Error("No results found with the given spaId");
     }
 
     const spaDetails:T.SpaDetails = {
@@ -160,16 +160,24 @@ router.route('/spas/:spaId/bookService/:serviceId').get(isAuthenticated, isAutho
     if (spa === null) {
       throw new Error("No results found with the given spaId");
     }
-    const occupiedRecords = await Promise.all(spa.recordIds.map( async (recordId: string) => {
-      const record = await Record.findOne({_id: recordId});
-      if (record === null) {
-        throw new Error("No Record found with the given id");
-      }
+    // const occupiedRecords = await Promise.all(spa.recordIds.map( async (recordId: string) => {
+    //   const record = await Record.findOne({_id: recordId});
+    //   if (record === null) {
+    //     throw new Error("No Record found with the given id");
+    //   }
+    //   const serviceStage = record.serviceStage;
+    //   if (serviceStage === "booking" || serviceStage === "booked" || serviceStage === "rescheduling") {
+    //     return record;
+    //   }
+    // }))
+    const spaRecords = await Record.find({ spaId: spa._id });
+    const occupiedRecords = spaRecords.filter( record => {
       const serviceStage = record.serviceStage;
       if (serviceStage === "booking" || serviceStage === "booked" || serviceStage === "rescheduling") {
         return record;
       }
-    }))
+    })
+
     const bookingService = await VendorService.findOne({ _id: serviceId });
 
     if (bookingService === null) {

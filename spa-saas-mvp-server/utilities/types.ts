@@ -8,7 +8,7 @@ export type NewClientProfile = {
 }
 
 export type NewVendorProfile = {
-  userId: VendorUserId,
+  userId: VendorId,
   firstName: string,
   lastName: string,
   phoneNumber: string,
@@ -24,7 +24,7 @@ export type ServiceCategory = {
   description: string,
 }
 
-type VendorUserId = id;
+type VendorId = id;
 export type ServiceCategoryId = id;
 type id = string;
 
@@ -39,14 +39,14 @@ export type NewVendorService = {
 
 // NewVendorSpa and VendorSpaHeader looks identical for now as intended
 export type NewVendorSpa = {
-  userId: VendorUserId,
+  userId: VendorId,
   name: string,
   description: string,
   serviceCategoryIds: ServiceCategoryId[],
 }
 
 export type VendorSpaHeader = {
-  vendorSpaId: VendorUserId,
+  spaId: SpaId,
   name: string,
   description: string,
 }
@@ -66,6 +66,7 @@ type VendorServiceForm = {
 }
 type VendorServiceId = id;
 type VendorService = VendorServiceForm & { _id: VendorServiceId };
+type SpaId = id;
 
 export type DateTimeRange = {
   startDateTime: Date,

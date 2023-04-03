@@ -96,31 +96,36 @@ router.route('/my-spa').get(isAuthenticated, isAuthorized, async (req, res) => {
     const mySpa = await MySpa.findOne({ userId: req.session.data?.userId });
 
     if (mySpa === null) {
-      res.status(404).json(null);
-    } else {
-      const spaEmployees = await Promise.all(mySpa.employees.map( async (employeeId: string) => {
-        const spaEmployee = await SpaEmployee.findOne({ _id: employeeId });
-        if (spaEmployee === null) {
-          throw new Error("No matching employee found");
-        }
-        return spaEmployee;
-      }));
+      throw new Error("No spa found with the given vendorId");
+    } 
+      // const spaEmployees = await Promise.all(mySpa.employees.map( async (employeeId: string) => {
+      //   const spaEmployee = await SpaEmployee.findOne({ _id: employeeId });
+      //   if (spaEmployee === null) {
+      //     throw new Error("No matching employee found");
+      //   }
+      //   return spaEmployee;
+      // }));
+      const mySpaId = mySpa._id;
+      const spaEmployees = await SpaEmployee.find({ spaId: mySpaId });
+      
+      // const spaServices = await Promise.all(mySpa.serviceIds.map( async (serviceId: string) => {
+      //   const spaService = await VendorService.findOne({ _id: serviceId });
+      //   if (spaService === null) {
+      //     throw new Error("No matching service found");
+      //   }
+      //   return spaService;
+      // }));
+      const spaServices = await VendorService.find( {spaId: mySpaId });
+  
+      // const spaResources = await Promise.all(mySpa.resourceIds.map( async (resourceId: string) => {
+      //   const spaResource = await SpaResource.findOne({ _id: resourceId });
+      //   if (spaResource === null) {
+      //     throw new Error("No matching resource found");
+      //   }
+      //   return spaResource;
+      // }));
 
-      const spaServices = await Promise.all(mySpa.serviceIds.map( async (serviceId: string) => {
-        const spaService = await VendorService.findOne({ _id: serviceId });
-        if (spaService === null) {
-          throw new Error("No matching service found");
-        }
-        return spaService;
-      }));
-
-      const spaResources = await Promise.all(mySpa.resourceIds.map( async (resourceId: string) => {
-        const spaResource = await SpaResource.findOne({ _id: resourceId });
-        if (spaResource === null) {
-          throw new Error("No matching resource found");
-        }
-        return spaResource;
-      }));
+      const spaResources = await SpaResource.find( {spaId: mySpaId })
 
       const spa = {
         name: mySpa.name,
@@ -131,7 +136,7 @@ router.route('/my-spa').get(isAuthenticated, isAuthorized, async (req, res) => {
       }
 
       res.status(200).json(spa);
-    }
+    
   } catch(err) {
     console.log(err)
     res.status(500).json({ message: 'An error has occurred when creating the spa.'})
@@ -216,6 +221,9 @@ router.route('/my-spa/info/delete').delete(isAuthenticated, isAuthorized, async 
 //   }
 // });
 
+
+// --------- Services ---------- //
+
 /*
     GET /api/vendor/my-spa/services/:vendorServiceId
     Description: 
@@ -271,14 +279,13 @@ router.route('/my-spa/services/create').post(isAuthenticated, isAuthorized, asyn
     if (vendorSpa === null) {
       throw new Error('Unable to find the spa associated with the given vendorId');
     }
-    const service: T.NewVendorService = {...req.body, vendorUserId: req.session.data?.userId, vendorSpaId: vendorSpa._id};
+    const service: T.NewVendorService = {...req.body, vendorId: req.session.data?.userId, spaId: vendorSpa._id};
     
     const newService = new VendorService(service);
-    vendorSpa.serviceIds.push(newService._id);
-    await vendorSpa.save();
+    // vendorSpa.serviceIds.push(newService._id);
+    // await vendorSpa.save();
     await newService.save();
     
-
     res.status(200).json({ message: 'Vendor service sucessfully created.', vendorServiceId: newService._id});
   } catch(err) {
     console.log(err)
@@ -320,11 +327,11 @@ router.route('/my-spa/services/:vendorServiceId/delete').delete(isAuthenticated,
       throw new Error('Unable to find the spa associated with the given vendorId');
     }
 
-    const updatedSpaServiceIds = vendorSpa.serviceIds.filter( (serviceId: Schema.Types.ObjectId) => {   
-      return serviceId.toString() !== vendorServiceId
-    });
-    vendorSpa.serviceIds = updatedSpaServiceIds;
-    await vendorSpa.save();
+    // const updatedSpaServiceIds = vendorSpa.serviceIds.filter( (serviceId: Schema.Types.ObjectId) => {   
+    //   return serviceId.toString() !== vendorServiceId
+    // });
+    // vendorSpa.serviceIds = updatedSpaServiceIds;
+    // await vendorSpa.save();
     await VendorService.findOneAndDelete({ _id: vendorServiceId });
     res.status(200).json({ message: 'VendorService sucessfully deleted.'});
   } catch(err) {
@@ -345,19 +352,19 @@ router.route('/my-spa/services/:vendorServiceId/delete').delete(isAuthenticated,
 router.route('/my-spa/resources').get(isAuthenticated, isAuthorized, async (req, res) => {
   try {
 
-    const vendorUserId = req.session.data?.userId;
-    const vendorSpa = await MySpa.findOne({ userId: vendorUserId })
+    const vendorId = req.session.data?.userId;
+    const vendorSpa = await MySpa.findOne({ userId: vendorId })
 
     if (vendorSpa === null) {
       throw new Error('Unable to find the spa associated with the given vendorId');
     }
     
-    const spaResources = await Promise.all(vendorSpa.resourceIds.map( async (resourceId: string) => {
-      return await SpaResource.findOne({ _id: resourceId });
-    }))
-
-    res.status(200).json(spaResources);
+    // const spaResources = await Promise.all(vendorSpa.resourceIds.map( async (resourceId: string) => {
+    //   return await SpaResource.findOne({ _id: resourceId });
+    // }))
+    const spaResources = await SpaResource.find({ spaId: vendorSpa._id });
     
+    res.status(200).json(spaResources);
   } catch(err) {
     console.log(err)
     res.status(500).json({ message: 'An error has occurred when getting spa resources'})
@@ -373,8 +380,8 @@ router.route('/my-spa/resources').get(isAuthenticated, isAuthorized, async (req,
 router.route('/my-spa/resources/:resourceId').get(isAuthenticated, isAuthorized, async (req, res) => {
   try {
 
-    const vendorUserId = req.session.data?.userId;
-    const vendorSpa = await MySpa.findOne({ userId: vendorUserId })
+    const vendorId = req.session.data?.userId;
+    const vendorSpa = await MySpa.findOne({ userId: vendorId })
 
     if (vendorSpa === null) {
       throw new Error('Unable to find the spa associated with the given vendorId');
@@ -403,19 +410,19 @@ router.route('/my-spa/resources/create').post(isAuthenticated, isAuthorized, asy
  
   try {
 
-    const vendorUserId = req.session.data?.userId;
+    const vendorId = req.session.data?.userId;
 
-    const vendorSpa = await MySpa.findOne({ userId: vendorUserId })
+    const vendorSpa = await MySpa.findOne({ userId: vendorId })
 
     if (vendorSpa === null) {
       throw new Error('Unable to find the spa associated with the given vendorId');
     }
 
-    const resource = {...req.body, vendorId: vendorUserId, spaId: vendorSpa._id};
+    const resource = {...req.body, vendorId: vendorId, spaId: vendorSpa._id};
     
     const newResource = new SpaResource(resource);
-    vendorSpa.resourceIds.push(newResource._id);
-    await vendorSpa.save();
+    // vendorSpa.resourceIds.push(newResource._id);
+    // await vendorSpa.save();
     await newResource.save();
     
     res.status(200).json({ message: 'Vendor resource sucessfully created.', spaResourceId: newResource._id});
@@ -431,17 +438,17 @@ router.route('/my-spa/resources/create').post(isAuthenticated, isAuthorized, asy
     Request body: NewVendorService
     Response body: 
 */
-router.route('/my-spa/services/update').put(isAuthenticated, isAuthorized, async (req, res) => {
+// router.route('/my-spa/services/update').put(isAuthenticated, isAuthorized, async (req, res) => {
 
-  try {
-    await VendorService.findOneAndUpdate({ _id: req.body._id }, req.body);
+//   try {
+//     await VendorService.findOneAndUpdate({ _id: req.body._id }, req.body);
 
-    res.status(200).json({ message: 'Vendor service sucessfully updated.'});
-  } catch(err) {
-    console.log(err)
-    res.status(500).json({ message: 'An error has occurred when updating the vendor service.'})
-  }
-});
+//     res.status(200).json({ message: 'Vendor service sucessfully updated.'});
+//   } catch(err) {
+//     console.log(err)
+//     res.status(500).json({ message: 'An error has occurred when updating the vendor service.'})
+//   }
+// });
 
 /*
     DELETE /api/vendor/my-spa/services/:vendorServiceId/delete
@@ -449,27 +456,27 @@ router.route('/my-spa/services/update').put(isAuthenticated, isAuthorized, async
     Request body: 
     Response body: 
 */
-router.route('/my-spa/services/:vendorServiceId/delete').delete(isAuthenticated, isAuthorized, async (req, res) => {
+// router.route('/my-spa/services/:vendorServiceId/delete').delete(isAuthenticated, isAuthorized, async (req, res) => {
 
-  const vendorServiceId = req.params.vendorServiceId;
+//   const vendorServiceId = req.params.vendorServiceId;
 
-  try {
-    const vendorSpa = await MySpa.findOne({userId: req.session.data?.userId});
-    if (vendorSpa === null) {
-      throw new Error('Unable to find the spa associated with the given vendorId');
-    }
+//   try {
+//     const vendorSpa = await MySpa.findOne({userId: req.session.data?.userId});
+//     if (vendorSpa === null) {
+//       throw new Error('Unable to find the spa associated with the given vendorId');
+//     }
 
-    const updatedSpaServiceIds = vendorSpa.serviceIds.filter( (serviceId: Schema.Types.ObjectId) => {   
-      return serviceId.toString() !== vendorServiceId
-    });
-    vendorSpa.serviceIds = updatedSpaServiceIds;
-    await vendorSpa.save();
-    await VendorService.findOneAndDelete({ _id: vendorServiceId });
-    res.status(200).json({ message: 'VendorService sucessfully deleted.'});
-  } catch(err) {
-    console.log(err)
-    res.status(500).json({ message: 'An error has occurred when deleting VendorService.'})
-  }
-});
+//     // const updatedSpaServiceIds = vendorSpa.serviceIds.filter( (serviceId: Schema.Types.ObjectId) => {   
+//     //   return serviceId.toString() !== vendorServiceId
+//     // });
+//     // vendorSpa.serviceIds = updatedSpaServiceIds;
+//     // await vendorSpa.save();
+//     await VendorService.findOneAndDelete({ _id: vendorServiceId });
+//     res.status(200).json({ message: 'VendorService sucessfully deleted.'});
+//   } catch(err) {
+//     console.log(err)
+//     res.status(500).json({ message: 'An error has occurred when deleting VendorService.'})
+//   }
+// });
 
 export default router;

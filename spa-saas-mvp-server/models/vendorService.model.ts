@@ -3,8 +3,8 @@ import { SpaResourceInterface } from "./spaResources.model";
 
 export interface VendorServiceInterface extends Document {
   categoryId: string,
-  vendorSpaId: string,
-  vendorUserId: string,
+  spaId: string,
+  vendorId: string,
   name: string,
   description: string,
   durationInSeconds: number,
@@ -18,13 +18,12 @@ const vendorServiceSchema = new Schema<VendorServiceInterface>({
     // required: true,
     unique: false,
   },
-  // [TODO] replace all usage of vendorUserId in vendorServices with vendorSpaId
-  vendorUserId: {
+  vendorId: {
     type: String,
     required: true,
     unique: false,
   },
-  vendorSpaId: {
+  spaId: {
     type: String,
     required: true,
     unique: false,
