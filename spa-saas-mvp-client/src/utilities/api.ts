@@ -267,6 +267,13 @@ export async function deleteServiceCategoryDetails(id: T.ServiceCategoryId): Pro
   return response.status;
 }
 
+/* 
+* 
+* 
+---------------- SPA INFORMATION ---------------- 
+* 
+* 
+*/
 
 /* GET Spa info from vendor */
 export async function getMySpa(): Promise<T.VendorSpa> {
@@ -343,6 +350,42 @@ export async function deleteMySpaInfo(): Promise<T.HTTPStatusCode> {
 
   return response.status;
 }
+
+/* 
+* 
+* 
+---------------- SPA EMPLOYEES ---------------- 
+* 
+* 
+*/
+export async function createSpaEmployee(newEmployee: T.SpaEmployeeForm): Promise<Response> {
+
+  const requestOptions = {
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(newEmployee)
+  }
+
+  const response = await fetch(`/api/vendor/my-spa/employees/create`, requestOptions);
+
+  if (response.status === 401 || response.status === 403) {
+    window.location.href = '/login';
+  }
+
+  if (response.status !== 200) {
+    throw new Error(`/api/vendor/my-spa/employees/create returned HTTP status code: ${response.status}`);
+  }
+
+  return response;
+}
+
+/* 
+* 
+* 
+---------------- SPA SERVICES ---------------- 
+* 
+* 
+*/
 
 /* GET a list of vendor service info based on vendorId*/
 export async function getSpaServiceHeaders(): Promise<T.VendorServiceHeader[]> {
@@ -493,7 +536,13 @@ export async function getSpaDetailsById(vendorSpaId: T.VendorSpaId): Promise<T.S
 }
 
 
-/* API calls for spa resources */
+/* 
+* 
+* 
+---------------- SPA RESOURCES ---------------- 
+* 
+* 
+*/
 
 export async function getSpaResources(): Promise<T.SpaResource[]> {
 

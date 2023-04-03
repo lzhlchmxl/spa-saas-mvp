@@ -92,9 +92,14 @@ export default function MySpaPage() {
     // }
   }
 
+  const handleCreateSpaEmployee = () => {
+    navigate(`/vendor/my-spa/employees/create`)
+  }
+
   const handleCreateSpaService = () => {
     navigate(`/vendor/my-spa/services/create`)
   }
+
 
   const spaEmployeesHTML = mySpa.employees.map( (employee, index) => {
     return (
@@ -204,7 +209,16 @@ export default function MySpaPage() {
             <p className="mt-3 text-lg">Description: {mySpa.description}</p>
           </div>
           {/* Employees */}
-          <div id="employees" className="my-5 flex flex-col w-full rounded-md border-[1px] border-textsIcons/30 p-5">
+          <div id="employees" className="relative my-5 flex flex-col w-full rounded-md border-[1px] border-textsIcons/30 p-5">
+            <div 
+              className="flex absolute top-5 right-5 hover:cursor-pointer hover:bg-textsIcons/5 py-1 px-2 rounded-sm"
+              onClick={handleCreateSpaEmployee}        
+            >
+              <div className="pr-1">
+                <IconButton icon={faPlus} actionCallback={handleCreateSpaEmployee} />
+              </div>
+              Add Employee
+            </div>
             <h1 className="text-2xl font-semibold capitalize">employees</h1>
             <div className="flex flex-col mt-3">
               <div className="flex mb-1">

@@ -29,6 +29,7 @@ import EditServiceCategoryDetailsPage from './features/AdminPage/EditServiceCate
 import CreateServiceCategoryDetailsPage from './features/AdminPage/CreateServiceCategoryDetails';
 import ViewSpaEmployeeDetails from './features/VendorPage/MySpaPage/SpaEmployees/ViewSpaEmployeeDetails';
 import CreateSpaResource from './features/VendorPage/MySpaPage/SpaResources/CreateSpaResource';
+import CreateSpaEmployee from './features/VendorPage/MySpaPage/SpaEmployees/CreateSpaEmployee';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -55,6 +56,7 @@ root.render(
             <Route path='profile/edit' element={<VendorEditProfilePage />} />
             <Route path="my-spa" element={<MySpaPage />}> 
               <Route path="edit" element={<EditMySpaInfo />} />
+              <Route path='employees/create' element={<CreateSpaEmployee />} />
               <Route path='employees/:employeeId' element={<ViewSpaEmployeeDetails />} />
               <Route path="services/:vendorServiceId" element={<ViewVendorServiceDetails />} />
               <Route path="services/:vendorServiceId/edit" element={<EditVendorServiceDetails />} />

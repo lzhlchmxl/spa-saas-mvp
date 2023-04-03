@@ -6,7 +6,6 @@ import SpaEmployee from '../models/spaEmployee.model';
 import SpaResource, { SpaResourceInterface } from '../models/spaResources.model';
 import MySpa from '../models/mySpa.model';
 import * as T from '../utilities/types';
-import { Schema } from 'mongoose';
 
 const router = express.Router();
 
@@ -221,8 +220,49 @@ router.route('/my-spa/info/delete').delete(isAuthenticated, isAuthorized, async 
 //   }
 // });
 
+/* 
+* 
+* 
+---------------- SPA EMPLOYEES ---------------- 
+* 
+* 
+*/
 
-// --------- Services ---------- //
+/*
+    POST /api/vendor/my-spa/employees/create
+    Description: 
+    Request body: NewEmployee
+    Response body: 
+*/
+router.route('/my-spa/employees/create').post(isAuthenticated, isAuthorized, async (req, res) => {
+ 
+  try {
+
+    const vendorSpa = await MySpa.findOne({userId: req.session.data?.userId});
+    if (vendorSpa === null) {
+      throw new Error('Unable to find the spa associated with the given vendorId');
+    }
+    const employee: T.SpaEmployeeForm = {...req.body, vendorId: req.session.data?.userId, spaId: vendorSpa._id};
+    
+    const newEmployee = new SpaEmployee(employee);
+    // vendorSpa.serviceIds.push(newService._id);
+    // await vendorSpa.save();
+    await newEmployee.save();
+    
+    res.status(200).json({ message: 'Spa employee sucessfully created.', spaEmployeeId: newEmployee._id});
+  } catch(err) {
+    console.log(err)
+    res.status(500).json({ message: 'An error has occurred when creating the new vendor service.'})
+  }
+});
+
+/* 
+* 
+* 
+---------------- SPA SERVICES ---------------- 
+* 
+* 
+*/
 
 /*
     GET /api/vendor/my-spa/services/:vendorServiceId

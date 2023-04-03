@@ -139,6 +139,46 @@ export const hydroSPAServices = [
     }
   ]
 
+  // username: string,
+  // password: string,
+  // firstName: string,
+  // lastName: string,
+  // status: "active" | "vacation" | "off-work",
+  // permission: "basic" | "advanced",
+  // unavailableDateTimeRanges: DateTimeRange[],
+  export const vendorSpaEmployeeFormData: T.FormData[] = [
+    {
+      stateName: "username",
+      setStateName: "setName",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "password",
+      setStateName: "setAvailableCount",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "firstName",
+      setStateName: "setType",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "lastName",
+      setStateName: "setType",
+      initialStateValue: "",
+      inputType: "text",
+    },
+    {
+      stateName: "permission",
+      setStateName: "setType",
+      initialStateValue: "",
+      inputType: "text",
+    },
+  ]
+
   export const vendorSpaServiceFormData: T.FormData[] = [
     {
       stateName: "name",

@@ -51,6 +51,16 @@ export type VendorSpaHeader = {
   description: string,
 }
 
+export type SpaEmployeeForm = {
+  username: string,
+  password: string,
+  firstName: string,
+  lastName: string,
+  status: "active" | "vacation" | "off-work",
+  permission: "basic" | "advanced",
+  unavailableDateTimeRanges: DateTimeRange[],
+}
+
 export type SpaDetails = {
   name: string,
   description: string,

@@ -2,7 +2,7 @@ import * as T from "../../utilities/types";
 import { useState } from "react";
 import Button from "./Button";
 import InputWithLabel from "./InputWithLabel";
-import { clientProfileFormData, vendorProfileFormData, vendorSpaInfoFormData, vendorSpaResourceFormData, vendorSpaServiceFormData } from "../../utilities/data";
+import { clientProfileFormData, vendorProfileFormData, vendorSpaEmployeeFormData, vendorSpaInfoFormData, vendorSpaResourceFormData, vendorSpaServiceFormData } from "../../utilities/data";
 import { useNavigate } from "react-router-dom";
 import DurationPickerWithLabel from "./DurationPickerWithLabel";
 import { useAsync } from "../../utilities/customHooks";
@@ -49,6 +49,8 @@ export default function Form({
         return vendorSpaResourceFormData;
       case 'clientProfileForm':
         return clientProfileFormData;
+      case 'vendorSpaEmployeeForm':
+        return vendorSpaEmployeeFormData;
       default:
         throw new Error("Unknown form name.")
     }  

@@ -77,8 +77,7 @@ export type DateTimeRange = {
   endDateTime: Date,
 }
 
-export type SpaEmployee = {
-  _id: SpaEmployeeId,
+export type SpaEmployeeForm = {
   username: string,
   password: string,
   firstName: string,
@@ -87,7 +86,9 @@ export type SpaEmployee = {
   permission: "basic" | "advanced",
   unavailableDateTimeRanges: DateTimeRange[],
 }
-type SpaEmployeeId = id;
+
+export type SpaEmployee = SpaEmployeeForm & { _id: SpaEmployeeId };
+export type SpaEmployeeId = id;
 
 
 export type SpaResource = SpaResourceForm & { _id: SpaResourceId }
