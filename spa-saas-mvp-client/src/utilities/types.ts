@@ -87,6 +87,14 @@ export type SpaEmployeeForm = {
   unavailableDateTimeRanges: DateTimeRange[],
 }
 
+export type AvailablePractitionerWithAvailableTime = {
+  practitioner: {
+    practitionerId: string, 
+    practitionerName: string, 
+  } 
+  startTime: Date
+};
+
 export type SpaEmployee = SpaEmployeeForm & { _id: SpaEmployeeId };
 export type SpaEmployeeId = id;
 
@@ -112,9 +120,9 @@ export type NewSpa = {
   name: string,
   description: string,
 }
-export type VendorSpaId = id; 
+export type spaId = id; 
 export type VendorSpaHeader = {
-  spaId: VendorSpaId;
+  spaId: spaId;
   name: string,
   description: string,
 }

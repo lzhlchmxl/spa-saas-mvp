@@ -1,3 +1,4 @@
+import { parseISO } from 'date-fns';
 import * as T from './types';
 
 export async function createAccount(newUser: T.User): Promise<T.HTTPStatusCode> {
@@ -521,8 +522,8 @@ export async function getVendorSpaHeaders(): Promise<T.VendorSpaHeader[]> {
 }
 
 /* GET spa details by spaId as a client */
-export async function getSpaDetailsById(vendorSpaId: T.VendorSpaId): Promise<T.SpaDetails> {
-  const response = await fetch(`/api/client/spas/${vendorSpaId}`);
+export async function getSpaDetailsById(spaId: T.spaId): Promise<T.SpaDetails> {
+  const response = await fetch(`/api/client/spas/${spaId}`);
 
   if (response.status === 401 || response.status === 403) {
     window.location.href = '/login';
@@ -635,9 +636,15 @@ export async function createSpaResource(newResource: T.SpaResourceForm): Promise
 //   return response.status;
 // }
 
-/* ---------- Booking Service ----------- */
+/* 
+* 
+* 
+---------------- BOOKING SERVICE ---------------- 
+* 
+* 
+*/
 
-export async function getUnavailableDatesByServiceId(spaId: T.VendorSpaId, serviceId: T.VendorServiceId): Promise<Date[]> {
+export async function getUnavailableDatesByServiceId(spaId: T.spaId, serviceId: T.VendorServiceId): Promise<Date[]> {
 
   const res = await fetch(`/api/client/spas/${spaId}/bookService/${serviceId}`);
 
@@ -649,6 +656,67 @@ export async function getUnavailableDatesByServiceId(spaId: T.VendorSpaId, servi
     throw new Error(`/api/client/spas/${spaId}/bookService/${serviceId}: returned HTTP status code: ${res.status}`);
   }
 
-  return await res.json();
+  return (await res.json()).map( (stringfiedDate: string ) => parseISO(stringfiedDate));
 }
 
+export async function findAvailablePractitionersAndStartingTimes(selectedDate: Date, spaId: T.spaId, serviceId: T.VendorServiceId): Promise<T.AvailablePractitionerWithAvailableTime[]> {
+
+  const requestOptions = {
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({selectedDate})
+  }
+
+  const res = await fetch(`/api/client/spas/${spaId}/bookService/${serviceId}`, requestOptions);
+
+  if (res.status === 401 || res.status === 403) {
+    window.location.href = '/login';
+  }
+
+  if (res.status !== 200) {
+    throw new Error(`/api/client/spas/${spaId}/bookService/${serviceId}: returned HTTP status code: ${res.status}`);
+  }
+
+  const results = await res.json();
+
+  return results.map( (availablePractitionersWithAvailableTime: { 
+    practitioner: {
+      practitionerId: string, 
+      practitionerName: string, 
+    } 
+    startTime: string
+  }) => {
+    return {
+      ...availablePractitionersWithAvailableTime,
+      startTime: parseISO(availablePractitionersWithAvailableTime.startTime),
+    }
+  });
+}
+
+export async function bookService(scheduledStartDateTime: Date, spaId: T.spaId, serviceId: T.VendorServiceId, practitionerId: string): Promise<Response> {
+
+  const requestBody = {
+    spaId,
+    serviceId,
+    scheduledStartDateTime,
+    practitionerId,
+  }
+
+  const requestOptions = {
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(requestBody)
+  }
+
+  const res = await fetch(`/api/client/spas/${spaId}/bookService/${serviceId}/create`, requestOptions);
+
+  if (res.status === 401 || res.status === 403) {
+    window.location.href = '/login';
+  }
+
+  if (res.status !== 200) {
+    throw new Error(`/api/client/spas/${spaId}/bookService/${serviceId}: returned HTTP status code: ${res.status}`);
+  }
+
+  return res;
+}

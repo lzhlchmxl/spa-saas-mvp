@@ -62,14 +62,14 @@ export default function Register() {
       <InputWithLabel 
         label="password" 
         name="password"
-        type="text"
+        type="password"
         value={password} 
         setValue={setPassword}        
       />
       <InputWithLabel 
         label="re-password" 
         name="re-password"
-        type="text"
+        type="password"
         value={rePassword} 
         setValue={setRePassword}        
       />

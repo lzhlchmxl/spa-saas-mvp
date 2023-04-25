@@ -5,7 +5,8 @@ import MySpa from '../models/mySpa.model';
 import VendorService from '../models/vendorService.model';
 import Record from '../models/record.model';
 import * as T from '../utilities/types';
-import { getUnavailableDates } from '../utilities/processorFunctions';
+import { parseISO } from 'date-fns'
+import { getAvailablePractitionersWithAvailableTimes, getUnavailableDates } from '../utilities/processorFunctions';
 
 const router = express.Router();
 
@@ -141,7 +142,13 @@ router.route('/spas/:spaId').get(isAuthenticated, isAuthorized, async (req, res)
   }
 });
 
-// ------------ Booking ------------ //
+/* 
+* 
+* 
+---------------- Booking ---------------- 
+* 
+* 
+*/
 
 
 /*
@@ -160,16 +167,7 @@ router.route('/spas/:spaId/bookService/:serviceId').get(isAuthenticated, isAutho
     if (spa === null) {
       throw new Error("No results found with the given spaId");
     }
-    // const occupiedRecords = await Promise.all(spa.recordIds.map( async (recordId: string) => {
-    //   const record = await Record.findOne({_id: recordId});
-    //   if (record === null) {
-    //     throw new Error("No Record found with the given id");
-    //   }
-    //   const serviceStage = record.serviceStage;
-    //   if (serviceStage === "booking" || serviceStage === "booked" || serviceStage === "rescheduling") {
-    //     return record;
-    //   }
-    // }))
+
     const spaRecords = await Record.find({ spaId: spa._id });
     const occupiedRecords = spaRecords.filter( record => {
       const serviceStage = record.serviceStage;
@@ -193,5 +191,95 @@ router.route('/spas/:spaId/bookService/:serviceId').get(isAuthenticated, isAutho
     res.status(500).json({ message: 'An error has occurred when retriving spaDetails.'})
   }
 });
+
+/*
+    POST /api/client/spas/:spaId/bookService/:serviceId
+    Description: 
+    Request body: 
+    Response body: 
+*/
+router.route('/spas/:spaId/bookService/:serviceId').post(isAuthenticated, isAuthorized, async (req, res) => {
+  
+  const reqDate: Date = parseISO(req.body);
+  const bookingDate = reqDate.getDate();
+  const spaId = req.params.spaId;
+  const serviceId = req.params.serviceId;
+
+  try {
+    const spa = await MySpa.findOne({ _id: spaId});
+    if (spa === null) {
+      throw new Error("No results found with the given spaId");
+    }
+
+    const spaRecords = await Record.find({ spaId: spa._id });
+    const occupiedRecordsForSelectedDate = spaRecords.filter( record => {
+      const serviceStage = record.serviceStage;
+      const scheduledDate = record.scheduledStartDateTime.getDate();
+      if (
+        bookingDate === scheduledDate &&
+        (serviceStage === "booking" || serviceStage === "booked" || serviceStage === "rescheduling")
+      ) {
+        return record;
+      }
+    })
+
+    const bookingService = await VendorService.findOne({ _id: serviceId });
+
+    if (bookingService === null) {
+      throw new Error("No results found with the given spaId or serviceId");
+    }
+
+    const results = getAvailablePractitionersWithAvailableTimes(occupiedRecordsForSelectedDate, bookingService.durationInSeconds, 8, 20);
+
+    res.status(200).json(results);
+  } catch(err) {
+    console.log(err)
+    res.status(500).json({ message: 'An error has occurred when retriving spaDetails.'})
+  }
+});
+
+
+/*
+    POST /api/client/spas/:spaId/bookService/:serviceId/create
+    Description: 
+    Request body: 
+    Response body: 
+*/
+router.route('/spas/:spaId/bookService/:serviceId/create').post(isAuthenticated, isAuthorized, async (req, res) => {
+  
+  try {
+    const scheduledStartDateTime: Date = parseISO(req.body.scheduledStartDateTime);
+    const spaId = req.params.spaId;
+    const serviceId = req.params.serviceId;
+    const practitionerId: string = req.body.practitionerId;
+    const clientId = req.session.data?.userId;
+  
+    const spa = await MySpa.findOne({ _id: spaId});
+    if (spa === null) {
+      throw new Error("No results found with the given spaId");
+    }
+    const vendorId = spa.userId;
+
+    const record = {
+      clientId,
+      vendorId,
+      spaId,
+      serviceId,
+      serviceStage: "booking",
+      scheduledStartDateTime,
+      practitioner: practitionerId,
+      paymentStage: "Service not complete yet.",
+    }
+
+    const newRecord = new Record(record);
+    await newRecord.save();
+   
+    res.status(200).json({ recordId: newRecord._id });
+  } catch(err) {
+    console.log(err)
+    res.status(500).json({ message: 'An error has occurred when retriving spaDetails.'})
+  }
+});
+
 
 export default router;

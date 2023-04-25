@@ -41,3 +41,7 @@ export function secondsToDuration(seconds: number): T.Duration {
 export function addSpaceBeforeCapitalLetters(s: string): string {
   return s.replace(/([A-Z])/g, ' $1').trim();
 }
+
+export function onlyUnique<T>(value: T, index: number, array: T[]) {
+  return array.indexOf(value) === index;
+}

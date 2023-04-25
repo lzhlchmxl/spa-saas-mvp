@@ -79,7 +79,7 @@ export default function Login() {
       <InputWithLabel 
         label="Password"
         name="password"
-        type="text"
+        type="password"
         value={password} 
         setValue={setPassword} 
       />

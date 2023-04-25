@@ -48,7 +48,7 @@ root.render(
             <Route index path="*" element={<ProfilePage />} />
             <Route path='profile/edit' element={<EditProfile />} />
             <Route path="spas" element={<SpasPage />} />
-            <Route path="spas/:vendorSpaId" element={<ViewSpaDetails />} />
+            <Route path="spas/:spaId" element={<ViewSpaDetails />} />
             <Route path="appointments" element={<AppointmentsPage />} />
             <Route path="history" element={<HistoryPage />} />
           </Route>

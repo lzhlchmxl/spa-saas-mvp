@@ -3,7 +3,7 @@ import Button from "../../../app/UIComponents/Button";
 import ContentPageTopButtons from "../../../app/UIComponents/ContentPageTopButtons";
 import ErrorIndicator from "../../../app/UIComponents/ErrorIndicator";
 import LoadingIndicator from "../../../app/UIComponents/LoadingIndicator";
-import { getSpaDetailsById, getUnavailableDatesByServiceId } from "../../../utilities/api";
+import { bookService, findAvailablePractitionersAndStartingTimes, getSpaDetailsById, getUnavailableDatesByServiceId } from "../../../utilities/api";
 import { useAsync, useRequiredParams } from "../../../utilities/customHooks";
 import { secondsToDuration } from "../../../utilities/utilityFunctions";
 import Modal from 'react-modal';
@@ -15,14 +15,23 @@ export default function ViewSpaDetails() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [bookingServiceId, setBookingServiceId] = useState("");
-  const vendorSpaId = useRequiredParams('vendorSpaId');
+  const spaId = useRequiredParams('spaId');
   const [isModalLoading, setIsModalLoading] = useState(false);
   const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
-  const [selectedBookingDateTime, setSelectedBookingDateTime] = useState<Date | null>(null);
-  const [availablePractitionerNames, setAvailablePractitionerNames] = useState<string[]>([]);
-  const [availableStartingTimeRanges, setAvailableStartingTimeRanges] = useState<T.DateTimeRange[]>([]);
+  const [selectedBookingDate, setSelectedBookingDate] = useState<Date | null>(null);
 
-  const spaDetailsAsync = useAsync(() => getSpaDetailsById(vendorSpaId), []);
+
+  const [availablePractitionersAndStartingTimes, setAvailablePractitionersAndStartingTimes] = useState<T.AvailablePractitionerWithAvailableTime[]>([]);
+
+  const [availablePractitioners, setAvailablePractitioners] = useState<{ practitionerId: string, practitionerName: string }[]>([]);
+  const [availableStartingTimes, setAvailableStartingTimes] = useState<Date[]>([]);
+  const [selectedPractitioner, setSelectedPractitioner] = useState<{
+    practitionerId: string;
+    practitionerName: string;
+}>({practitionerId: "", practitionerName: ""});
+  const [selectedBookingDateTime, setSelectedBookingDateTime] = useState<Date | null>(null);
+
+  const spaDetailsAsync = useAsync(() => getSpaDetailsById(spaId), []);
 
   if (spaDetailsAsync.status === "pending") {
     return <LoadingIndicator />
@@ -77,21 +86,51 @@ export default function ViewSpaDetails() {
 
   const afterOpenModal = async () => {
     setIsModalLoading(true);
-    setUnavailableDates(await getUnavailableDatesByServiceId(vendorSpaId, bookingServiceId));
+    setUnavailableDates(await getUnavailableDatesByServiceId(spaId, bookingServiceId));
     setIsModalLoading(false);
   }
 
   const closeModal = () => {
     setIsModalOpen(false)
+    setAvailablePractitioners([])
+    setUnavailableDates([])
+    setAvailablePractitionersAndStartingTimes([])
+    setSelectedBookingDate(null)
+    setAvailableStartingTimes([])
+    setSelectedPractitioner({practitionerId: "", practitionerName: ""})
+    setSelectedBookingDateTime(null)
   }
 
   const handleBookingDateSelected = async (date: Date | null) => {
-    setSelectedBookingDateTime(date);
+    setSelectedBookingDate(date);
     if (date !== null) {
       setIsModalLoading(true);
-      // const { availablePractitionerNames, avilableStartingTimeRanges } = await findAvailablePractitionerNamesAndTimeRanges(selectedBookingDateTime);
-      // setAvailablePractitionerNames(availablePractitionerNames);
-      // setAvailableStartingTimeRanges(avilableStartingTimeRanges);
+      const availablePractitionersAndStartingTimes = await findAvailablePractitionersAndStartingTimes(date, spaId, bookingServiceId);
+      
+      setAvailablePractitionersAndStartingTimes(availablePractitionersAndStartingTimes);
+
+      // [TODO]!!!!!!!!!! Order n^2, not cool!!!!!!!!!!!!
+      const uniqueAvailablePractitionerIds: string[] = [];
+      const availablePractitioners = availablePractitionersAndStartingTimes.map( availablePractitionerAndStartingTime => availablePractitionerAndStartingTime.practitioner);
+      
+      const uniqueAvailablePractitioner = availablePractitioners.filter( availablePractitioner => {
+        let isUnique = true;
+        uniqueAvailablePractitionerIds.forEach( uniqueAvailablePractitionerId => {
+          if (uniqueAvailablePractitionerId === availablePractitioner.practitionerId) {
+            isUnique = false;
+          }
+        })
+        if (isUnique) {
+          uniqueAvailablePractitionerIds.push(availablePractitioner.practitionerId);
+          return availablePractitioner;
+        }
+      })
+      
+      setAvailablePractitioners(uniqueAvailablePractitioner);
+      const availableStartingTimes = availablePractitionersAndStartingTimes.map(availablePractitionerAndStartingTime => {
+        return availablePractitionerAndStartingTime.startTime;
+      })
+      // setAvailableStartingTimes(availableStartingTimes);
       setIsModalLoading(false);
     }
   }
@@ -110,6 +149,27 @@ export default function ViewSpaDetails() {
       minWidth: '500px',
     },
   };
+
+  const handleBookServiceDetails = async () => {
+    setIsModalLoading(true);
+    
+    await getUnavailableDatesByServiceId(spaId, bookingServiceId);
+
+    if (selectedBookingDateTime === null) {
+      throw new Error("Cannot book service without selecting booking date time first.");
+    }
+    
+    const res = await bookService(selectedBookingDateTime, spaId, bookingServiceId, selectedPractitioner.practitionerId);
+    
+    setIsModalLoading(false);
+    console.log(res)
+    if (res.status === 200) {
+      window.location.href = '/client/appointments';
+    } else {
+      return (<ErrorIndicator />);
+    }
+
+  }
   
   return (
     <div className="relative flex flex-col h-full w-contentWidth max-w-maxContentWidth items-center text-textsIcons">
@@ -146,7 +206,7 @@ export default function ViewSpaDetails() {
               </label>
               <DatePicker 
                 name="avilable-date-selector"
-                selected={selectedBookingDateTime}
+                selected={selectedBookingDate}
                 onChange={(date) => handleBookingDateSelected(date)}
                 excludeDates={unavailableDates}
                 className="bg-lightBackgrounds border border-white/30 rounded-md p-2"
@@ -158,36 +218,77 @@ export default function ViewSpaDetails() {
                 }}
               />
               {
-                availablePractitionerNames.length !== 0
+                availablePractitioners.length !== 0
                 &&
                 <div className="flex flex-col">
-                  <div className="font-semibold mb-1">Select available practitioner(s)</div>
+                  <div className="font-semibold mb-1 mt-5">Select available practitioner(s)</div>
                   <div>
+                    {
+                      availablePractitioners.map( uniqueAvilablePractitioner => {
+                        return (
+                          <div className="flex">
+                            <input 
+                              className="mr-3"
+                              checked={selectedPractitioner.practitionerId === uniqueAvilablePractitioner.practitionerId }
+                              type="checkbox"
+                              onChange={(e) => {
+                                if (e.currentTarget.checked) {
+                                  setSelectedPractitioner({
+                                    practitionerId: uniqueAvilablePractitioner.practitionerId,
+                                    practitionerName: uniqueAvilablePractitioner.practitionerName,
+                                  })
+
+                                  const selectedPractitionerAndStartingTimes = availablePractitionersAndStartingTimes.filter( practitionerAndStartingTime => {
+                                    return practitionerAndStartingTime.practitioner.practitionerId === uniqueAvilablePractitioner.practitionerId
+                                  })
+
+                                  const avilableStartingTimes = selectedPractitionerAndStartingTimes.map(selectedPractitionerAndStartingTime => selectedPractitionerAndStartingTime.startTime);
+                                  
+                                  setAvailableStartingTimes(avilableStartingTimes);
+                                }
+                              }}
+                            />
+                            {uniqueAvilablePractitioner.practitionerName}
+                          </div>
+                        )
+                      })
+                    }
                     
                   </div>
                 </div>
               }
               {
-                availableStartingTimeRanges.length !== 0
+                availableStartingTimes.length !== 0
                 &&
                 <div className="flex flex-col">
-                  <div className="font-semibold mb-1">Select an available time slot</div>
+                  <div className="font-semibold mb-1 mt-5">Select an available time slot</div>
                   <DatePicker 
                     name="avilable-date-selector"
                     selected={selectedBookingDateTime}
                     onChange={setSelectedBookingDateTime}
                     showTimeSelect
                     showTimeSelectOnly
-                    timeIntervals={15}
+                    timeIntervals={30}
                     timeCaption="Time"
                     dateFormat="h:mm aa"
                     className="bg-lightBackgrounds border border-white/30 rounded-md p-2"
-                    // includeTimes={[
-                      // setHours(setMinutes(new Date(), 0), 17),
-                      // setHours(setMinutes(new Date(), 30), 18),
-                      // setHours(setMinutes(new Date(), 30), 19),
-                      // setHours(setMinutes(new Date(), 30), 17),
-                    // ]}
+                    includeTimes={availableStartingTimes}
+                  />
+                </div>
+              }
+              {
+                selectedBookingDateTime !== null 
+                &&
+                <div className="flex mt-10 justify-center">
+                  <Button 
+                    actionType="primary"
+                    actionText="Book"
+                    actionHandler={handleBookServiceDetails}                  
+                  />
+                  <Button 
+                    actionType="secondary"
+                    actionText="Cancel"
+                    actionHandler={closeModal}                  
                   />
                 </div>
               }

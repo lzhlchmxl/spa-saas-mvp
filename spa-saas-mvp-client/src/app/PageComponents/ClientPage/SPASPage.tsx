@@ -19,8 +19,8 @@ export default function SpasPage() {
 
   const vendorSpaHeaders = vendorSpaHeadersAsync.value;
 
-  const handleViewSpaDetails = (vendorSpaId: T.VendorSpaId) => {
-    window.location.pathname = `/client/spas/${vendorSpaId}`
+  const handleViewSpaDetails = (spaId: T.spaId) => {
+    window.location.pathname = `/client/spas/${spaId}`
   }
   
   const vendorSpaHeadersHTML = vendorSpaHeaders.map(vendorSpaHeader => {
